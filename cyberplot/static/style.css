@@ -1,0 +1,156 @@
+@font-face{
+    font-family: 'Libre Franklin Bold';
+    src: url('fonts/LibreFranklin-Bold.ttf') format('truetype');
+}
+
+@font-face{
+    font-family: 'Libre Franklin';
+    src: url('fonts/LibreFranklin-Regular.ttf') format('truetype');
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Libre Franklin';
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+a {
+    outline: none;
+}
+
+h1 {
+    display: none;
+}
+
+nav {
+    height: 2.5em;
+    padding: 2em;
+    background: linear-gradient(90deg, #14e0f9, #3765ff);
+}
+
+#cyberplot_logo {
+    height: 2.5em;
+}
+
+.button_primary {
+    background: linear-gradient(to bottom, #64dafa, #1fbbfb 15%, #3765ff 100%);
+    padding: 0.5em;
+    border-radius: 0.3em;
+    font-family: 'Libre Franklin Bold';
+    text-decoration: none;
+    color: white;
+}
+
+.button_primary:hover {
+    background: linear-gradient(to bottom, #69dfff, #25c4ff 15%, #3a69ff 100%);
+}
+
+.button_primary:active {
+    background: linear-gradient(to bottom, #3765ff 15%, #1fbbfb 100%);
+}
+
+.button_secondary {
+    background-color: white;
+    padding: 0.5em;
+    border-radius: 0.3em;
+    font-family: 'Libre Franklin Bold';
+    text-decoration: none;
+    color: #3765ff;
+}
+
+.button_secondary:hover {
+    background-color: #eee;
+}
+
+#dataset_listing {
+    list-style: none;
+    padding: 1em;
+    margin: 1em;
+    margin-right: 0;
+    margin: 0;
+    padding-right: 0;
+    flex-grow: 1;
+}
+
+#dataset_listing li {
+    border-bottom: 3px solid #eee;
+    padding: 1em;
+    font-family: 'Libre Franklin Bold';
+    color: #888;
+}
+
+#dataset_listing li:hover {
+    background-color: #eee;
+}
+
+#dataset_listing a {
+    text-decoration: none;
+}
+
+#user_label {
+    color: white;
+    padding: 0.5em;
+    text-decoration: none;
+    font-family: 'Libre Franklin Bold';
+    float: right;
+    margin-right: 1em;
+}
+
+#logout_button {
+    float: right;
+}
+
+#dataset_add_button {
+    height: 3em;
+    display: block;
+    margin: 1em;
+    text-align: center;
+    line-height: 3em;
+    position: relative;
+}
+
+#sidebar {
+    width: 40em;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    background-color: #f9f9f9;
+}
+
+#content {
+    width: 100%;
+    background-color: #e6e6e6;
+    padding: 1em;
+}
+
+main {
+    display: flex;
+    height: 100%;
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.content_placeholder {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15em;
+}
+
+#icon_user {
+    vertical-align: middle;
+}

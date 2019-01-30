@@ -1,13 +1,29 @@
 <!doctype html>
 <title>{% block title %}{% endblock %} - cyberplot</title>
-<link rel = "stylesheet" href = "{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 <nav>
-  <h1>Cyberplot</h1>
+    <h1>Cyberplot</h1>
+    <img src="{{ url_for('static', filename='images/logo_white.svg') }}" alt="Cyberplot logo" id="cyberplot_logo">
+    <a href="#" id="logout_button" class="button_secondary">Log out</a>
+    <a href="#" id="user_label">
+        <img src="{{ url_for('static', filename='images/icon_user_white.svg') }}" alt="User profile" id="icon_user">
+        username
+    </a>
 </nav>
 
-<section class="sidebar">
-</section>
+<main>
+    <section id="sidebar">
+        <ul id="dataset_listing">
+            <a href="#"><li>dataset1</li></a>
+            <a href="#"><li>dataset2</li></a>
+            <a href="#"><li>dataset3</li></a>
+        </ul>
 
-<section class = "content">
-</section>
+        <a href="#" id="dataset_add_button" class="button_primary">Add new dataset</a>
+    </section>
+
+    <section id="content">
+        <img src="{{ url_for('static', filename='images/icon_dataset_gray.svg') }}" alt="No dataset selected" class="content_placeholder">
+    </section>
+</main>
