@@ -1,11 +1,11 @@
 @font-face{
     font-family: 'Libre Franklin Bold';
-    src: url('fonts/LibreFranklin-Bold.ttf') format('truetype');
+    src: url('../fonts/LibreFranklin-Bold.ttf') format('truetype');
 }
 
 @font-face{
     font-family: 'Libre Franklin';
-    src: url('fonts/LibreFranklin-Regular.ttf') format('truetype');
+    src: url('../fonts/LibreFranklin-Regular.ttf') format('truetype');
 }
 
 html {
@@ -68,7 +68,7 @@ nav {
     border-radius: 0.3em;
     font-family: 'Libre Franklin Bold';
     text-decoration: none;
-    color: #3765ff;
+    color: #1fbbfb;
 }
 
 .button_secondary:hover {
@@ -111,6 +111,7 @@ nav {
 
 #logout_button {
     float: right;
+    color: #3765ff;
 }
 
 #dataset_add_button {
@@ -132,8 +133,10 @@ nav {
 
 #content {
     width: 100%;
-    background-color: #e6e6e6;
-    padding: 1em;
+    background-color: #ececec;
+    color: #4b4b4b;
+    display: flex;
+    flex-direction: column;
 }
 
 main {
@@ -141,6 +144,7 @@ main {
     height: 100%;
     align-items: stretch;
     align-content: stretch;
+    overflow: hidden;
 }
 
 .content_placeholder {
@@ -153,4 +157,9 @@ main {
 
 #icon_user {
     vertical-align: middle;
+}
+
+#dataset_listing #active_dataset_button {
+    background-color: #ececec;
+    border-bottom: 5px solid #1fbbfb;
 }

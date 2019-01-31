@@ -1,3 +1,7 @@
 {% extends 'application/base.html' %}
 
-<h1>{% block title %}dataset_name{% endblock %}</h1>
+<h1>{% block title %}username's datasets{% endblock %}</h1>
+
+{% block content %}
+<img src="{{ url_for('static', filename='images/icon_dataset_gray.svg') }}" alt="No dataset selected" class="content_placeholder">
+{% endblock %}

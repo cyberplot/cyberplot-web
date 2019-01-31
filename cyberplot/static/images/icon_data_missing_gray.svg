@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="7.0492334mm"
+   height="6.6149211mm"
+   viewBox="0 0 7.0492334 6.614921"
+   version="1.1"
+   id="svg4633"
+   inkscape:version="0.92.4 (unknown)"
+   sodipodi:docname="icon_data_missing_gray.svg">
+  <defs
+     id="defs4627">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6218">
+      <stop
+         style="stop-color:#14e0f9;stop-opacity:1"
+         offset="0"
+         id="stop6214" />
+      <stop
+         style="stop-color:#3765ff;stop-opacity:1"
+         offset="1"
+         id="stop6216" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6218"
+       id="linearGradient4933"
+       x1="-3759.241"
+       y1="4189.0234"
+       x2="-3756.2056"
+       y2="4189.0234"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.8347475,0,0,1.8347475,3241.6795,-3368.5314)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6218"
+       id="linearGradient6199"
+       x1="-3759.241"
+       y1="4189.0234"
+       x2="-3756.2056"
+       y2="4189.0234"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.8347475,0,0,1.8347475,6849.0095,-7706.9634)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.2"
+     inkscape:cx="18.811079"
+     inkscape:cy="22.613528"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1014"
+     inkscape:window-x="1920"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1"
+     showguides="false" />
+  <metadata
+     id="metadata4630">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-25.110161,12.735069)">
+    <g
+       id="g6334"
+       transform="translate(0.35700994,27.813281)">
+      <text
+         inkscape:export-ydpi="99.025696"
+         inkscape:export-xdpi="99.025696"
+         inkscape:export-filename="/home/tomires/g4365-3.png"
+         id="text819-5-4-1-2-1-4-3-0-7-0-9"
+         y="-36.302307"
+         x="27.569862"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.61741543px;line-height:125%;font-family:Riffic;-inkscape-font-specification:Riffic;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#4b4b4b;fill-opacity:1;stroke:none;stroke-width:0.06543536px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           id="tspan903-3-1-2-0-8-1-9-54-9-1"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libre Franklin';-inkscape-font-specification:'Libre Franklin Bold';fill:#4b4b4b;fill-opacity:1;stroke-width:0.06543536px"
+           y="-36.302307"
+           x="27.569862"
+           sodipodi:role="line">?</tspan></text>
+      <rect
+         inkscape:export-ydpi="99.025696"
+         inkscape:export-xdpi="99.025696"
+         inkscape:export-filename="/home/tomires/g4365-3.png"
+         ry="0.16251484"
+         y="-39.129948"
+         x="26.38871"
+         height="3.7781155"
+         width="3.7781155"
+         id="rect4016-2"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#4b4b4b;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:0.41029585, 0.82059173;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+    </g>
+  </g>
+</svg>
