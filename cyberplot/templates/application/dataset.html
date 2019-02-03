@@ -42,7 +42,7 @@
 <div id="attribute_panel">
     <div id="attribute_settings">
         <h2>Height</h2>
-        <a href="#"><img src="{{ url_for('static', filename='images/icon_rename_blue.svg') }}" alt="Rename attribute"></a>
+        <a href="#" id="attribute_rename_button" class="button_secondary"><img src="{{ url_for('static', filename='images/icon_rename_blue.svg') }}" alt="Rename attribute"></a>
         <dl>
             <dt><img src="{{ url_for('static', filename='images/icon_data_type_gray.svg') }}"> Data type</dt>
             <dd id="data_type_selector" class="selector">
@@ -63,8 +63,28 @@
     <div id="attribute_statistics">
         <dl>
             <dt><img src="{{ url_for('static', filename='images/icon_statistics_gray.svg') }}"> Statistics</dt>
-            <dd></dd>
+            <dd>
+                <table>
+                    <tr><td>128</td><td>135</td><td>157</td><td>165</td><td>189</td></tr>
+                    <tr><td>min</td><td>1Q</td><td>med</td><td>3Q</td><td>max</td></tr>
+                </table>
+
+                <ul>
+                    <li><img src="{{ url_for('static', filename='images/icon_mean_gray.svg') }}" alt="Arithmetic mean"> 161</li>
+                    <li><img src="{{ url_for('static', filename='images/icon_standard_deviation_gray.svg') }}" alt="Standard deviation"> 24.5</li>
+                </ul>
+            </dd>
         </dl>    
     </div>
 </div>
+{% endblock %}
+
+{% block overlay %}
+<dialog>
+    <header><img src="{{ url_for('static', filename='images/icon_update_blue.svg') }}"> Update data</header>
+    <p>Please select data source to continue.</p>
+    <ul>
+        <a href="#"><li><img src="{{ url_for('static', filename='images/icon_source_file_blue.svg') }}">Local file</li></a>
+    </ul>
+</dialog>
 {% endblock %}

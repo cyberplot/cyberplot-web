@@ -89,9 +89,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="-57.886769"
-     inkscape:cy="66.748623"
+     inkscape:zoom="15.839192"
+     inkscape:cx="13.172275"
+     inkscape:cy="14.963894"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -109,7 +109,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -120,17 +120,17 @@
      transform="translate(-25.110161,12.735069)">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.83598948px;line-height:125%;font-family:Riffic;-inkscape-font-specification:Riffic;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:none;stroke-width:0.09589973px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="25.915571"
-       y="-8.0044565"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.00296426px;line-height:125%;font-family:Riffic;-inkscape-font-specification:Riffic;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:none;stroke-width:0.07507411px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="26.506075"
+       y="-8.313509"
        id="text819-5-4-1-2-1-4-3-0-7-1-6"
        inkscape:export-filename="/home/tomires/g4365-3.png"
        inkscape:export-xdpi="99.025696"
        inkscape:export-ydpi="99.025696"><tspan
          sodipodi:role="line"
-         x="25.915571"
-         y="-8.0044565"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libre Franklin';-inkscape-font-specification:'Libre Franklin Bold';fill:#4d4d4d;fill-opacity:1;stroke-width:0.09589973px"
+         x="26.506075"
+         y="-8.313509"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libre Franklin';-inkscape-font-specification:'Libre Franklin Bold';fill:#4d4d4d;fill-opacity:1;stroke-width:0.07507411px"
          id="tspan903-3-1-2-0-8-1-9-54-2-2">SD</tspan></text>
   </g>
 </svg>
