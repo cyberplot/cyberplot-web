@@ -37,20 +37,20 @@
        id="linearGradient4727"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.8776341,0,0,1.8776341,3321.4506,-3009.5043)"
-       x1="-3766.1421"
-       y1="3427.0664"
-       x2="-3763.1489"
-       y2="3427.0664" />
+       x1="-3766.3789"
+       y1="3425.3328"
+       x2="-3762.8777"
+       y2="3428.834" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient6218"
        id="linearGradient4729"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.8776341,0,0,1.8776341,220.5794,-4476.6612)"
-       x1="-239.35786"
-       y1="5085.3589"
-       x2="-238.02312"
-       y2="5085.3589" />
+       x1="-241.15607"
+       y1="5085.3081"
+       x2="-236.20457"
+       y2="5085.3081" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -59,9 +59,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="8.3721447"
-     inkscape:cy="20.946622"
+     inkscape:zoom="2.8"
+     inkscape:cx="51.462222"
+     inkscape:cy="-23.537827"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -70,7 +70,7 @@
      inkscape:window-x="1920"
      inkscape:window-y="33"
      inkscape:window-maximized="1"
-     showguides="false" />
+     showguides="true" />
   <metadata
      id="metadata4630">
     <rdf:RDF>
@@ -79,7 +79,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -45,19 +45,19 @@
        xlink:href="#linearGradient6218"
        id="linearGradient10646"
        gradientUnits="userSpaceOnUse"
-       x1="25.906363"
-       y1="-9.427618"
-       x2="31.363186"
-       y2="-9.427618" />
+       x1="25.54447"
+       y1="-11.89986"
+       x2="31.666613"
+       y2="-7.0556002" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient6218"
        id="linearGradient10648"
        gradientUnits="userSpaceOnUse"
-       x1="25.906363"
-       y1="-9.427618"
-       x2="31.363186"
-       y2="-9.427618" />
+       x1="25.54447"
+       y1="-11.89986"
+       x2="31.666613"
+       y2="-7.0556002" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -66,11 +66,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="15.839192"
-     inkscape:cx="10.200844"
-     inkscape:cy="19.181654"
+     inkscape:zoom="7.919596"
+     inkscape:cx="-0.27909914"
+     inkscape:cy="-2.6107495"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g6124-7"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1014"
@@ -86,7 +86,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
