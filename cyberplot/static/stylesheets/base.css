@@ -8,6 +8,11 @@
     src: url('../fonts/LibreFranklin-Regular.ttf') format('truetype');
 }
 
+@font-face{
+    font-family: 'Roboto Mono';
+    src: url('../fonts/RobotoMono-Regular.ttf') format('truetype');
+}
+
 html {
     height: 100%;
 }
@@ -33,6 +38,10 @@ a {
 
 h1 {
     display: none;
+}
+
+h2 {
+    font-weight: normal;
 }
 
 #navigation_main {
@@ -186,6 +195,7 @@ main {
     display: block;
     margin: 0;
     position: relative;
+    border: none;
 }
 
 #overlay header {
@@ -206,15 +216,6 @@ main {
 #overlay p {
     margin-left: 4.1em;
     margin-top: 0;
-}
-
-#overlay form div {
-    width: 9em;
-    height: 8em;
-    margin: 0.75em;
-    text-align: center;
-    padding-top: 1.5em;
-    display: inline-block;
 }
 
 #overlay form label img {
@@ -247,6 +248,73 @@ main {
 
 #overlay #button_back {
     float: left;
+}
+
+.cli_box {
+    background-color: black;
+    color: white;
+    padding: 1em;
+    margin-bottom: 1.5em;
+    margin-left: 4.1em;
+    margin-right: 1em;
+    border-radius: 0.3em;
+    font-family: 'Roboto Mono';
+
+    -webkit-touch-callout: default;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+strong {
+    font-family: 'Libre Franklin Bold';
+    font-weight: normal;
+}
+
+#overlay [type=text], [type=password] {
+    margin-left: 4.1em;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+}
+
+#overlay .button_primary {
+    display: block;
+    margin-left: auto;
+
+    width: intrinsic;
+    width: -moz-max-content;
+    width: -webkit-max-content;
+}
+
+#overlay form {
+    display: none;
+}
+
+#form_user_settings p:nth-of-type(2) {
+    margin-top: 2em;
+}
+
+.textbox_with_icon {
+    background-position: right;
+    background-repeat: no-repeat;
+    background-position-x: 0.25em;
+    background-position-y: 0.25em;
+    background-size: 1.75em;
+    padding-left: 2.25em !important;
+}
+
+[type=text], [type=password] {
+    display: block;
+    background-color: white;
+    border: none;
+    padding: 0.5em;
+    border-radius: 0.3em;
+    font-family: 'Libre Franklin Bold';
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
 }
 
 [type=radio] { 

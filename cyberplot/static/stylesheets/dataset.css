@@ -196,3 +196,20 @@ a img {
 #attribute_statistics li:nth-of-type(2) {
     margin-left: 0.1em;
 }
+
+#overlay #form_update div {
+    width: 9em;
+    height: 8em;
+    margin: 0.75em;
+    text-align: center;
+    padding-top: 1.5em;
+    display: inline-block;
+}
+
+#overlay #form_update_r .button_secondary {
+    margin-left: 4.1em;
+}
+
+#overlay #form_update_python .button_secondary {
+    margin-left: 4.1em;
+}

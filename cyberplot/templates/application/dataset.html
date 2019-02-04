@@ -121,4 +121,78 @@
             <a href="#" id="button_back"><img src="{{ url_for('static', filename='images/button_back.svg') }}" alt="Back"></a>
         </nav>
     </form>
+
+    <form id="form_update_r">
+        <header><img src="{{ url_for('static', filename='images/icon_update_blue.svg') }}"> Update data using R</header>
+        <p>To upload an R dataframe, first download the cyberplot package by running the following command.</p>
+        <div class="cli_box">
+            install.packages("cyberplot")<br />
+            library("cyberplot")
+        </div>
+
+        <p>After importing the package, use the following command to update <strong>Employee Earnings Comparison</strong></p>
+  
+        <div class="cli_box">
+            cyberplot.update(your_datatable,<br />
+            id = "<strong>346f9f436c0d99fbb937658af47a09f9</strong>")
+        </div>
+        <a href="#" id="button_copy" class="button_secondary">Copy dataset identifier</a>
+        
+        <nav>
+            <a href="#" id="button_back"><img src="{{ url_for('static', filename='images/button_back.svg') }}" alt="Back"></a>
+        </nav>
+    </form>
+
+    <form id="form_update_python">
+        <header><img src="{{ url_for('static', filename='images/icon_update_blue.svg') }}"> Update data using Python</header>
+        <p>To use Python with Cyberplot, first install the cyberplot package from PyPI repository by running the following command in the terminal.</p>
+        <div class="cli_box">
+            pip install cyberplot
+        </div>
+
+        <p>After installing the package, use the following command in your Python environment to update <strong>Employee Earnings Comparison</strong></p>
+  
+        <div class="cli_box">
+            import cyberplot<br />
+            cyberplot.update(your_array,<br />
+            id = "<strong>346f9f436c0d99fbb937658af47a09f9</strong>")
+        </div>
+        <a href="#" id="button_copy" class="button_secondary">Copy dataset identifier</a>
+        
+        <nav>
+            <a href="#" id="button_back"><img src="{{ url_for('static', filename='images/button_back.svg') }}" alt="Back"></a>
+        </nav>
+    </form>
+
+    <form id="form_rename_dataset">
+        <header><img src="{{ url_for('static', filename='images/icon_rename_blue.svg') }}"> Rename dataset</header>
+        <p>Please enter a new name for <strong>Employee Earnings Comparison</strong>.</p>
+
+        <input type="text" name="dataset_name" placeholder="Employee Earnings Comparison">
+        <a href="#" id="button_rename" class="button_primary">Rename dataset</a>
+    </form>
+
+    <form id="form_rename_attribute">
+        <header><img src="{{ url_for('static', filename='images/icon_rename_blue.svg') }}"> Rename attribute</header>
+        <p>Please enter a new name for <strong>Name</strong>.</p>
+
+        <input type="text" name="attribute_name" placeholder="Name">
+        <a href="#" id="button_rename" class="button_primary">Rename attribute</a>
+    </form>
+
+    <form id="form_delete">
+        <header><img src="{{ url_for('static', filename='images/icon_delete_blue.svg') }}"> Delete dataset</header>
+        <p>You are about to delete <strong>Employee Earnings Comparison</strong>. This operation cannot be reversed. If you are certain you want to continue, please type the name of your dataset into the following textbox.</p>
+
+        <input type="text" name="dataset_name" placeholder="Employee Earnings Comparison">
+        <a href="#" id="button_delete" class="button_primary">Delete dataset</a>
+    </form>
+
+    <form id="form_share">
+        <header><img src="{{ url_for('static', filename='images/icon_share_blue.svg') }}"> Share a copy of dataset</header>
+        <p>Please enter name of the user you want to share <strong>Employee Earnings Comparison</strong> with.</p>
+
+        <input type="text" name="user_name" placeholder="Enter user name" class="textbox_with_icon" style="background-image: url({{ url_for('static', filename='images/icon_user_gray.svg') }});">
+        <a href="#" id="button_share" class="button_primary">Share dataset</a>
+    </form>
 {% endblock %}
