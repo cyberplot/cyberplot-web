@@ -12,3 +12,7 @@ def index():
 @bp.route('/dataset')
 def dataset():
     return render_template('application/dataset.html')
+
+@bp.route('/login')
+def login():
+    return render_template('application/login.html')

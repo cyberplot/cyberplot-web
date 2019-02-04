@@ -47,7 +47,7 @@ h2 {
 #navigation_main {
     height: 2.5em;
     padding: 2em;
-    background: linear-gradient(90deg, #14e0f9, #3765ff);
+    background: linear-gradient(135deg, #14e0f9, #3765ff);
 }
 
 #cyberplot_logo {
@@ -274,7 +274,7 @@ strong {
     font-weight: normal;
 }
 
-#overlay [type=text], [type=password] {
+#overlay [type=text], #overlay [type=password] {
     margin-left: 4.1em;
     width: -moz-available;
     width: -webkit-fill-available;

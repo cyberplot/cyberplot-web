@@ -1,0 +1,18 @@
+<!doctype html>
+<title>Log in - cyberplot</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/login.css') }}">
+
+<main>
+    <form id="login_form">
+        <img src="{{ url_for('static', filename='images/logo_blue.svg') }}" alt="Cyberplot logo">
+        <input type="text" name="user_name" placeholder="User name" class="textbox_with_icon" style="background-image: url({{ url_for('static', filename='images/icon_user_gray.svg') }});">
+        <input type="password" name="password" placeholder="Password" class="textbox_with_icon" style="background-image: url({{ url_for('static', filename='images/icon_password_gray.svg') }});">
+        <a href="#" id="button_login" class="button_primary">Log in</a>
+        <a href="#" id="button_forgot" class="button_secondary">Forgot password?</a>
+    </form>
+
+    <p>New to cyberplot?
+            <a href="#" id="button_signup" class="button_secondary">Sign up</a>
+    </p>
+</main>
