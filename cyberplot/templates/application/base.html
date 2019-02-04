@@ -50,3 +50,17 @@
         </form>
     </dialog>
 </div>
+
+<div id="notifications">
+    <img id="arrow" src="{{ url_for('static', filename='images/popup_arrow.svg') }}">
+
+    <form>
+        <header><img src="{{ url_for('static', filename='images/icon_share_incoming_blue.svg') }}"> Shared dataset</header>
+        <p>
+            georgecost shared <strong>Revenue Q3</strong> with you.
+        </p>
+    
+        <a href="#" id="button_accept" class="button_primary">Accept</a>
+        <a href="#" id="button_ignore" class="button_secondary">Ignore</a>
+    </form>
+</div>
