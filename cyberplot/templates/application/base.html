@@ -2,7 +2,7 @@
 <title>{% block title %}{% endblock %} - cyberplot</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/base.css') }}">
 
-<nav>
+<nav id="navigation_main">
     <h1>Cyberplot</h1>
     <img src="{{ url_for('static', filename='images/logo_white.svg') }}" alt="Cyberplot logo" id="cyberplot_logo">
     <a href="#" id="logout_button" class="button_secondary">Log out</a>
@@ -31,5 +31,8 @@
 </main>
 
 <div id="overlay">
-    {% block overlay %}{% endblock %}
+    <dialog>
+        <a href="#" id="button_close" class="button_secondary"><img src="{{ url_for('static', filename='images/icon_close_blue.svg') }}" alt="Close dialog"></a>
+        {% block overlay %}{% endblock %}
+    </dialog>
 </div>

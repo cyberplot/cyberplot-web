@@ -80,11 +80,45 @@
 {% endblock %}
 
 {% block overlay %}
-<dialog>
-    <header><img src="{{ url_for('static', filename='images/icon_update_blue.svg') }}"> Update data</header>
-    <p>Please select data source to continue.</p>
-    <ul>
-        <a href="#"><li><img src="{{ url_for('static', filename='images/icon_source_file_blue.svg') }}">Local file</li></a>
-    </ul>
-</dialog>
+    <form id="form_update">
+        <header><img src="{{ url_for('static', filename='images/icon_update_blue.svg') }}"> Update data</header>
+        <p>Please select data source to continue.</p>
+    
+        <label>
+            <input type="radio" name="source" value="local">
+            <div class="button_secondary">
+                <img src="{{ url_for('static', filename='images/icon_source_file_blue.svg') }}">
+                Local file
+            </div>
+        </label>
+
+        <label>
+            <input type="radio" name="source" value="local">
+            <div class="button_secondary">
+                <img src="{{ url_for('static', filename='images/icon_source_database_blue.svg') }}">
+                Remote database
+            </div>
+        </label>
+
+        <label>
+            <input type="radio" name="source" value="local">
+            <div class="button_secondary">
+                <img src="{{ url_for('static', filename='images/icon_source_python_blue.svg') }}">
+                Python
+            </div>
+        </label>
+        
+        <label>
+            <input type="radio" name="source" value="local">
+            <div class="button_secondary">
+                <img src="{{ url_for('static', filename='images/icon_source_r_blue.svg') }}">
+                R data frame
+            </div>
+        </label>
+
+        <nav>
+            <a href="#" id="button_next"><img src="{{ url_for('static', filename='images/button_next.svg') }}" alt="Next"></a>
+            <a href="#" id="button_back"><img src="{{ url_for('static', filename='images/button_back.svg') }}" alt="Back"></a>
+        </nav>
+    </form>
 {% endblock %}

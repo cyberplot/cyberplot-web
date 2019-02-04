@@ -35,7 +35,7 @@ h1 {
     display: none;
 }
 
-nav {
+#navigation_main {
     height: 2.5em;
     padding: 2em;
     background: linear-gradient(90deg, #14e0f9, #3765ff);
@@ -177,7 +177,6 @@ main {
 #overlay dialog {
     width: 35em;
     background-color: #f9f9f9;
-    height: 30em;
     opacity: 1;
     border-radius: 0.3em;
     padding: 1em;
@@ -202,4 +201,66 @@ main {
 #overlay header img {
     width: 2.5em;
     vertical-align: middle;
+}
+
+#overlay p {
+    margin-left: 4.1em;
+    margin-top: 0;
+}
+
+#overlay form div {
+    width: 9em;
+    height: 8em;
+    margin: 0.75em;
+    text-align: center;
+    padding-top: 1.5em;
+    display: inline-block;
+}
+
+#overlay form label img {
+    display: block;
+    width: 5em;
+    margin: auto;
+}
+
+#overlay #button_close {
+    float: right;
+    margin: 0.5em;
+}
+
+#overlay #button_close img {
+    width: 1.5em;
+}
+
+#overlay nav {
+    display: block;
+    height: 4em;
+}
+
+#overlay nav img {
+    width: 4em;
+}
+
+#overlay #button_next {
+    float: right;
+}
+
+#overlay #button_back {
+    float: left;
+}
+
+[type=radio] { 
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+  
+[type=radio] + div {
+    cursor: pointer;
+}
+  
+[type=radio]:checked + div {
+    background: linear-gradient(to bottom, #64dafa, #1fbbfb 15%, #3765ff 100%);
+    color: white;
 }
