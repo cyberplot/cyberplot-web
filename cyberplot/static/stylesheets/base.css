@@ -61,6 +61,8 @@ h2 {
     font-family: 'Libre Franklin Bold';
     text-decoration: none;
     color: white;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 .button_primary:hover {
@@ -78,6 +80,8 @@ h2 {
     font-family: 'Libre Franklin Bold';
     text-decoration: none;
     color: #1fbbfb;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 .button_secondary:hover {
@@ -228,6 +232,8 @@ main {
 #overlay #button_close {
     float: right;
     margin: 0.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }
 
 #overlay #button_close img {
