@@ -1,3 +1,85 @@
+<template>
+<content>
+    <nav id="navigation_main">
+        <h1>Cyberplot</h1>
+        <img src="@/assets/images/logo_white.svg" alt="Cyberplot logo" id="cyberplot_logo">
+        <a href="#" id="logout_button" class="button_secondary">Log out</a>
+        <a href="#" id="user_label">
+            <img src="@/assets/images/icon_user_white.svg" alt="User profile" id="icon_user">
+            username
+        </a>
+    </nav>
+
+    <main>
+        <section id="sidebar">
+            <ul id="dataset_listing">
+                <a href="#"><li>dataset1</li></a>
+                <a href="#"><li id="active_dataset_button">dataset2</li></a>
+                <a href="#"><li>dataset3</li></a>
+                <a href="#"><li>dataset4</li></a>
+                <a href="#"><li>dataset5</li></a>
+            </ul>
+
+            <a href="#" id="dataset_add_button" class="button_primary">Add new dataset</a>
+        </section>
+
+        <section id="content">
+            <!-- CONTENT -->
+        </section>
+    </main>
+
+    <div id="overlay">
+        <dialog>
+            <a href="#" id="button_close" class="button_secondary"><img src="@/assets/images/icon_close_blue.svg" alt="Close dialog"></a>
+            <!-- OVERLAY -->
+
+            <form id="form_user_settings">
+                <header><img src="@/assets/images/icon_user_blue.svg"> User settings</header>
+                <p>If you would like to change your password, you can do so here.</p>
+        
+                <input type="password" name="password" placeholder="Enter new password">
+                <input type="password" name="password_confirm" placeholder="Confirm password">
+                <a href="#" id="button_password_change" class="button_primary">Change password</a>
+
+                <p>Here you can delete your cyberplot account. This will remove all your datasets and spaces. Be aware that the operation cannot be reversed. If your are certain, please enter <strong>I want to delete my cyberplot account</strong> into the following textbox.</p>
+
+                <input type="text" name="deleted_account_name" placeholder="I want to delete my cyberplot account">
+                <a href="#" id="button_account_delete" class="button_primary">Delete account</a>
+            </form>
+        </dialog>
+    </div>
+
+    <div id="notifications">
+        <img id="arrow" src="@/assets/images/popup_arrow.svg">
+
+        <form>
+            <header><img src="@/assets/images/icon_share_incoming_blue.svg"> Shared dataset</header>
+            <p>
+                georgecost shared <strong>Revenue Q3</strong> with you.
+            </p>
+        
+            <a href="#" id="button_accept" class="button_primary">Accept</a>
+            <a href="#" id="button_ignore" class="button_secondary">Ignore</a>
+        </form>
+    </div>
+</content>
+</template>
+
+<script>
+export default {
+    name: 'Dataset',
+    data() {
+        return {
+        }
+    }
+}
+</script>
+
+<style scoped>
+content {
+    display: contents;
+}
+
 h2 {
     font-family: 'Libre Franklin Bold';
     font-size: 2.5em;
@@ -215,3 +297,4 @@ a img {
 #overlay #form_update_python .button_secondary {
     margin-left: 4.1em;
 }
+</style>

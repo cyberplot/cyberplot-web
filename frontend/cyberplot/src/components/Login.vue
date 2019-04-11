@@ -19,7 +19,6 @@
 
 <script>
 export default {
-    name: 'Login',
     data() {
         return {
         }
@@ -28,20 +27,14 @@ export default {
 </script>
 
 <style scoped>
+content {
+    display: contents;
+}
+
 #login_form {
     background-color: #f9f9f9;
     padding: 1.5em;
     border-radius: 0.3em;
-}
-
-content{
-    background: linear-gradient(135deg, #14e0f9, #3765ff);
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    overflow: auto;
 }
 
 main {
