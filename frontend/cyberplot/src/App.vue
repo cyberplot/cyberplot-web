@@ -7,8 +7,10 @@ export default {
     name: 'App',
     data() {
         return {
-            user_name: "tomires",
-            user_id: 1
+            user: {
+                id: 1,
+                name: "tomires"
+            }
         }
     }
 }

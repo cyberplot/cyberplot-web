@@ -6,210 +6,38 @@
         <a href="#" id="logout_button" class="button_secondary">Log out</a>
         <a href="#" id="user_label">
             <img src="@/assets/images/icon_user_white.svg" alt="User profile" id="icon_user">
-            username
+            {{ this.$parent.user.name }}
         </a>
     </nav>
+    <NotificationCenter />
 
     <main>
-        <section id="sidebar">
-            <ul id="dataset_listing">
-                <a href="#"><li>dataset1</li></a>
-                <a href="#"><li id="active_dataset_button">dataset2</li></a>
-                <a href="#"><li>dataset3</li></a>
-                <a href="#"><li>dataset4</li></a>
-                <a href="#"><li>dataset5</li></a>
-            </ul>
-
-            <a href="#" id="dataset_add_button" class="button_primary">Add new dataset</a>
-        </section>
-
-        <section id="content">
-            <!-- CONTENT -->
-        </section>
+        <DatasetList />
+        <DatasetView />
     </main>
 
-    <div id="overlay">
-        <dialog>
-            <a href="#" id="button_close" class="button_secondary"><img src="@/assets/images/icon_close_blue.svg" alt="Close dialog"></a>
-            <!-- OVERLAY -->
-
-            <form id="form_user_settings">
-                <header><img src="@/assets/images/icon_user_blue.svg"> User settings</header>
-                <p>If you would like to change your password, you can do so here.</p>
-        
-                <input type="password" name="password" placeholder="Enter new password">
-                <input type="password" name="password_confirm" placeholder="Confirm password">
-                <a href="#" id="button_password_change" class="button_primary">Change password</a>
-
-                <p>Here you can delete your cyberplot account. This will remove all your datasets and spaces. Be aware that the operation cannot be reversed. If your are certain, please enter <strong>I want to delete my cyberplot account</strong> into the following textbox.</p>
-
-                <input type="text" name="deleted_account_name" placeholder="I want to delete my cyberplot account">
-                <a href="#" id="button_account_delete" class="button_primary">Delete account</a>
-            </form>
-        </dialog>
-    </div>
-
-    <div id="notifications">
-        <img id="arrow" src="@/assets/images/popup_arrow.svg">
-
-        <form>
-            <header><img src="@/assets/images/icon_share_incoming_blue.svg"> Shared dataset</header>
-            <p>
-                georgecost shared <strong>Revenue Q3</strong> with you.
-            </p>
-        
-            <a href="#" id="button_accept" class="button_primary">Accept</a>
-            <a href="#" id="button_ignore" class="button_secondary">Ignore</a>
-        </form>
-    </div>
+    <DatasetOverlay />
 </content>
 </template>
 
 <script>
+import NotificationCenter from './NotificationCenter.vue'
+import DatasetOverlay from './DatasetOverlay.vue'
+import DatasetList from './DatasetList.vue'
+import DatasetView from './DatasetView.vue'
+
 export default {
     name: 'Dataset',
-    data() {
-        return {
-            all_datasets: [
-                {
-                    id: 1,
-                    name: "Employee Satisfaction Q4"
-                },
-                {
-                    id: 2,
-                    name: "Quarterly Earnings"
-                },
-                {
-                    id: 3,
-                    name: "Iris Dataset"
-                },
-                {
-                    id: 4,
-                    name: "Lab Measurements"
-                }
-            ],
-            dataset: {
-                id: 3,
-                item_count: 150,
-                last_edit: 1555044143,
-                attributes: [
-                    {
-                        label: "Sepal Length",
-                        selected_type: "numeric",
-                        possible_types: [
-                            "nominal",
-                            "numeric"
-                        ],
-                        values: [
-                            "5.1",
-                            "4.9",
-                            "4.7"
-                        ],
-                        stats: {
-                            min: 4.5,
-                            q1: 4.8,
-                            med: 5.1,
-                            q3: 5.3,
-                            max: 6.0,
-                            mean: 5.3,
-                            sdev: 0.4
-                        },
-                        missing_setting: null
-                    },
-                    {
-                        label: "Sepal Width",
-                        selected_type: "numeric",
-                        possible_types: [
-                            "nominal",
-                            "numeric"
-                        ],
-                        values: [
-                            "3.5",
-                            "3.0",
-                            "3.2"
-                        ],
-                        stats: {
-                            min: 2.5,
-                            q1: 3.1,
-                            med: 3.5,
-                            q3: 3.7,
-                            max: 4.5,
-                            mean: 3.3,
-                            sdev: 0.6
-                        },
-                        missing_setting: null
-                    },
-                    {
-                        label: "Petal Length",
-                        selected_type: "numeric",
-                        possible_types: [
-                            "nominal",
-                            "numeric"
-                        ],
-                        values: [
-                            "1.4",
-                            "1.4",
-                            "1.3"
-                        ],
-                        stats: {
-                            min: 1.0,
-                            q1: 1.2,
-                            med: 1.4,
-                            q3: 1.5,
-                            max: 1.8,
-                            mean: 1.4,
-                            sdev: 0.2
-                        },
-                        missing_setting: null
-                    },
-                    {
-                        label: "Petal Width",
-                        selected_type: "numeric",
-                        possible_types: [
-                            "nominal",
-                            "numeric"
-                        ],
-                        values: [
-                            "0.2",
-                            "0.2",
-                            "0.2"
-                        ],
-                        stats: {
-                            min: 0.1,
-                            q1: 0.1,
-                            med: 0.2,
-                            q3: 0.3,
-                            max: 0.5,
-                            mean: 0.2,
-                            sdev: 0.1
-                        },
-                        missing_setting: null
-                    },
-                    {
-                        label: "Class",
-                        selected_type: "categorical",
-                        possible_types: [
-                            "nominal",
-                            "categorical"
-                        ],
-                        values: [
-                            "setosa",
-                            "setosa",
-                            "setosa"
-                        ],
-                        stats: {
-                        },
-                        missing_setting: null
-                    },
-                ]
-            }
-
-        }
+    components: {
+        DatasetList,
+        DatasetView,
+        NotificationCenter,
+        DatasetOverlay
     }
 }
 </script>
 
-<style scoped>
+<style>
 content {
     display: contents;
 }
@@ -299,6 +127,12 @@ dt img {
     display: inline;
     font-family: 'Libre Franklin Bold';
     font-size: 1.25em;
+}
+
+#attribute_listing_item dd:nth-of-type(1) {
+    font-family: 'Libre Franklin';
+    font-size: 1em;
+    display: block;
 }
 
 #attribute_listing dd:nth-of-type(2) {
