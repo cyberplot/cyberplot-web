@@ -85,6 +85,17 @@ h2 {
     padding-right: 1em;
 }
 
+.button_secondary_disabled {
+    background-color: darkgray;
+    padding: 0.5em;
+    border-radius: 0.3em;
+    font-family: 'Libre Franklin Bold';
+    text-decoration: none;
+    color: white;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
 .button_secondary:hover {
     background-color: #eee;
 }

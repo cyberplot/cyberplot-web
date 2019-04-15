@@ -47,11 +47,13 @@ export default {
                 attributes: [
                     {
                         label: "Sepal Length",
-                        selected_type: "numeric",
-                        possible_types: [
-                            "nominal",
-                            "numeric"
-                        ],
+                        selected_type: "numerical",
+                        possible_types: {
+                            nominal: true,
+                            numerical: true,
+                            categorical: false,
+                            vector: false
+                        },
                         values: [
                             "5.1",
                             "4.9",
@@ -70,11 +72,13 @@ export default {
                     },
                     {
                         label: "Sepal Width",
-                        selected_type: "numeric",
-                        possible_types: [
-                            "nominal",
-                            "numeric"
-                        ],
+                        selected_type: "numerical",
+                        possible_types: {
+                            nominal: true,
+                            numerical: true,
+                            categorical: false,
+                            vector: false
+                        },
                         values: [
                             "3.5",
                             "3.0",
@@ -93,11 +97,13 @@ export default {
                     },
                     {
                         label: "Petal Length",
-                        selected_type: "numeric",
-                        possible_types: [
-                            "nominal",
-                            "numeric"
-                        ],
+                        selected_type: "numerical",
+                        possible_types: {
+                            nominal: true,
+                            numerical: true,
+                            categorical: false,
+                            vector: false
+                        },
                         values: [
                             "1.4",
                             "1.4",
@@ -116,11 +122,13 @@ export default {
                     },
                     {
                         label: "Petal Width",
-                        selected_type: "numeric",
-                        possible_types: [
-                            "nominal",
-                            "numeric"
-                        ],
+                        selected_type: "numerical",
+                        possible_types: {
+                            nominal: true,
+                            numerical: true,
+                            categorical: false,
+                            vector: false
+                        },
                         values: [
                             "0.2",
                             "0.2",
@@ -140,10 +148,12 @@ export default {
                     {
                         label: "Class",
                         selected_type: "categorical",
-                        possible_types: [
-                            "nominal",
-                            "categorical"
-                        ],
+                        possible_types: {
+                            nominal: true,
+                            numerical: false,
+                            categorical: true,
+                            vector: false
+                        },
                         values: [
                             "setosa",
                             "setosa",
