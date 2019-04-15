@@ -1,9 +1,9 @@
 <template>
 <section id="sidebar">
     <ul id="dataset_listing">
-        <a href="#" v-for="dataset in datasets" :key="dataset.id">
-        <li>{{ dataset.name }}</li></a>
-        <a href="#"><li id="active_dataset_button">dataset2</li></a>
+        <router-link :to="`${dataset.id}`" href="#" v-for="dataset in datasets" :key="dataset.id">
+            <li>{{ dataset.name }}</li>
+        </router-link>
     </ul>
 
     <a href="#" id="dataset_add_button" class="button_primary">Add new dataset</a>
