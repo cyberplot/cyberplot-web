@@ -14,6 +14,12 @@ export default new Router({
         },
 
         {
+            path: '/dataset/',
+            name: 'DatasetNone',
+            component: Dataset
+        },
+
+        {
             path: '/dataset/:id',
             name: 'Dataset',
             component: Dataset

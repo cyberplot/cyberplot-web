@@ -13,7 +13,10 @@
 
     <main>
         <DatasetList />
-        <DatasetView />
+        <DatasetView v-if="datasetSelected()" />
+        <section v-else id="content">
+            <img src="@/assets/images/icon_dataset_gray.svg" alt="No dataset selected" id="dataset_placeholder_icon" />
+        </section>
     </main>
 
     <DatasetOverlay />
@@ -33,6 +36,11 @@ export default {
         DatasetView,
         NotificationCenter,
         DatasetOverlay
+    },
+    methods: {
+        datasetSelected: function() {
+            return this.$route.name === "Dataset"
+        }
     }
 }
 </script>
@@ -57,6 +65,17 @@ li img {
 dt img {
     vertical-align: middle;
     width: 2em;
+}
+
+#dataset_placeholder_icon {
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    display: block;
+    margin: 0;
+    position: relative;
+    width: 16em;
 }
 
 #dataset_details {
