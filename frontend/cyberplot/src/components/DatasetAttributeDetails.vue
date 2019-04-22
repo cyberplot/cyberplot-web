@@ -41,11 +41,7 @@ export default {
         }
     },
     props: {
-        attribute: {
-            type: Array,
-            required: false,
-            default: "none"
-        }
+        attribute: Object
     }
 }
 </script>

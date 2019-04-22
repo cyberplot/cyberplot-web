@@ -21,11 +21,7 @@
 export default {
     name: 'DatasetAttributeStatistics',
     props: {
-        stats: {
-            type: Array,
-            required: false,
-            default: "none"
-        }
+        stats: Object
     }
 }
 </script>
