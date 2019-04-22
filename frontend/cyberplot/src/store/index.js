@@ -12,7 +12,8 @@ const state = {
         datasetShare: false,
         attributeRename: false
     },
-    notificationsOpened: false
+    notificationsOpened: false,
+    datasetUpdateUpdating: false /* are we updating an existing dataset? */
 }
 
 const actions = {
@@ -21,6 +22,14 @@ const actions = {
 
 const mutations = {
     openModal(state, modal) {
+        if(modal === 'datasetAdd' || modal === 'datasetUpdate') {
+            state.datasetUpdateUpdating = (modal == 'datasetUpdate')
+        }
+
+        if(modal === 'datasetAdd') {
+            modal = 'datasetUpdate'
+        }
+
         state.openedModals[modal] = true
     },
 

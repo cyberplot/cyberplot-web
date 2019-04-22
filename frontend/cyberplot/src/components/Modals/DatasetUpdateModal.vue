@@ -1,7 +1,13 @@
 <template>
 <form id="form_update" v-show="modalOpened">
-    <header><img src="@/assets/images/icon_update_blue.svg"> Update data</header>
-    <p>Please select data source to continue.</p>
+    <span v-if="updating">
+        <header><img src="@/assets/images/icon_update_blue.svg"> Update dataset</header>
+        <p>Please select data source to update <strong>Iris Dataset</strong>.</p>
+    </span>
+    <span v-else>
+        <header><img src="@/assets/images/icon_dataset_new_blue.svg"> Add new dataset</header>
+        <p>Please select data source to continue.</p>
+    </span>
 
     <label>
         <input type="radio" name="source" value="local">
@@ -48,6 +54,10 @@ export default {
     computed: {
         modalOpened() {
             return this.$store.state.openedModals.datasetUpdate
+        },
+
+        updating() {
+            return this.$store.state.datasetUpdateUpdating
         }
     }
 }

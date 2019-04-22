@@ -37,7 +37,7 @@ export default {
     },
     methods: {
         showNewDatasetModal: function() {
-            this.$store.commit('openModal', 'datasetUpdate')
+            this.$store.commit('openModal', 'datasetAdd')
         }
     }
 }
