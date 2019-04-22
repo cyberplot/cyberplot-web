@@ -1,5 +1,7 @@
 <template>
 <content>
+    <VueTitle title="Iris Dataset" v-if="datasetSelected()" />
+
     <nav id="navigation_main">
         <h1>Cyberplot</h1>
         <img src="@/assets/images/logo_white.svg" alt="Cyberplot logo" id="cyberplot_logo">
@@ -28,6 +30,7 @@ import NotificationCenter from './NotificationCenter.vue'
 import DatasetOverlay from './DatasetOverlay.vue'
 import DatasetList from './DatasetList.vue'
 import DatasetView from './DatasetView.vue'
+import VueTitle from './Helpers/Title.vue'
 
 export default {
     name: 'Dataset',
@@ -35,7 +38,8 @@ export default {
         DatasetList,
         DatasetView,
         NotificationCenter,
-        DatasetOverlay
+        DatasetOverlay,
+        VueTitle
     },
     methods: {
         datasetSelected: function() {
