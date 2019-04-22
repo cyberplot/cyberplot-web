@@ -6,7 +6,7 @@
         </router-link>
     </ul>
 
-    <a href="#" id="dataset_add_button" class="button_primary">Add new dataset</a>
+    <a @click="showNewDatasetModal" id="dataset_add_button" class="button_primary">Add new dataset</a>
 </section>
 </template>
 
@@ -33,6 +33,11 @@ export default {
                     name: "Lab Measurements"
                 }
             ]
+        }
+    },
+    methods: {
+        showNewDatasetModal: function() {
+            this.$store.commit('openModal', 'datasetUpdate')
         }
     }
 }

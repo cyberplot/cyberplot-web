@@ -4,7 +4,7 @@
         <h1>Cyberplot</h1>
         <img src="@/assets/images/logo_white.svg" alt="Cyberplot logo" id="cyberplot_logo">
         <a href="#" id="logout_button" class="button_secondary">Log out</a>
-        <a @click="toggleNotifications" id="user_label">
+        <a @click="toggleNotifications" id="user_label" class="interactive">
             <img src="@/assets/images/icon_user_white_notification.svg" alt="User profile" id="icon_user">
             {{ this.$parent.user.name }}
         </a>

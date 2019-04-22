@@ -9,15 +9,15 @@
         </ul>
 
         <ul id="dataset_actions">
-            <a href="#"><li><img src="@/assets/images/icon_update_blue.svg" alt="Update dataset"></li></a>
-            <a href="#"><li><img src="@/assets/images/icon_download_blue.svg" alt="Download dataset"></li></a>
-            <a href="#"><li><img src="@/assets/images/icon_share_blue.svg" alt="Share dataset"></li></a>
-            <a href="#"><li><img src="@/assets/images/icon_rename_blue.svg" alt="Rename dataset"></li></a>
-            <a href="#"><li><img src="@/assets/images/icon_delete_blue.svg" alt="Delete dataset"></li></a>
+            <a @click="showDatasetUpdateModal" class="interactive"><li><img src="@/assets/images/icon_update_blue.svg" alt="Update dataset"></li></a>
+            <a href="#" class="interactive"><li><img src="@/assets/images/icon_download_blue.svg" alt="Download dataset"></li></a>
+            <a @click="showDatasetShareModal" class="interactive"><li><img src="@/assets/images/icon_share_blue.svg" alt="Share dataset"></li></a>
+            <a @click="showDatasetRenameModal" class="interactive"><li><img src="@/assets/images/icon_rename_blue.svg" alt="Rename dataset"></li></a>
+            <a @click="showDatasetDeleteModal" class="interactive"><li><img src="@/assets/images/icon_delete_blue.svg" alt="Delete dataset"></li></a>
         </ul>
 
         <ul id="attribute_listing">
-            <li v-for="(attribute, index) in dataset.attributes" :key="index"><dl>
+            <li v-for="(attribute, index) in dataset.attributes" :key="index" class="interactive"><dl>
                 <dt>Name</dt><dd>{{ attribute.label }}</dd>
                 <dt>Type</dt><dd><img src="@/assets/images/icon_attribute_nominal_white.svg" alt="Nominal"></dd>
                 <div id="attribute_listing_item" v-for="(value, index) in attribute.values" :key="index"><dt>Value</dt><dd>{{ value }}</dd></div>
@@ -166,6 +166,23 @@ export default {
                 ]
             }
         }
+    },
+    methods: {
+        showDatasetDeleteModal: function() {
+            this.$store.commit('openModal', 'datasetDelete')
+        },
+
+        showDatasetRenameModal: function() {
+            this.$store.commit('openModal', 'datasetRename')
+        },
+
+        showDatasetShareModal: function() {
+            this.$store.commit('openModal', 'datasetShare')
+        },
+
+        showDatasetUpdateModal: function() {
+            this.$store.commit('openModal', 'datasetUpdate')
+        },
     },
     computed: {
         lastEdit() {

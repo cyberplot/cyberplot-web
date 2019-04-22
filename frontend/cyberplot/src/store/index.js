@@ -5,7 +5,12 @@ Vue.use(Vuex)
 
 const state = {
     openedModals: {
-        userSettings: false
+        userSettings: false,
+        datasetRename: false,
+        datasetUpdate: false,
+        datasetDelete: false,
+        datasetShare: false,
+        attributeRename: false
     },
     notificationsOpened: false
 }
@@ -15,17 +20,17 @@ const actions = {
 }
 
 const mutations = {
-    openModal(modal) {
-        openedModals[modal] = true
+    openModal(state, modal) {
+        state.openedModals[modal] = true
     },
 
-    closeModals() {
+    closeModals(state) {
         for(var modal in state.openedModals) {
             state.openedModals[modal] = false
         }
     },
     
-    toggleNotifications() {
+    toggleNotifications(state) {
         state.notificationsOpened = !state.notificationsOpened
     }
 }

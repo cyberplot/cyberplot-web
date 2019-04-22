@@ -64,6 +64,7 @@ h2 {
     color: white;
     padding-left: 1em;
     padding-right: 1em;
+    cursor: pointer;
 }
 
 .button_primary:hover {
@@ -83,6 +84,7 @@ h2 {
     color: #1fbbfb;
     padding-left: 1em;
     padding-right: 1em;
+    cursor: pointer;
 }
 
 .button_secondary_disabled {
@@ -132,6 +134,9 @@ h2 {
     font-family: 'Libre Franklin Bold';
     float: right;
     margin-right: 1em;
+}
+
+.interactive {
     cursor: pointer;
 }
 

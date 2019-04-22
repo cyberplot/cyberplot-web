@@ -2,7 +2,7 @@
 <div id="attribute_panel">
     <div id="attribute_settings">
         <h2>{{ attribute.label }}</h2>
-        <a href="#" id="attribute_rename_button" class="button_secondary"><img src="@/assets/images/icon_rename_blue.svg" alt="Rename attribute"></a>
+        <a @click="showAttributeRenameModal" id="attribute_rename_button" class="button_secondary"><img src="@/assets/images/icon_rename_blue.svg" alt="Rename attribute"></a>
         <dl>
             <dt><img src="@/assets/images/icon_data_type_gray.svg"> Data type</dt>
             <dd id="data_type_selector" class="selector">
@@ -27,11 +27,18 @@
 
 <script>
 import DatasetAttributeStatistics from './DatasetAttributeStatistics.vue';
+import AttributeRenameModal from './Modals/AttributeRenameModal.vue'
 
 export default {
     name: 'DatasetAttributeDetails',
     components: {
-        DatasetAttributeStatistics
+        DatasetAttributeStatistics,
+        AttributeRenameModal
+    },
+    methods: {
+        showAttributeRenameModal: function() {
+            this.$store.commit('openModal', 'attributeRename')
+        }
     },
     props: {
         attribute: {

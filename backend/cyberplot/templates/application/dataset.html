@@ -80,47 +80,7 @@
 {% endblock %}
 
 {% block overlay %}
-    <form id="form_update">
-        <header><img src="{{ url_for('static', filename='images/icon_update_blue.svg') }}"> Update data</header>
-        <p>Please select data source to continue.</p>
     
-        <label>
-            <input type="radio" name="source" value="local">
-            <div class="button_secondary">
-                <img src="{{ url_for('static', filename='images/icon_source_file_blue.svg') }}">
-                Local file
-            </div>
-        </label>
-
-        <label>
-            <input type="radio" name="source" value="local">
-            <div class="button_secondary">
-                <img src="{{ url_for('static', filename='images/icon_source_database_blue.svg') }}">
-                Remote database
-            </div>
-        </label>
-
-        <label>
-            <input type="radio" name="source" value="local">
-            <div class="button_secondary">
-                <img src="{{ url_for('static', filename='images/icon_source_python_blue.svg') }}">
-                Python
-            </div>
-        </label>
-        
-        <label>
-            <input type="radio" name="source" value="local">
-            <div class="button_secondary">
-                <img src="{{ url_for('static', filename='images/icon_source_r_blue.svg') }}">
-                R data frame
-            </div>
-        </label>
-
-        <nav>
-            <a href="#" id="button_next"><img src="{{ url_for('static', filename='images/button_next.svg') }}" alt="Next"></a>
-            <a href="#" id="button_back"><img src="{{ url_for('static', filename='images/button_back.svg') }}" alt="Back"></a>
-        </nav>
-    </form>
 
     <form id="form_update_r">
         <header><img src="{{ url_for('static', filename='images/icon_update_blue.svg') }}"> Update data using R</header>
@@ -162,37 +122,5 @@
         <nav>
             <a href="#" id="button_back"><img src="{{ url_for('static', filename='images/button_back.svg') }}" alt="Back"></a>
         </nav>
-    </form>
-
-    <form id="form_rename_dataset">
-        <header><img src="{{ url_for('static', filename='images/icon_rename_blue.svg') }}"> Rename dataset</header>
-        <p>Please enter a new name for <strong>Employee Earnings Comparison</strong>.</p>
-
-        <input type="text" name="dataset_name" placeholder="Employee Earnings Comparison">
-        <a href="#" id="button_rename" class="button_primary">Rename dataset</a>
-    </form>
-
-    <form id="form_rename_attribute">
-        <header><img src="{{ url_for('static', filename='images/icon_rename_blue.svg') }}"> Rename attribute</header>
-        <p>Please enter a new name for <strong>Name</strong>.</p>
-
-        <input type="text" name="attribute_name" placeholder="Name">
-        <a href="#" id="button_rename" class="button_primary">Rename attribute</a>
-    </form>
-
-    <form id="form_delete">
-        <header><img src="{{ url_for('static', filename='images/icon_delete_blue.svg') }}"> Delete dataset</header>
-        <p>You are about to delete <strong>Employee Earnings Comparison</strong>. This operation cannot be reversed. If you are certain you want to continue, please type the name of your dataset into the following textbox.</p>
-
-        <input type="text" name="dataset_name" placeholder="Employee Earnings Comparison">
-        <a href="#" id="button_delete" class="button_primary">Delete dataset</a>
-    </form>
-
-    <form id="form_share">
-        <header><img src="{{ url_for('static', filename='images/icon_share_blue.svg') }}"> Share a copy of dataset</header>
-        <p>Please enter name of the user you want to share <strong>Employee Earnings Comparison</strong> with.</p>
-
-        <input type="text" name="user_name" placeholder="Enter user name" class="textbox_with_icon" style="background-image: url({{ url_for('static', filename='images/icon_user_gray.svg') }});">
-        <a href="#" id="button_share" class="button_primary">Share dataset</a>
     </form>
 {% endblock %}
