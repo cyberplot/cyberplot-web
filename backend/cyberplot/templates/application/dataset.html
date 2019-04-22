@@ -82,45 +82,7 @@
 {% block overlay %}
     
 
-    <form id="form_update_r">
-        <header><img src="{{ url_for('static', filename='images/icon_update_blue.svg') }}"> Update data using R</header>
-        <p>To upload an R dataframe, first download the cyberplot package by running the following command.</p>
-        <div class="cli_box">
-            install.packages("cyberplot")<br />
-            library("cyberplot")
-        </div>
+    
 
-        <p>After importing the package, use the following command to update <strong>Employee Earnings Comparison</strong></p>
-  
-        <div class="cli_box">
-            cyberplot.update(your_datatable,<br />
-            id = "<strong>346f9f436c0d99fbb937658af47a09f9</strong>")
-        </div>
-        <a href="#" id="button_copy" class="button_secondary">Copy dataset identifier</a>
-        
-        <nav>
-            <a href="#" id="button_back"><img src="{{ url_for('static', filename='images/button_back.svg') }}" alt="Back"></a>
-        </nav>
-    </form>
-
-    <form id="form_update_python">
-        <header><img src="{{ url_for('static', filename='images/icon_update_blue.svg') }}"> Update data using Python</header>
-        <p>To use Python with Cyberplot, first install the cyberplot package from PyPI repository by running the following command in the terminal.</p>
-        <div class="cli_box">
-            pip install cyberplot
-        </div>
-
-        <p>After installing the package, use the following command in your Python environment to update <strong>Employee Earnings Comparison</strong></p>
-  
-        <div class="cli_box">
-            import cyberplot<br />
-            cyberplot.update(your_array,<br />
-            id = "<strong>346f9f436c0d99fbb937658af47a09f9</strong>")
-        </div>
-        <a href="#" id="button_copy" class="button_secondary">Copy dataset identifier</a>
-        
-        <nav>
-            <a href="#" id="button_back"><img src="{{ url_for('static', filename='images/button_back.svg') }}" alt="Back"></a>
-        </nav>
-    </form>
+    
 {% endblock %}

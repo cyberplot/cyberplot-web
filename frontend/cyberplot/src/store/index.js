@@ -22,6 +22,8 @@ const actions = {
 
 const mutations = {
     openModal(state, modal) {
+        mutations.closeModals(state)
+
         if(modal === 'datasetAdd' || modal === 'datasetUpdate') {
             state.datasetUpdateUpdating = (modal == 'datasetUpdate')
         }
