@@ -3,8 +3,8 @@
     <main>
         <form id="login_form">
             <img src="@/assets/images/logo_blue.svg" alt="Cyberplot logo">
-            <input type="text" name="user_name" placeholder="User name" class="textbox_with_icon" style="background-image: url('@/assets/images/icon_user_gray.svg');">
-            <input type="password" name="password" placeholder="Password" class="textbox_with_icon" style="background-image: url('@/assets/images/icon_password_gray.svg');">
+            <input type="text" name="user_name" placeholder="User name" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_user_gray.svg')})`}">
+            <input type="password" name="password" placeholder="Password" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_password_gray.svg')})`}">
             <a href="#" id="button_login" class="button_primary">Log in</a>
             <a href="#" id="button_forgot" class="button_secondary">Forgot password?</a>
         </form>
