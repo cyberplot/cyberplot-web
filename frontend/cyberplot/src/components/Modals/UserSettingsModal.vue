@@ -1,5 +1,5 @@
 <template>
-<form id="form_user_settings">
+<form id="form_user_settings" v-show="modalOpened">        
     <header><img src="@/assets/images/icon_user_blue.svg"> User settings</header>
     <p>If you would like to change your password, you can do so here.</p>
 
@@ -16,6 +16,11 @@
 
 <script>
 export default {
-    name: 'UserSettingsModal'
+    name: 'UserSettingsModal',
+    computed: {
+        modalOpened() {
+            return this.$store.state.openedModals.userSettings
+        }
+    }
 }
 </script>

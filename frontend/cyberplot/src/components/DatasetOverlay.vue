@@ -1,7 +1,7 @@
 <template>
-<div id="overlay">
+<div id="overlay" v-show="overlayOpened">
     <dialog>
-        <a href="#" id="button_close" class="button_secondary"><img src="@/assets/images/icon_close_blue.svg" alt="Close dialog"></a>
+        <a @click="closeOverlay" id="button_close" class="button_secondary"><img src="@/assets/images/icon_close_blue.svg" alt="Close dialog"></a>
         <!-- OVERLAY -->
 
         <UserSettingsModal />
@@ -16,6 +16,16 @@ export default {
     name: 'DatasetOverlay',
     components: {
         UserSettingsModal
+    },
+    methods: {
+        closeOverlay: function() {
+            this.$store.commit('closeModals')
+        }
+    },
+    computed: {
+        overlayOpened() {
+            return this.$store.getters.overlayOpened
+        }
     }
 }
 </script>
