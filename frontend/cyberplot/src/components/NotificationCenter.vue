@@ -1,5 +1,5 @@
 <template>
-<div id="notifications">
+<div id="notifications" v-show="notificationsOpened">
     <img id="arrow" src="@/assets/images/popup_arrow.svg">
 
     <form>
@@ -16,6 +16,11 @@
 
 <script>
 export default {
-    name: 'NotificationCenter'
+    name: 'NotificationCenter',
+    computed: {
+        notificationsOpened() {
+            return this.$store.state.notificationsOpened
+        }
+    }
 }
 </script>

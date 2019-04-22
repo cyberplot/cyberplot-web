@@ -4,8 +4,8 @@
         <h1>Cyberplot</h1>
         <img src="@/assets/images/logo_white.svg" alt="Cyberplot logo" id="cyberplot_logo">
         <a href="#" id="logout_button" class="button_secondary">Log out</a>
-        <a href="#" id="user_label">
-            <img src="@/assets/images/icon_user_white.svg" alt="User profile" id="icon_user">
+        <a @click="toggleNotifications" id="user_label">
+            <img src="@/assets/images/icon_user_white_notification.svg" alt="User profile" id="icon_user">
             {{ this.$parent.user.name }}
         </a>
     </nav>
@@ -40,6 +40,10 @@ export default {
     methods: {
         datasetSelected: function() {
             return this.$route.name === "Dataset"
+        },
+
+        toggleNotifications: function() {
+            this.$store.commit('toggleNotifications')
         }
     }
 }

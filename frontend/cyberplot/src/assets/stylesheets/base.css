@@ -132,6 +132,7 @@ h2 {
     font-family: 'Libre Franklin Bold';
     float: right;
     margin-right: 1em;
+    cursor: pointer;
 }
 
 #logout_button {
@@ -331,7 +332,6 @@ strong {
     padding-top: 0;
     box-shadow: 0 0.2em 2em 0.1em #22222233;
     width: 20em;
-    visibility: hidden;
 }
 
 #notifications p {

@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const state = {
     openedModals: {
         userSettings: false
-    }
+    },
+    notificationsOpened: false
 }
 
 const actions = {
@@ -22,6 +23,10 @@ const mutations = {
         for(var modal in state.openedModals) {
             state.openedModals[modal] = false
         }
+    },
+    
+    toggleNotifications() {
+        state.notificationsOpened = !state.notificationsOpened
     }
 }
 
