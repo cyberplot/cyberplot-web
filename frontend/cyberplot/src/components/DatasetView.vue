@@ -19,7 +19,12 @@
         <ul id="attribute_listing">
             <li @click="selectedAttribute = index" v-for="(attribute, index) in dataset.attributes" :key="index" class="interactive"><dl>
                 <dt>Name</dt><dd>{{ attribute.label }}</dd>
-                <dt>Type</dt><dd><img src="@/assets/images/icon_attribute_nominal_white.svg" alt="Nominal"></dd>
+                <dt>Type</dt><dd>
+                    <img src="@/assets/images/icon_attribute_nominal_white.svg" :alt="attribute.selected_type" v-show="attribute.selected_type === 'nominal'">
+                    <img src="@/assets/images/icon_attribute_numerical_white.svg" :alt="attribute.selected_type" v-show="attribute.selected_type === 'numerical'">
+                    <img src="@/assets/images/icon_attribute_categorical_white.svg" :alt="attribute.selected_type" v-show="attribute.selected_type === 'categorical'">
+                    <img src="@/assets/images/icon_attribute_vector_white.svg" :alt="attribute.selected_type" v-show="attribute.selected_type === 'vector'">
+                </dd>
                 <div id="attribute_listing_item" v-for="(value, index) in attribute.values" :key="index"><dt>Value</dt><dd>{{ value }}</dd></div>
             </dl></li>
         </ul>
