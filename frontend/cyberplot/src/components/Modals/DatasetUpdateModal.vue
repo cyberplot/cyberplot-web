@@ -1,8 +1,8 @@
 <template>
 <div v-show="modalOpened">
     <Base :updating="updating" v-show="selectedMethod == METHODS.DEFAULT" v-on:formSubmit="selectUpdateMethod" />
-    <Python :updating="updating" v-show="selectedMethod == METHODS.PYTHON" />
-    <R :updating="updating" v-show="selectedMethod == METHODS.R" />
+    <Python :updating="updating" v-show="selectedMethod == METHODS.PYTHON" v-on:backToInitial="returnToInitial" />
+    <R :updating="updating" v-show="selectedMethod == METHODS.R" v-on:backToInitial="returnToInitial" />
 </div>
 </template>
 
@@ -33,6 +33,10 @@ export default {
     methods: {
         selectUpdateMethod: function(method) {
             this.selectedMethod = method
+        },
+
+        returnToInitial: function() {
+            this.selectedMethod = this.METHODS.DEFAULT
         }
     },
     computed: {

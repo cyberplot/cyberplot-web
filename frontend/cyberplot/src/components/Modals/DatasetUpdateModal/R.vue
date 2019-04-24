@@ -34,7 +34,7 @@
     </span>
 
     <nav>
-        <a href="#" id="button_back"><img src="@/assets/images/button_back.svg" alt="Back"></a>
+        <a @click="backToInitial" id="button_back" class="interactive"><img src="@/assets/images/button_back.svg" alt="Back"></a>
     </nav>
 </form>
 </template>
@@ -44,6 +44,11 @@ export default {
     name: 'DatasetUpdateModalR',
     props: {
         updating: Boolean
+    },
+    methods: {
+        backToInitial: function() {
+            this.$emit('backToInitial')
+        }
     }
 }
 </script>
