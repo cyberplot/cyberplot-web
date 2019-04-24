@@ -17,7 +17,7 @@
         </ul>
 
         <ul id="attribute_listing">
-            <li v-for="(attribute, index) in dataset.attributes" :key="index" class="interactive"><dl>
+            <li @click="selectedAttribute = index" v-for="(attribute, index) in dataset.attributes" :key="index" class="interactive"><dl>
                 <dt>Name</dt><dd>{{ attribute.label }}</dd>
                 <dt>Type</dt><dd><img src="@/assets/images/icon_attribute_nominal_white.svg" alt="Nominal"></dd>
                 <div id="attribute_listing_item" v-for="(value, index) in attribute.values" :key="index"><dt>Value</dt><dd>{{ value }}</dd></div>
@@ -25,7 +25,7 @@
         </ul>
     </div>
 
-    <DatasetAttributeDetails :attribute="dataset.attributes[0]" />
+    <DatasetAttributeDetails :attribute="dataset.attributes[selectedAttribute]" />
 </section>
 </template>
 
@@ -39,6 +39,7 @@ export default {
     },
     data() {
         return {
+            selectedAttribute: 0,
             dataset: {
                 id: 3,
                 name: "Iris Dataset",
