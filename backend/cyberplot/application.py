@@ -1,18 +1,8 @@
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
-)
-from werkzeug.exceptions import abort
+from flask import Flask
 
-bp = Blueprint('application', __name__)
-
-@bp.route('/')
-def index():
-    return render_template('application/index.html')
-
-@bp.route('/dataset')
-def dataset():
-    return render_template('application/dataset.html')
-
-@bp.route('/login')
-def login():
-    return render_template('application/login.html')
+def create_app(app_name="CYBERPLOT"):
+    app = Flask(app_name)
+    app.config.from_object("cyberplot.config.BaseConfig")
+    from cyberplot.api import api
+    app.register_blueprint(api, url_prefix="/api")
+    return app

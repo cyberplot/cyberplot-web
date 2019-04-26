@@ -1,3 +1,0 @@
-graft cyberplot/templates
-graft cyberplot/static
-include cyberplot/schema.sql
