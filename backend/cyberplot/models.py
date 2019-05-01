@@ -20,6 +20,9 @@ class User(db.Model):
 
 class Dataset(db.Model):
     __tablename__ = "datasets"
+    __table_args__ = (
+        db.UniqueConstraint("did", "uid", name = "uc_datasets"),
+    )
     did = db.Column(db.Integer, primary_key = True, nullable = False)
     uid = db.Column(db.Integer, db.ForeignKey("users.uid"), primary_key = True)
     name = db.Column(db.String(100), nullable = False)
@@ -37,9 +40,14 @@ class Dataset(db.Model):
 
 class Space(db.Model):
     __tablename__ = "spaces"
+    __table_args__ = (
+        db.UniqueConstraint("sid", "did", "dataset_uid", "owner_uid", name = "uc_spaces"),
+        db.ForeignKeyConstraint(["did", "dataset_uid"],
+                                ["datasets.did", "datasets.uid"]),
+    )
     sid = db.Column(db.Integer, primary_key = True, nullable = False)
-    did = db.Column(db.Integer, db.ForeignKey("datasets.did"), primary_key = True)
-    dataset_uid = db.Column(db.Integer, db.ForeignKey("users.uid"), primary_key = True)
+    did = db.Column(db.Integer, primary_key = True)
+    dataset_uid = db.Column(db.Integer, primary_key = True)
     owner_uid = db.Column(db.Integer, db.ForeignKey("users.uid"), primary_key = True)
     name = db.Column(db.String(100), nullable = False)
     filename = db.Column(db.String(255), nullable = False)
@@ -54,26 +62,40 @@ class Space(db.Model):
 
 class Attribute(db.Model):
     __tablename__ = "attributes"
+    __table_args__ = (
+        db.UniqueConstraint("aid", "did", "uid", name = "uc_attributes"),
+        db.ForeignKeyConstraint(["did", "uid"],
+                                ["datasets.did", "datasets.uid"]),
+    )
     aid = db.Column(db.Integer, primary_key = True, nullable = False)
-    did = db.Column(db.Integer, db.ForeignKey("datasets.did"), primary_key = True)
-    uid = db.Column(db.Integer, db.ForeignKey("datasets.uid"), primary_key = True)
+    did = db.Column(db.Integer, primary_key = True)
+    uid = db.Column(db.Integer, primary_key = True)
+    label = db.Column(db.String(255), nullable = False)
     type = db.Column(db.SmallInteger, nullable = False)
-    type_mask = db.Column(db.Binary, nullable = False)
+    type_mask = db.Column(db.Integer, nullable = False)
     missing_value_setting = db.Column(db.SmallInteger, nullable = False)
+    missing_value_custom = db.Column(db.Numeric)
 
     def to_dict(self):
         return dict(AID = self.aid,
                     DID = self.did,
                     UID = self.uid,
+                    label = self.label,
                     type = self.type,
                     typeMask = self.type_mask,
-                    missingValueSetting = self.missing_value_setting)
+                    missingValueSetting = self.missing_value_setting,
+                    missingValueCustom = self.missing_value_custom)
 
 class Connector(db.Model):
     __tablename__ = "connectors"
-    did = db.Column(db.Integer, db.ForeignKey("datasets.did"), primary_key = True)
-    uid = db.Column(db.Integer, db.ForeignKey("datasets.uid"), primary_key = True)
-    type = db.Column(db.SmallInteger, nullable = False)
+    __table_args__ = (
+        db.UniqueConstraint("did", "uid", name = "uc_connectors"),
+        db.ForeignKeyConstraint(["did", "uid"],
+                                ["datasets.did", "datasets.uid"]),
+    )
+    did = db.Column(db.Integer, primary_key = True)
+    uid = db.Column(db.Integer, primary_key = True)
+    type = db.Column(db.String(3), nullable = False)
     key = db.Column(db.String(255))
 
     def to_dict(self):
@@ -84,9 +106,14 @@ class Connector(db.Model):
 
 class DatasetVersion(db.Model):
     __tablename__ = "dataset_versions"
+    __table_args__ = (
+        db.UniqueConstraint("vid", "did", "uid", name = "uc_dataset_versions"),
+        db.ForeignKeyConstraint(["did", "uid"],
+                                ["datasets.did", "datasets.uid"]),
+    )
     vid = db.Column(db.Integer, primary_key = True, nullable = False)
-    did = db.Column(db.Integer, db.ForeignKey("datasets.did"), primary_key = True)
-    uid = db.Column(db.Integer, db.ForeignKey("datasets.uid"), primary_key = True)
+    did = db.Column(db.Integer, primary_key = True)
+    uid = db.Column(db.Integer, primary_key = True)
     filename = db.Column(db.String(255), nullable = False)
     upload_date = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     item_count = db.Column(db.Integer, nullable = False)
@@ -101,9 +128,14 @@ class DatasetVersion(db.Model):
 
 class Statistics(db.Model):
     __tablename__ = "statistics"
-    aid = db.Column(db.Integer, db.ForeignKey("attributes.aid"), primary_key = True)
-    did = db.Column(db.Integer, db.ForeignKey("attributes.did"), primary_key = True)
-    uid = db.Column(db.Integer, db.ForeignKey("attributes.uid"), primary_key = True)
+    __table_args__ = (
+        db.UniqueConstraint("aid", "did", "uid", name = "uc_statistics"),
+        db.ForeignKeyConstraint(["aid", "did", "uid"],
+                                ["attributes.aid", "attributes.did", "attributes.uid"]),
+    )
+    aid = db.Column(db.Integer, primary_key = True)
+    did = db.Column(db.Integer, primary_key = True)
+    uid = db.Column(db.Integer, primary_key = True)
     minimum = db.Column(db.Numeric)
     q1 = db.Column(db.Numeric)
     median = db.Column(db.Numeric)
