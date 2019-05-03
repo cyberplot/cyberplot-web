@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { apiDatasetList } from '../api';
 
 Vue.use(Vuex)
 
@@ -13,11 +14,18 @@ const state = {
         attributeRename: false
     },
     notificationsOpened: false,
-    datasetUpdateUpdating: false /* are we updating an existing dataset? */
+    datasetUpdateUpdating: false, /* are we updating an existing dataset? */
+    datasets: [],
+    user_uid: 1
 }
 
 const actions = {
-
+    getDatasets(context) {
+        return apiDatasetList(this.state.user_uid)
+            .then((response) => {
+                context.commit('setDatasets', { response: response.data })
+            })
+    }
 }
 
 const mutations = {
@@ -43,6 +51,10 @@ const mutations = {
     
     toggleNotifications(state) {
         state.notificationsOpened = !state.notificationsOpened
+    },
+
+    setDatasets(state, payload) {
+        state.datasets = payload.response.datasets
     }
 }
 
