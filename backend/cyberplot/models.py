@@ -82,7 +82,12 @@ class Attribute(db.Model):
                     UID = self.uid,
                     label = self.label,
                     type = self.type,
-                    typeMask = self.type_mask,
+                    possibleTypes = dict(
+                        nominal = (self.type_mask >> 3) & 1,
+                        numerical = (self.type_mask >> 2) & 1,
+                        categorical = (self.type_mask >> 1) & 1,
+                        vector = (self.type_mask >> 0) & 1
+                    ),
                     missingValueSetting = self.missing_value_setting,
                     missingValueCustom = self.missing_value_custom)
 
