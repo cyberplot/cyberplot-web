@@ -13,10 +13,11 @@ def datasetList(uid):
 # Returns metadata on specified dataset along with attributes and their stats
 @api.route("/dataset/<int:uid>/<int:did>/")
 def dataset(uid, did):
-    dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first()
+    dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first().to_dict()
+    dataset["item_count"] = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first().to_dict()["itemCount"]
     attributes = Attribute.query.filter_by(uid = uid, did = did)
     statistics = Statistics.query.filter_by(uid = uid, did = did)
-    return jsonify({ 'dataset': dataset.to_dict(),
+    return jsonify({ 'dataset': dataset,
                      'attributes': [a.to_dict() for a in attributes],
                      'statistics': [s.to_dict() for s in statistics] })
 
