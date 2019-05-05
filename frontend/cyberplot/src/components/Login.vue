@@ -37,6 +37,11 @@ content {
     border-radius: 0.3em;
 }
 
+#login_form input {
+    width: -webkit-fill-available;
+    width: -moz-available;
+}
+
 main {
     top: 50%;
     left: 50%;
