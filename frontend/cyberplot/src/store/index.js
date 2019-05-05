@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList } from '../api';
+import { apiDatasetList, apiDataset } from '../api';
 
 Vue.use(Vuex)
 
@@ -16,6 +16,7 @@ const state = {
     notificationsOpened: false,
     datasetUpdateUpdating: false, /* are we updating an existing dataset? */
     datasets: [],
+    currentDataset: [],
     user_uid: 1
 }
 
@@ -24,6 +25,12 @@ const actions = {
         return apiDatasetList(this.state.user_uid)
             .then((response) => {
                 context.commit('setDatasets', { response: response.data })
+            })
+    },
+    getCurrentDataset(context, { dataset_did }) {
+        return apiDataset(this.state.user_uid, dataset_did)
+            .then((response) => {
+                context.commit('setCurrentDataset', { response: response.data })
             })
     }
 }
@@ -55,6 +62,10 @@ const mutations = {
 
     setDatasets(state, payload) {
         state.datasets = payload.response.datasets
+    },
+
+    setCurrentDataset(state, payload) {
+        state.currentDataset = payload.response
     }
 }
 

@@ -4,7 +4,7 @@
         <dt><img src="@/assets/images/icon_statistics_gray.svg"> Statistics</dt>
         <dd>
             <table>
-                <tr><td>{{ stats.min }}</td><td>{{ stats.q1 }}</td><td>{{ stats.med }}</td><td>{{ stats.q3 }}</td><td>{{ stats.max }}</td></tr>
+                <tr><td>{{ stats.minimum }}</td><td>{{ stats.Q1 }}</td><td>{{ stats.median }}</td><td>{{ stats.Q3 }}</td><td>{{ stats.maximum }}</td></tr>
                 <tr><td>min</td><td>1Q</td><td>med</td><td>3Q</td><td>max</td></tr>
             </table>
 

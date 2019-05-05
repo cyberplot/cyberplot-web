@@ -6,10 +6,10 @@
         <dl>
             <dt><img src="@/assets/images/icon_data_type_gray.svg"> Data type</dt>
             <dd id="data_type_selector" class="selector">
-                <a href="#" id="data_type_nominal_button" :class="[attribute.possible_types.nominal ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[attribute.possible_types.nominal ? require('@/assets/images/label_attribute_nominal_blue.svg') : require('@/assets/images/label_attribute_nominal_white.svg')]" alt="Nominal"></a>
-                <a href="#" id="data_type_numerical_button" :class="[attribute.possible_types.numerical ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[attribute.possible_types.numerical ? require('@/assets/images/label_attribute_numerical_blue.svg') : require('@/assets/images/label_attribute_numerical_white.svg')]" alt="Numerical"></a>
-                <a href="#" id="data_type_categorical_button" :class="[attribute.possible_types.categorical ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[attribute.possible_types.categorical ? require('@/assets/images/label_attribute_categorical_blue.svg') : require('@/assets/images/label_attribute_categorical_white.svg')]" alt="Categorical"></a>
-                <a href="#" id="data_type_vector_button" :class="[attribute.possible_types.vector ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[attribute.possible_types.vector ? require('@/assets/images/label_attribute_vector_blue.svg') : require('@/assets/images/label_attribute_vector_white.svg')]" alt="Vector"></a>
+                <a href="#" id="data_type_nominal_button" :class="[attribute.possibleTypes.nominal ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[attribute.possibleTypes.nominal ? require('@/assets/images/label_attribute_nominal_blue.svg') : require('@/assets/images/label_attribute_nominal_white.svg')]" alt="Nominal"></a>
+                <a href="#" id="data_type_numerical_button" :class="[attribute.possibleTypes.numerical ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[attribute.possibleTypes.numerical ? require('@/assets/images/label_attribute_numerical_blue.svg') : require('@/assets/images/label_attribute_numerical_white.svg')]" alt="Numerical"></a>
+                <a href="#" id="data_type_categorical_button" :class="[attribute.possibleTypes.categorical ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[attribute.possibleTypes.categorical ? require('@/assets/images/label_attribute_categorical_blue.svg') : require('@/assets/images/label_attribute_categorical_white.svg')]" alt="Categorical"></a>
+                <a href="#" id="data_type_vector_button" :class="[attribute.possibleTypes.vector ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[attribute.possibleTypes.vector ? require('@/assets/images/label_attribute_vector_blue.svg') : require('@/assets/images/label_attribute_vector_white.svg')]" alt="Vector"></a>
             </dd>
             <dt><img src="@/assets/images/icon_data_missing_gray.svg"> Missing values</dt>
             <dd id="data_missing_selector" class="selector">
@@ -21,7 +21,7 @@
         </dl>
     </div>
 
-    <DatasetAttributeStatistics :stats="attribute.stats" />
+    <DatasetAttributeStatistics :stats="statistics" />
 </div>
 </template>
 
@@ -41,7 +41,8 @@ export default {
         }
     },
     props: {
-        attribute: Object
+        attribute: Object,
+        statistics: Object
     }
 }
 </script>

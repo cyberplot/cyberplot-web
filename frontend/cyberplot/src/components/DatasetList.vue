@@ -1,7 +1,7 @@
 <template>
 <section id="sidebar">
     <ul id="dataset_listing">
-        <router-link :to="`${dataset.DID}`" href="#" v-for="dataset in datasets" :key="dataset.id">
+        <router-link :to="`${dataset.DID}`" v-for="dataset in datasets" :key="dataset.id">
             <li>{{ dataset.name }}</li>
         </router-link>
     </ul>
