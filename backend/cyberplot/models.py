@@ -34,7 +34,7 @@ class Dataset(db.Model):
         return dict(DID = self.did,
                     UID = self.uid,
                     name = self.name,
-                    lastEdit = self.last_edit,
+                    lastEdit = int(datetime.timestamp(self.last_edit)),
                     spaceDependencies = self.space_dependencies,
                     deleted = self.deleted)
 
@@ -123,7 +123,7 @@ class DatasetVersion(db.Model):
                     DID = self.did,
                     UID = self.uid,
                     filename = self.filename,
-                    uploadDate = self.upload_date,
+                    uploadDate = int(datetime.timestamp(self.upload_date)),
                     itemCount = self.item_count)
 
 class Statistics(db.Model):
