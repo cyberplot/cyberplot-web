@@ -1,5 +1,5 @@
 <template>
-<section id="content" v-if="currentDataset">
+<section id="content" v-if="currentDataset.dataset">
     <div id="dataset_panel">
         <h2>{{ currentDataset.dataset.name }}</h2>
         <ul id="dataset_details">

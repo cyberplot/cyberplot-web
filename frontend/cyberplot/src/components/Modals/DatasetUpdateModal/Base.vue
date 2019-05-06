@@ -2,7 +2,7 @@
 <form id="form_update">
     <span v-if="updating">
         <header><img src="@/assets/images/icon_update_blue.svg"> Update dataset</header>
-        <p>Please select data source to update <strong>Iris Dataset</strong>.</p>
+        <p>Please select data source to update <strong>{{ currentDataset.dataset.name }}</strong>.</p>
     </span>
     <span v-else>
         <header><img src="@/assets/images/icon_dataset_new_blue.svg"> Add new dataset</header>
@@ -68,6 +68,11 @@ export default {
             if(this.dataSource != '') {
                 this.$emit('formSubmit', this.dataSource)
             }
+        }
+    },
+    computed: {
+        currentDataset() {
+            return this.$store.state.currentDataset
         }
     }
 }

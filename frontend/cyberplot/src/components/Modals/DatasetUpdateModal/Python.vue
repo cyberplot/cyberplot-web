@@ -13,7 +13,7 @@
     </div>
 
     <span v-if="updating">
-        <p>After installing the package, use the following command in your Python environment to update <strong>Iris Dataset</strong>.</p>
+        <p>After installing the package, use the following command in your Python environment to update <strong>{{ currentDataset.dataset.name }}</strong>.</p>
 
         <div class="cli_box">
             import cyberplot<br />
@@ -49,6 +49,11 @@ export default {
     methods: {
         backToInitial: function() {
             this.$emit('backToInitial')
+        }
+    },
+    computed: {
+        currentDataset() {
+            return this.$store.state.currentDataset
         }
     }
 }
