@@ -25,7 +25,7 @@
                     <img src="@/assets/images/icon_attribute_categorical_white.svg" :alt="attribute.type" v-show="attribute.type === 'categorical'">
                     <img src="@/assets/images/icon_attribute_vector_white.svg" :alt="attribute.type" v-show="attribute.type === 'vector'">
                 </dd>
-                <!--div id="attribute_listing_item" v-for="(value, index) in attribute.values" :key="index"><dt>Value</dt><dd>{{ value }}</dd></div-->
+                <div id="attribute_listing_item" v-for="(value, index) in attribute.values" :key="index"><dt>Value</dt><dd>{{ value }}</dd></div>
             </dl></li>
         </ul>
     </div>
