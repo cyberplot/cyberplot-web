@@ -1,6 +1,6 @@
 from datetime import datetime  
 from flask_sqlalchemy import SQLAlchemy
-from .utils import isFlagOnPosition
+from .utils import isFlagOnPosition, intToType
 
 db = SQLAlchemy()
 
@@ -82,7 +82,7 @@ class Attribute(db.Model):
                     DID = self.did,
                     UID = self.uid,
                     label = self.label,
-                    type = self.type,
+                    type = intToType(self.type).lower(),
                     possibleTypes = dict(
                         nominal = isFlagOnPosition(self.type_mask, 3),
                         numerical = isFlagOnPosition(self.type_mask, 2),
