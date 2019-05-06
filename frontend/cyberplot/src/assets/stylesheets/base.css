@@ -76,7 +76,7 @@ h2 {
 }
 
 .button_secondary {
-    background-color: white;
+    background: linear-gradient(to bottom, #fff, #fff 15%, #eee 100%);
     padding: 0.5em;
     border-radius: 0.3em;
     font-family: 'Libre Franklin Bold';
@@ -87,8 +87,16 @@ h2 {
     cursor: pointer;
 }
 
+.button_secondary:hover {
+    background-color: white;
+}
+
+.button_secondary:active {
+    background: linear-gradient(to bottom, #eee, #eee 15%, #fff 100%);
+}
+
 .button_secondary_disabled {
-    background-color: darkgray;
+    background: linear-gradient(to bottom, #999, #999 15%, #bbb 100%);
     padding: 0.5em;
     border-radius: 0.3em;
     font-family: 'Libre Franklin Bold';
@@ -371,7 +379,6 @@ strong {
 
 #notifications form a:nth-of-type(2) {
     margin-right: 0.6em;
-    border: 1px solid #1fbbfb;
 }
 
 #notifications #arrow {
