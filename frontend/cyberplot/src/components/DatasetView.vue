@@ -17,7 +17,7 @@
         </ul>
 
         <ul id="attribute_listing">
-            <li @click="selectedAttribute = index" v-for="(attribute, index) in currentDataset.attributes" :key="index" class="interactive"><dl>
+            <li @click="selectAttribute(index)" v-for="(attribute, index) in currentDataset.attributes" :key="index" class="interactive"><dl>
                 <dt>Name</dt><dd>{{ attribute.label }}</dd>
                 <dt>Type</dt><dd>
                     <img src="@/assets/images/icon_attribute_nominal_white.svg" :alt="attribute.type" v-show="attribute.type === 'nominal'">
@@ -30,7 +30,7 @@
         </ul>
     </div>
 
-    <DatasetAttributeDetails :attribute="currentDataset.attributes[selectedAttribute]" :statistics="currentDataset.statistics[selectedAttribute]" />
+    <DatasetAttributeDetails />
 </section>
 </template>
 
@@ -44,11 +44,6 @@ export default {
     },
     beforeMount() {
         this.$store.dispatch('getCurrentDataset', { dataset_did: parseInt(this.$route.params.id) })
-    },
-    data() {
-        return {
-            selectedAttribute: 0
-        }
     },
     methods: {
         showDatasetDeleteModal: function() {
@@ -66,6 +61,10 @@ export default {
         showDatasetUpdateModal: function() {
             this.$store.commit('openModal', 'datasetUpdate')
         },
+
+        selectAttribute: function(attribute) {
+            this.$store.commit('selectAttribute', attribute)
+        }
     },
     computed: {
         lastEdit() {

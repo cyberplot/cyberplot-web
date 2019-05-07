@@ -17,6 +17,7 @@ const state = {
     datasetUpdateUpdating: false, /* are we updating an existing dataset? */
     datasets: [],
     currentDataset: [],
+    selectedAttribute: 0,
     user_uid: 1
 }
 
@@ -66,6 +67,10 @@ const mutations = {
 
     setCurrentDataset(state, payload) {
         state.currentDataset = payload.response
+    },
+
+    selectAttribute(state, attribute) {
+        state.selectedAttribute = attribute
     }
 }
 
