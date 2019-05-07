@@ -1,5 +1,5 @@
 <template>
-<div id="attribute_statistics">
+<div id="attribute_statistics" v-if="selectedAttribute != -1">
     <dl>
         <dt><img src="@/assets/images/icon_statistics_gray.svg"> Statistics</dt>
         <dd>
@@ -26,7 +26,19 @@ export default {
         },
 
         selectedAttribute() {
-            return this.$store.state.selectedAttribute
+            var attributeAID = this.$store.state.selectedAttribute
+
+            if(!attributeAID) {
+                return -1
+            }
+
+            for(let [index, attribute] of this.currentDataset.statistics.entries()) {
+                if(attribute.AID == attributeAID) {
+                    return index
+                }
+            }
+
+            return -1 /* if there is no statistics record associated with attribute, display nothing */
         }
     }
 }

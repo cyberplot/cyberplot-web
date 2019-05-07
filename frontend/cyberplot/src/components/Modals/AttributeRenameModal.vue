@@ -1,5 +1,5 @@
 <template>
-<form id="form_rename_attribute" v-show="modalOpened" v-if="currentDataset.dataset">
+<form id="form_rename_attribute" v-show="modalOpened" v-if="selectedAttribute">
     <header><img src="@/assets/images/icon_rename_blue.svg"> Rename attribute</header>
     <p>Please enter a new name for <strong>{{ attributeLabel }}</strong>.</p>
 
@@ -25,7 +25,13 @@ export default {
         },
 
         attributeLabel() {
-            return this.currentDataset.attributes[this.selectedAttribute].label 
+            var attributeAID = this.selectedAttribute
+
+            for(let [index, attribute] of this.currentDataset.attributes.entries()) {
+                if(attribute.AID == attributeAID) {
+                    return attribute.label
+                }
+            }
         }
     }
 }

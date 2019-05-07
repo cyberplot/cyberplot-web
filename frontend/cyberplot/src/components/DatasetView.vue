@@ -17,7 +17,7 @@
         </ul>
 
         <ul id="attribute_listing">
-            <li @click="selectAttribute(index)" v-for="(attribute, index) in currentDataset.attributes" :key="index" class="interactive"><dl>
+            <li @click="selectAttribute(attribute.AID)" v-for="(attribute, index) in currentDataset.attributes" :key="index" class="interactive"><dl>
                 <dt>Name</dt><dd>{{ attribute.label }}</dd>
                 <dt>Type</dt><dd>
                     <img src="@/assets/images/icon_attribute_nominal_white.svg" :alt="attribute.type" v-show="attribute.type === 'nominal'">

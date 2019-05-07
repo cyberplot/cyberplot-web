@@ -1,5 +1,5 @@
 <template>
-<div id="attribute_panel">
+<div id="attribute_panel" v-if="selectedAttribute != -1">
     <div id="attribute_settings">
         <h2>{{ currentDataset.attributes[selectedAttribute].label }}</h2>
         <a @click="showAttributeRenameModal" id="attribute_rename_button" class="button_secondary"><img src="@/assets/images/icon_rename_blue.svg" alt="Rename attribute"></a>
@@ -46,7 +46,17 @@ export default {
         },
 
         selectedAttribute() {
-            return this.$store.state.selectedAttribute
+            var attributeAID = this.$store.state.selectedAttribute
+
+            if(!attributeAID) {
+                return -1
+            }
+
+            for(let [index, attribute] of this.currentDataset.attributes.entries()) {
+                if(attribute.AID == attributeAID) {
+                    return index
+                }
+            }
         }
     }
 }
