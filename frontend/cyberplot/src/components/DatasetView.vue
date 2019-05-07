@@ -9,11 +9,11 @@
         </ul>
 
         <ul id="dataset_actions">
-            <a @click="showDatasetUpdateModal" class="interactive"><li><img src="@/assets/images/icon_update_blue.svg" alt="Update dataset"></li></a>
-            <a href="#" class="interactive"><li><img src="@/assets/images/icon_download_blue.svg" alt="Download dataset"></li></a>
-            <a @click="showDatasetShareModal" class="interactive"><li><img src="@/assets/images/icon_share_blue.svg" alt="Share dataset"></li></a>
-            <a @click="showDatasetRenameModal" class="interactive"><li><img src="@/assets/images/icon_rename_blue.svg" alt="Rename dataset"></li></a>
-            <a @click="showDatasetDeleteModal" class="interactive"><li><img src="@/assets/images/icon_delete_blue.svg" alt="Delete dataset"></li></a>
+            <a @click="showDatasetUpdateModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_update_blue.svg" alt="Update dataset"></li></a>
+            <a href="#" class="interactive button_secondary"><li><img src="@/assets/images/icon_download_blue.svg" alt="Download dataset"></li></a>
+            <a @click="showDatasetShareModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_share_blue.svg" alt="Share dataset"></li></a>
+            <a @click="showDatasetRenameModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_rename_blue.svg" alt="Rename dataset"></li></a>
+            <a @click="showDatasetDeleteModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_delete_blue.svg" alt="Delete dataset"></li></a>
         </ul>
 
         <ul id="attribute_listing">

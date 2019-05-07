@@ -100,7 +100,6 @@ dt img {
 }
 
 #dataset_actions {
-    display: inline;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -109,7 +108,10 @@ dt img {
 
 #dataset_actions li {
     display: inline;
-    margin-left: 1em;
+}
+
+#dataset_actions a {
+    margin: 0.25em;
 }
 
 #dataset_panel {
@@ -173,7 +175,7 @@ dt img {
 
 #attribute_panel {
     flex: 1;
-    background-color: #ccc;
+    background-color: #ddd;
     padding-top: 2em;
     padding-left: 7em;
     padding-right: 7em;
