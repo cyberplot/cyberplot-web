@@ -5,7 +5,7 @@
         <ul id="dataset_details">
             <li><img src="@/assets/images/icon_rows_gray.svg"> {{ currentDataset.dataset.item_count }} items</li>
             <li><img src="@/assets/images/icon_attribute_gray.svg"> {{ currentDataset.attributes.length }} attributes</li>
-            <li><img src="@/assets/images/icon_time_gray.svg"> Edited on {{ lastEdit }}</li>
+            <li><img src="@/assets/images/icon_time_gray.svg"> Edited {{ lastEdit }}</li>
         </ul>
 
         <ul id="dataset_actions">
@@ -68,8 +68,14 @@ export default {
     },
     computed: {
         lastEdit() {
-            var date = Date(this.currentDataset.dataset.lastEdit);
-            return date.toLocaleString();
+            var timestamp = this.currentDataset.dataset.lastEdit
+            var humanReadable = this.$moment(timestamp * 1000).tz(this.$moment.tz.guess()).calendar()
+
+            if(!humanReadable.startsWith('Today') && !humanReadable.startsWith('Yesterday')) {
+                humanReadable = 'on ' + humanReadable
+            }
+
+            return humanReadable
         },
 
         currentDataset() {
