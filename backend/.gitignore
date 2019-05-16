@@ -1,4 +1,5 @@
 migrations/
+datasets/
 cyberplot.db
 
 # Byte-compiled / optimized / DLL files
