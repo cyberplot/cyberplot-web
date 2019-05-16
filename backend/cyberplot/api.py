@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from .models import db, User, Dataset, Space, Attribute, Connector, DatasetVersion, Statistics
+from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics
 from .config import BaseConfig
 import simplejson as json
 import csv, itertools

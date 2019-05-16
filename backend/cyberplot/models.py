@@ -28,15 +28,13 @@ class Dataset(db.Model):
     uid = db.Column(db.Integer, db.ForeignKey("users.uid"), primary_key = True)
     name = db.Column(db.String(100), nullable = False)
     last_edit = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
-    space_dependencies = db.Column(db.Integer, nullable = False)
-    deleted = db.Column(db.Boolean, nullable = False)
+    deleted = db.Column(db.Boolean, nullable = False, default = False)
 
     def to_dict(self):
         return dict(DID = self.did,
                     UID = self.uid,
                     name = self.name,
                     lastEdit = int(datetime.timestamp(self.last_edit)),
-                    spaceDependencies = self.space_dependencies,
                     deleted = self.deleted)
 
 class Space(db.Model):
@@ -92,8 +90,8 @@ class Attribute(db.Model):
                     missingValueSetting = self.missing_value_setting,
                     missingValueCustom = self.missing_value_custom)
 
-class Connector(db.Model):
-    __tablename__ = "connectors"
+class DatasetConnector(db.Model):
+    __tablename__ = "dataset_connectors"
     __table_args__ = (
         db.UniqueConstraint("did", "uid", name = "uc_connectors"),
         db.ForeignKeyConstraint(["did", "uid"],
@@ -101,13 +99,20 @@ class Connector(db.Model):
     )
     did = db.Column(db.Integer, primary_key = True)
     uid = db.Column(db.Integer, primary_key = True)
-    type = db.Column(db.String(3), nullable = False)
-    key = db.Column(db.String(255))
+    key = db.Column(db.String(255), nullable = False, unique = True)
 
     def to_dict(self):
         return dict(DID = self.did,
                     UID = self.uid,
-                    type = self.type,
+                    key = self.key)
+
+class UserConnector(db.Model):
+    __tablename__ = "user_connectors"
+    uid = db.Column(db.Integer, db.ForeignKey("users.uid"), primary_key = True)
+    key = db.Column(db.String(255), nullable = False, unique = True)
+
+    def to_dict(self):
+        return dict(UID = self.uid,
                     key = self.key)
 
 class DatasetVersion(db.Model):
