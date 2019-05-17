@@ -67,6 +67,7 @@ const mutations = {
 
     setCurrentDataset(state, payload) {
         state.currentDataset = payload.response
+        state.selectedAttribute = 0 /* deselect attribute when changing datasets */
     },
 
     selectAttribute(state, attribute) {
