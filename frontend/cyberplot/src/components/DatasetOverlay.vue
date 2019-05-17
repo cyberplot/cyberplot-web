@@ -43,3 +43,16 @@ export default {
     }
 }
 </script>
+
+<style>
+#overlay #form_update div {
+    width: 9em;
+    height: 8em;
+    margin: 0.75em;
+    text-align: center;
+    padding-top: 1.5em;
+    display: inline-block;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+</style>

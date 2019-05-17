@@ -61,3 +61,18 @@ export default {
     }
 }
 </script>
+
+<style>
+#attribute_settings {
+    flex: 2;
+}
+
+#attribute_rename_button {
+    display: inline;
+}
+
+#attribute_settings dd {
+    margin-bottom: 1em;
+    margin-top: 0.3em;
+}
+</style>

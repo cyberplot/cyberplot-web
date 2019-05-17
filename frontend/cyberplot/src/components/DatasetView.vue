@@ -84,3 +84,124 @@ export default {
     }
 }
 </script>
+
+<style>
+h2 {
+    font-family: 'Libre Franklin Bold';
+    font-size: 2.5em;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+
+li img {
+    vertical-align: middle;
+    width: 2em;
+}
+
+dt img {
+    vertical-align: middle;
+    width: 2em;
+}
+
+#dataset_details {
+    display: inline;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#dataset_details li {
+    display: inline;
+    margin-right: 2em;
+    font-family: 'Libre Franklin Bold';
+}
+
+#dataset_actions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    float: right;
+}
+
+#dataset_actions li {
+    display: inline;
+}
+
+#dataset_actions a {
+    margin: 0.25em;
+}
+
+#dataset_panel {
+    padding: 7em;
+    padding-top: 3em;
+    padding-bottom: 0;
+    flex: 2;
+    overflow-y: scroll;
+}
+
+#attribute_listing {
+    list-style: none;
+    padding: 0;
+}
+
+#attribute_listing li {
+    display: inline-block;
+    border-radius: 0.3em;
+    background-color: #333;
+    background: linear-gradient(180deg, #4b4b4b 00%, #333 100%);
+    width: 15em;
+    padding: 1em;
+    color: white;
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
+#attribute_listing li:hover {
+    background: linear-gradient(180deg, #5c5c5c 0%, #474747 100%);
+}
+
+#attribute_listing dt {
+    display: none;
+}
+
+#attribute_listing dd {
+    margin: 0;
+    margin-top: 0.5em;
+}
+
+#attribute_listing dd:nth-of-type(1) {
+    display: inline;
+    font-family: 'Libre Franklin Bold';
+    font-size: 1.25em;
+}
+
+#attribute_listing_item dd:nth-of-type(1) {
+    font-family: 'Libre Franklin';
+    font-size: 1em;
+    display: block;
+}
+
+#attribute_listing dd:nth-of-type(2) {
+    display: inline;
+}
+
+#attribute_listing img {
+    float: right;
+    width: 3em;
+}
+
+#attribute_panel {
+    flex: 1;
+    background-color: #ddd;
+    padding-top: 2em;
+    padding-left: 7em;
+    padding-right: 7em;
+    display: flex;
+}
+
+#attribute_panel h2 {
+    font-size: 1.75em;
+    margin-right: 0.5em;
+    display: inline;
+}
+</style>
