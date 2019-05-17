@@ -32,3 +32,15 @@ export default {
     }
 }
 </script>
+
+<style>
+#dataset_listing {
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+#dataset_listing::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+</style>
