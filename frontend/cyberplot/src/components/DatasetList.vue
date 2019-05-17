@@ -1,7 +1,7 @@
 <template>
 <section id="sidebar">
     <ul id="dataset_listing">
-        <router-link :to="`${dataset.DID}`" v-for="dataset in datasets" :key="dataset.id">
+        <router-link v-on:click.native="changeDataset(dataset.DID)" :to="`${dataset.DID}`" v-for="dataset in datasets" :key="dataset.id">
             <li>{{ dataset.name }}</li>
         </router-link>
     </ul>
@@ -19,6 +19,10 @@ export default {
     methods: {
         showNewDatasetModal: function() {
             this.$store.commit('openModal', 'datasetAdd')
+        },
+
+        changeDataset: function(DID) {
+            this.$store.dispatch('getCurrentDataset', { dataset_did: DID })
         }
     },
     computed: {
