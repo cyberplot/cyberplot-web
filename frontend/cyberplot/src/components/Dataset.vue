@@ -1,6 +1,6 @@
 <template>
 <content>
-    <VueTitle title="Iris Dataset" v-if="datasetSelected()" />
+    <VueTitle :title="currentDataset.dataset.name" v-if="datasetSelected()" />
 
     <nav id="navigation_main">
         <h1>Cyberplot</h1>
@@ -48,6 +48,11 @@ export default {
 
         toggleNotifications: function() {
             this.$store.commit('toggleNotifications')
+        }
+    },
+    computed: {
+        currentDataset() {
+            return this.$store.state.currentDataset
         }
     }
 }
