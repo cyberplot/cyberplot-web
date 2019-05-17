@@ -1,6 +1,6 @@
 from datetime import datetime  
 from flask_sqlalchemy import SQLAlchemy
-from .utils import isFlagOnPosition, intToType
+from .utils import isFlagOnPosition, intToType, typeToInt, attributeTypes
 
 db = SQLAlchemy()
 
@@ -82,10 +82,10 @@ class Attribute(db.Model):
                     label = self.label,
                     type = intToType(self.type).lower(),
                     possibleTypes = dict(
-                        nominal = isFlagOnPosition(self.type_mask, 3),
-                        numerical = isFlagOnPosition(self.type_mask, 2),
-                        categorical = isFlagOnPosition(self.type_mask, 1),
-                        vector = isFlagOnPosition(self.type_mask, 0)
+                        nominal = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.NOMINAL)),
+                        numerical = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.NUMERICAL)),
+                        categorical = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.CATEGORICAL)),
+                        vector = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.VECTOR))
                     ),
                     missingValueSetting = self.missing_value_setting,
                     missingValueCustom = self.missing_value_custom)
