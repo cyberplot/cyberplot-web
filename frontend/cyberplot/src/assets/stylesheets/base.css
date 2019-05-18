@@ -104,6 +104,7 @@ h2 {
     color: white;
     padding-left: 1em;
     padding-right: 1em;
+    cursor: auto;
 }
 
 .button_secondary:hover {

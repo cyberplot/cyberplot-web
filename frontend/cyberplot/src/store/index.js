@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset } from '../api';
+import { apiDatasetList, apiDataset, apiDeleteDataset } from '../api'
+import router from '../router'
 
 Vue.use(Vuex)
 
@@ -28,11 +29,21 @@ const actions = {
                 context.commit('setDatasets', { response: response.data })
             })
     },
+
     getCurrentDataset(context, { dataset_did }) {
         return apiDataset(this.state.user_uid, dataset_did)
             .then((response) => {
                 context.commit('setCurrentDataset', { response: response.data })
             })
+    },
+
+    deleteCurrentDataset(context) {
+        apiDeleteDataset(this.state.user_uid, this.state.currentDataset.dataset.DID)
+        .then((response) => {
+            context.dispatch('getDatasets')
+        })
+        router.push({ path: `/dataset/` })
+        context.commit('closeModals')
     }
 }
 
@@ -72,7 +83,7 @@ const mutations = {
 
     selectAttribute(state, attribute) {
         state.selectedAttribute = attribute
-    }
+    }  
 }
 
 const getters = {
