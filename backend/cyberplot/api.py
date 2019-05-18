@@ -50,6 +50,7 @@ def userAutocomplete(phrase):
     users = User.query.filter(User.username.startswith(phrase)).limit(5).with_entities(User.uid, User.username)
     return jsonify({ 'users': [u for u in users] })
 
+# Used to create a new dataset or update an existing one
 @api.route("/upload/", methods = ("POST",))
 def uploadDataset():
     RequestForm = request.form
@@ -146,5 +147,23 @@ def uploadDataset():
 
     else:
         print("update") #TODO
+        datasetData = getDatasetData(filename)
+
+    return jsonify({'result': True}), 201
+
+# deletes dataset files and all metadata associated with it
+@api.route("/dataset_delete/<int:uid>/<int:did>/", methods = ("POST",))
+def deleteDataset(uid, did):
+    datasetVersions = DatasetVersion.query.filter_by(uid = uid, did = did)
+    for version in datasetVersions:
+        os.unlink(version.filename)
+
+    Space.query.filter_by(dataset_uid = uid, did = did).delete()
+    Statistics.query.filter_by(uid = uid, did = did).delete()
+    Attribute.query.filter_by(uid = uid, did = did).delete()
+    DatasetVersion.query.filter_by(uid = uid, did = did).delete()
+    DatasetConnector.query.filter_by(uid = uid, did = did).delete()
+    Dataset.query.filter_by(uid = uid, did = did).delete()
+    db.session.commit()
 
     return jsonify({'result': True}), 201
