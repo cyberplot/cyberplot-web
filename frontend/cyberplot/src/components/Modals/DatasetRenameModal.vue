@@ -29,14 +29,12 @@ export default {
 
         checkIfNameAvailable: function() {
             /* check if there is not a dataset with the same name */
-            let nameAlreadyUsed = false
+            this.nameAlreadyUsed = false
             this.$store.state.datasets.forEach((dataset) => {
                 if(dataset.name == this.inputtedName) {
-                    nameAlreadyUsed = true
+                    this.nameAlreadyUsed = true
                 }
             })
-
-            this.nameAlreadyUsed = nameAlreadyUsed
         }
     },
     computed: {
