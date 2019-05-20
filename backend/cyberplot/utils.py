@@ -1,4 +1,4 @@
-import enum, csv, itertools
+import enum, csv
 from .config import BaseConfig
 
 class attributeTypes(enum.Enum):
@@ -13,11 +13,11 @@ def isFlagOnPosition(mask, pos):
 def flipBitOnPosition(mask, pos):
     return mask ^ (1 << pos - 1)
 
-def intToType(int):
-    return attributeTypes(int).name
+def intToType(_int):
+    return attributeTypes(_int).name
 
-def typeToInt(type):
-    return type.value
+def typeToInt(_type):
+    return _type.value
 
 def isValidCSV(filename):
     # TODO

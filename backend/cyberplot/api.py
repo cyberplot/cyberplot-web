@@ -88,14 +88,14 @@ def dataset(user, did):
 
         attributes = Attribute.query.filter_by(uid = user.uid, did = did)
         for i, attribute in enumerate(attributes):
-           if data["attributes"][i]["label"] != attribute.label:
-               proposedLabel = data["attributes"][i]["label"]
-               # check if dataset does not include an attribute with the same label
-               if Attribute.query.filter_by(label = proposedLabel).first():
-                   return jsonify({'result': 'Dataset already contains an attribute with specified label.'}), 406
-               
-               attribute.label = data["attributes"][i]["label"]
-               datasetChanged = True
+            if data["attributes"][i]["label"] != attribute.label:
+                proposedLabel = data["attributes"][i]["label"]
+                # check if dataset does not include an attribute with the same label
+                if Attribute.query.filter_by(label = proposedLabel).first():
+                    return jsonify({'result': 'Dataset already contains an attribute with specified label.'}), 406
+
+                attribute.label = data["attributes"][i]["label"]
+                datasetChanged = True
 
         if datasetChanged:
             dataset.last_edit = datetime.datetime.now()
@@ -266,9 +266,5 @@ def login():
     if not user:
         return jsonify({'result': 'Invalid username or password.'}), 401
 
-    token = jwt.encode({
-        'sub': user.username,
-        'iat': datetime.datetime.utcnow(),
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes = 30)},
-        BaseConfig.SECRET_KEY)
+    token = jwt.encode({'sub': user.username, 'iat': datetime.datetime.utcnow(), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes = 30)}, BaseConfig.SECRET_KEY)
     return jsonify({'token': token.decode('UTF-8')})
