@@ -23,7 +23,7 @@ export function apiChangeDataset(did, datasetData, jwt) {
 }
 
 export function apiDeleteDataset(did, jwt) {
-    return axios.post(`${API_URL}/dataset_delete/${did}/`, {headers: {Authorization: `Bearer: ${jwt}`}})
+    return axios.post(`${API_URL}/dataset_delete/${did}/`, null, {headers: {Authorization: `Bearer: ${jwt}`}})
 }
 
 export function apiDownloadDataset(did, jwt) {
