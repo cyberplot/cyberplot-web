@@ -13,36 +13,55 @@ def datasetList(uid):
     datasets = Dataset.query.filter_by(uid = uid, deleted = False)
     return jsonify({ 'datasets': [d.to_dict() for d in datasets] })
 
-# Returns metadata on specified dataset along with attributes and their stats
-@api.route("/dataset/<int:uid>/<int:did>/")
+# GET: Returns metadata on specified dataset along with attributes and their stats
+# PUT: Allows for modification of dataset metadata
+@api.route("/dataset/<int:uid>/<int:did>/", methods = ("GET", "PUT",))
 def dataset(uid, did):
-    dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first().to_dict()
+    if request.method == "GET":
+        dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first().to_dict()
 
-    lastVersion = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first().to_dict()
-    dataset["item_count"] = lastVersion["itemCount"]
-    filename = lastVersion["filename"]
+        lastVersion = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first().to_dict()
+        dataset["item_count"] = lastVersion["itemCount"]
+        filename = lastVersion["filename"]
 
-    attributes_original = Attribute.query.filter_by(uid = uid, did = did)
-    attributes = []
+        attributes_original = Attribute.query.filter_by(uid = uid, did = did)
+        attributes = []
 
-    for attribute in attributes_original:
-        new_attribute = attribute.to_dict()
-        new_attribute["values"] = []
-        attributes.append(new_attribute)
+        for attribute in attributes_original:
+            new_attribute = attribute.to_dict()
+            new_attribute["values"] = []
+            attributes.append(new_attribute)
 
-    with open(filename) as csvfile:    
-        reader = csv.reader(csvfile)
-        for i, row in enumerate(itertools.islice(reader, BaseConfig.API_ATTRIBUTE_VALUE_PREVIEW_LENGTH + 1)):
-            if i == 0:
-                continue # ignore the header
-            for y, column in enumerate(row):
-                attributes[y]["values"].append(column)
+        with open(filename) as csvfile:    
+            reader = csv.reader(csvfile)
+            for i, row in enumerate(itertools.islice(reader, BaseConfig.API_ATTRIBUTE_VALUE_PREVIEW_LENGTH + 1)):
+                if i == 0:
+                    continue # ignore the header
+                for y, column in enumerate(row):
+                    attributes[y]["values"].append(column)
 
-    statistics = Statistics.query.filter_by(uid = uid, did = did)
+        statistics = Statistics.query.filter_by(uid = uid, did = did)
 
-    return jsonify({ 'dataset': dataset,
-                     'attributes': attributes,
-                     'statistics': [s.to_dict() for s in statistics] })
+        return jsonify({ 'dataset': dataset,
+                        'attributes': attributes,
+                        'statistics': [s.to_dict() for s in statistics] })
+
+    elif request.method == "PUT":
+        data = request.get_json()
+
+        proposedName = data["dataset"]["name"]
+        dataset = Dataset.query.filter_by(uid = uid, did = did).first()
+        if proposedName != dataset.name:
+            # check if another dataset does not have the same name
+            if Dataset.query.filter_by(name = proposedName).first():
+                return jsonify({'result': 'A dataset with specified name already exists.'}), 406
+
+            dataset.name = data["dataset"]["name"]
+            dataset.last_edit = datetime.datetime.now()
+
+        db.session.commit()
+
+        return jsonify({'result': True}), 201
 
 # Returns 5 results (UID, username) from User that match provided query
 @api.route("/user_autocomplete/<string:phrase>/")

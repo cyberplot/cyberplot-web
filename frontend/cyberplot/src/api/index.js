@@ -10,6 +10,10 @@ export function apiDataset(uid, did) {
     return axios.get(`${API_URL}/dataset/${uid}/${did}/`)
 }
 
+export function apiChangeDataset(uid, did, datasetData) {
+    return axios.put(`${API_URL}/dataset/${uid}/${did}/`, datasetData)
+}
+
 export function apiDeleteDataset(uid, did) {
     return axios.post(`${API_URL}/dataset_delete/${uid}/${did}/`)
 }

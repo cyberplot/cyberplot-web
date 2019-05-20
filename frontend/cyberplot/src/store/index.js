@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset, apiDeleteDataset } from '../api'
+import { apiDatasetList, apiDataset, apiDeleteDataset, apiChangeDataset } from '../api'
 import router from '../router'
 
 Vue.use(Vuex)
@@ -43,6 +43,14 @@ const actions = {
             context.dispatch('getDatasets')
         })
         router.push({ path: `/dataset/` })
+        context.commit('closeModals')
+    },
+
+    changeCurrentDataset(context) {
+        apiChangeDataset(this.state.user_uid, this.state.currentDataset.dataset.DID, this.state.currentDataset)
+        .then((response) => {
+            context.dispatch('getDatasets')
+        })
         context.commit('closeModals')
     }
 }

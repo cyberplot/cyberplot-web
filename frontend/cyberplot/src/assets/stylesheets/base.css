@@ -415,3 +415,15 @@ strong {
     background: linear-gradient(to bottom, #64dafa, #1fbbfb 15%, #3765ff 100%);
     color: white;
 }
+
+.errorText {
+    font-size: 0.8em;
+    font-weight: bold;
+    padding-left: 5em;
+    color: red;
+}
+
+.inputError {
+    border-color: red;
+    color: red;
+}
