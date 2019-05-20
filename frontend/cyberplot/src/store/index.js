@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset, apiDeleteDataset, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo } from '../api'
+import { apiDatasetList, apiDataset, apiDeleteDataset, apiDownloadDataset, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo } from '../api'
 import { isValidJwt, EventBus } from '../utils'
 import router from '../router'
 
@@ -72,6 +72,19 @@ const actions = {
             })
         router.push({ path: `/` })
         context.commit('closeModals')
+    },
+
+    downloadCurrentDataset(context) {
+        apiDownloadDataset(this.state.currentDataset.dataset.DID, context.state.jwt.token)
+            .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]))
+                const link = document.createElement('a')
+                link.href = url
+                link.setAttribute('download', 'dataset.csv')
+                document.body.appendChild(link)
+                link.click()
+                link.remove()
+            })
     },
 
     changeCurrentDataset(context) {

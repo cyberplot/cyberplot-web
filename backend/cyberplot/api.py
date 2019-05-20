@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics
 from .config import BaseConfig
 from .utils import isValidCSV, getDatasetData
@@ -234,6 +234,13 @@ def deleteDataset(user, did):
     db.session.commit()
 
     return jsonify({'result': True}), 201
+
+# Provides data file with selected dataset
+@api.route("/dataset_download/<int:did>/")
+@tokenRequired
+def downloadDataset(user, did):
+    path = DatasetVersion.query.filter_by(uid = user.uid, did = did).first().filename
+    return send_file(path, as_attachment = True)
 
 # Get information about user that is logged in
 @api.route("/user_info/")
