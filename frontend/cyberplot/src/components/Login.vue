@@ -1,5 +1,7 @@
 <template>
 <content>
+    <VueTitle title="cyberplot" />
+
     <main :class="{signup_main: signingUp}">
         <form id="login_form">
             <img src="@/assets/images/logo_blue.svg" alt="Cyberplot logo">
@@ -24,8 +26,13 @@
 
 <script>
 import {EventBus} from '../utils';
+import VueTitle from './Helpers/Title.vue'
 
 export default {
+    name: 'Login',
+    components: {
+        VueTitle
+    },
     data() {
         return {
             username: '',

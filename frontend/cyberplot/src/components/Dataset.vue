@@ -1,6 +1,6 @@
 <template>
 <content>
-    <VueTitle :title="currentDataset.dataset.name" v-if="datasetSelected()" />
+    <VueTitle :title="datasetSelected() ? currentDataset.dataset.name : 'cyberplot'" />
 
     <nav id="navigation_main">
         <h1>Cyberplot</h1>
