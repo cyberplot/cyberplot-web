@@ -21,6 +21,7 @@ const state = {
     currentDataset: [],
     selectedAttribute: 0,
     currentUser: '',
+    userKey: '',
     jwt: ''
 }
 
@@ -127,6 +128,7 @@ const mutations = {
 
     setCurrentUser(state, payload) {
         state.currentUser = payload.response.user
+        state.userKey = payload.response.key
     },
 
     selectAttribute(state, attribute) {

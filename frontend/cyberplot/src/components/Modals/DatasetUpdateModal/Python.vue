@@ -18,9 +18,9 @@
         <div class="cli_box">
             import cyberplot<br />
             cyberplot.update(your_array,<br />
-            id = "<strong>346f9f436c0d99fbb937658af47a09f9</strong>")
+            id = "<strong>{{ currentDataset.key }}</strong>")
         </div>
-        <a href="#" id="button_copy" class="button_secondary">Copy dataset identifier</a>
+        <a id="button_copy" class="button_secondary" v-clipboard="currentDataset.key">Copy dataset identifier</a>
     </span>
     <span v-else>
         <p>After installing the package, use the following command in your Python environment to upload a new dataset.</p>
@@ -28,10 +28,10 @@
         <div class="cli_box">
             import cyberplot<br />
             cyberplot.new(your_array,<br />
-            id = "<strong>346f9f436c0d99fbb937658af47a09f9</strong>",<br />
+            id = "<strong>{{ userKey }}</strong>",<br />
             name = "DATASET_NAME")
         </div>
-        <a href="#" id="button_copy" class="button_secondary">Copy user identifier</a>
+        <a id="button_copy" class="button_secondary" v-clipboard="userKey">Copy user identifier</a>
     </span>
     
     <nav>
@@ -54,7 +54,17 @@ export default {
     computed: {
         currentDataset() {
             return this.$store.state.currentDataset
+        },
+
+        userKey() {
+            return this.$store.state.userKey
         }
     }
 }
 </script>
+
+<style>
+#form_update_python .button_secondary {
+    margin-left: 4.1em;
+}
+</style>

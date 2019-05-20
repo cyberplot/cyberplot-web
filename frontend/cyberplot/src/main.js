@@ -6,10 +6,12 @@ import router from './router'
 import store from './store'
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
- 
+import VueClipboards from 'vue-clipboards'
+
 Vue.use(VueMoment, {
     moment,
 })
+Vue.use(VueClipboards)
 
 Vue.config.productionTip = false
 

@@ -67,10 +67,12 @@ def dataset(user, did):
                     attributes[y]["values"].append(column)
 
         statistics = Statistics.query.filter_by(uid = user.uid, did = did)
+        key = DatasetConnector.query.filter_by(uid = user.uid, did = did).first().key
 
         return jsonify({ 'dataset': dataset,
                         'attributes': attributes,
-                        'statistics': [s.to_dict() for s in statistics] })
+                        'statistics': [s.to_dict() for s in statistics],
+                        'key': key })
 
     elif request.method == "PUT":
         datasetChanged = False
@@ -237,7 +239,8 @@ def deleteDataset(user, did):
 @api.route("/user_info/")
 @tokenRequired
 def userInfo(user):
-    return jsonify({'user': user.to_dict()})
+    key = UserConnector.query.filter_by(uid = user.uid).first().key
+    return jsonify({'user': user.to_dict(), 'key': key})
 
 @api.route("/signup/", methods = ("POST",))
 def signup():
