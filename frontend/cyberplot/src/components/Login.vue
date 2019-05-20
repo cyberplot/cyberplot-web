@@ -43,7 +43,7 @@ export default {
             if(!this.signingUp) {
                 this.$store.dispatch('login', { username: this.username,
                                                 password: this.password })
-                    .then(() => this.$router.push('/dataset/'))
+                    .then(() => this.$router.push('/'))
             }
             else {
                 if(this.password != this.passwordConfirmation) {
@@ -54,7 +54,7 @@ export default {
                 this.$store.dispatch('signup', { username: this.username,
                                                  password: this.password,
                                                  email: this.email })
-                    .then(() => this.$router.push('/dataset/'))
+                    .then(() => this.$router.push('/'))
             }
         },
 

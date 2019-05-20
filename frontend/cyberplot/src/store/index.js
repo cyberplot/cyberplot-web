@@ -62,7 +62,7 @@ const actions = {
         .then((response) => {
             context.dispatch('getDatasets')
         })
-        router.push({ path: `/dataset/` })
+        router.push({ path: `/` })
         context.commit('closeModals')
     },
 
