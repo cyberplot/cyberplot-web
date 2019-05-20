@@ -4,27 +4,53 @@ from .config import BaseConfig
 from .utils import isValidCSV, getDatasetData
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets
+from functools import wraps
+import jwt
 
 api = Blueprint("api", __name__)
 
+def tokenRequired(f):
+    @wraps(f)
+    def _verify(*args, **kwargs):
+        authHeaders = request.headers.get("Authorization", "").split()
+
+        if len(authHeaders) != 2:
+            jsonify({'result': 'Authentication required.'}), 401
+
+        try:
+            token = authHeaders[1]
+            data = jwt.decode(token, BaseConfig.SECRET_KEY)
+            user = User.query.filter_by(username = data["sub"]).first()
+            if not user:
+                raise RuntimeError("User not found")
+            return f(user, *args, **kwargs)
+        except jwt.ExpiredSignatureError:
+            jsonify({'result': 'Authentication token expired.'}), 401
+        except jwt.InvalidTokenError:
+            jsonify({'result': 'Authentication required.'}), 401
+
+    return _verify
+
 # Returns metadata on all datasets belonging to user
-@api.route("/dataset_list/<int:uid>/")
-def datasetList(uid):
-    datasets = Dataset.query.filter_by(uid = uid, deleted = False)
+@api.route("/dataset_list/")
+@tokenRequired
+def datasetList(user):
+    datasets = Dataset.query.filter_by(uid = user.uid, deleted = False)
     return jsonify({ 'datasets': [d.to_dict() for d in datasets] })
 
 # GET: Returns metadata on specified dataset along with attributes and their stats
 # PUT: Allows for modification of dataset metadata
-@api.route("/dataset/<int:uid>/<int:did>/", methods = ("GET", "PUT",))
-def dataset(uid, did):
+@api.route("/dataset/<int:did>/", methods = ("GET", "PUT",))
+@tokenRequired
+def dataset(user, did):
     if request.method == "GET":
-        dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first().to_dict()
+        dataset = Dataset.query.filter_by(uid = user.uid, did = did, deleted = False).first().to_dict()
 
         lastVersion = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first().to_dict()
         dataset["itemCount"] = lastVersion["itemCount"]
         filename = lastVersion["filename"]
 
-        attributes_original = Attribute.query.filter_by(uid = uid, did = did)
+        attributes_original = Attribute.query.filter_by(uid = user.uid, did = did)
         attributes = []
 
         for attribute in attributes_original:
@@ -40,7 +66,7 @@ def dataset(uid, did):
                 for y, column in enumerate(row):
                     attributes[y]["values"].append(column)
 
-        statistics = Statistics.query.filter_by(uid = uid, did = did)
+        statistics = Statistics.query.filter_by(uid = user.uid, did = did)
 
         return jsonify({ 'dataset': dataset,
                         'attributes': attributes,
@@ -51,7 +77,7 @@ def dataset(uid, did):
         data = request.get_json()
 
         proposedName = data["dataset"]["name"]
-        dataset = Dataset.query.filter_by(uid = uid, did = did).first()
+        dataset = Dataset.query.filter_by(uid = user.uid, did = did).first()
         if proposedName != dataset.name:
             # check if another dataset does not have the same name
             if Dataset.query.filter_by(name = proposedName).first():
@@ -60,7 +86,7 @@ def dataset(uid, did):
             dataset.name = data["dataset"]["name"]
             datasetChanged = True
 
-        attributes = Attribute.query.filter_by(uid = uid, did = did)
+        attributes = Attribute.query.filter_by(uid = user.uid, did = did)
         for i, attribute in enumerate(attributes):
            if data["attributes"][i]["label"] != attribute.label:
                proposedLabel = data["attributes"][i]["label"]
@@ -79,7 +105,8 @@ def dataset(uid, did):
 
 # Returns 5 results (UID, username) from User that match provided query
 @api.route("/user_autocomplete/<string:phrase>/")
-def userAutocomplete(phrase):
+@tokenRequired
+def userAutocomplete(user, phrase):
     users = User.query.filter(User.username.startswith(phrase)).limit(5).with_entities(User.uid, User.username)
     return jsonify({ 'users': [u for u in users] })
 
@@ -109,7 +136,11 @@ def uploadDataset():
     datasetID = 0
     
     if createDataset:
-        datasetID = Dataset.query.filter_by(uid = userID).order_by(Dataset.did.desc()).first().to_dict()["DID"] + 1
+        lastDataset = Dataset.query.filter_by(uid = userID).order_by(Dataset.did.desc()).first()
+        if not lastDataset:
+            datasetID = 1
+        else:
+            datasetID = lastDataset.to_dict()["DID"] + 1
     else:
         datasetID = connector.to_dict()["DID"]
 
@@ -185,18 +216,59 @@ def uploadDataset():
     return jsonify({'result': True}), 201
 
 # deletes dataset files and all metadata associated with it
-@api.route("/dataset_delete/<int:uid>/<int:did>/", methods = ("POST",))
-def deleteDataset(uid, did):
-    datasetVersions = DatasetVersion.query.filter_by(uid = uid, did = did)
+@api.route("/dataset_delete/<int:did>/", methods = ("POST",))
+@tokenRequired
+def deleteDataset(user, did):
+    datasetVersions = DatasetVersion.query.filter_by(uid = user.uid, did = did)
     for version in datasetVersions:
         os.unlink(version.filename)
 
-    Space.query.filter_by(dataset_uid = uid, did = did).delete()
-    Statistics.query.filter_by(uid = uid, did = did).delete()
-    Attribute.query.filter_by(uid = uid, did = did).delete()
-    DatasetVersion.query.filter_by(uid = uid, did = did).delete()
-    DatasetConnector.query.filter_by(uid = uid, did = did).delete()
-    Dataset.query.filter_by(uid = uid, did = did).delete()
+    Space.query.filter_by(dataset_uid = user.uid, did = did).delete()
+    Statistics.query.filter_by(uid = user.uid, did = did).delete()
+    Attribute.query.filter_by(uid = user.uid, did = did).delete()
+    DatasetVersion.query.filter_by(uid = user.uid, did = did).delete()
+    DatasetConnector.query.filter_by(uid = user.uid, did = did).delete()
+    Dataset.query.filter_by(uid = user.uid, did = did).delete()
     db.session.commit()
 
     return jsonify({'result': True}), 201
+
+@api.route("/signup/", methods = ("POST",))
+def signup():
+    data = request.get_json()
+    user = User(**data)
+    if User.query.filter_by(username = user.username).first():
+        return jsonify({'result': 'Specified username is already taken.'}), 406
+
+    user.account_type = 0
+    db.session.add(user)
+
+    userID = User.query.filter_by(username = user.username).first().uid
+
+    while True:
+        key = secrets.token_hex(nbytes = 16)
+
+        # make sure we generate a unique key
+        if not DatasetConnector.query.filter_by(key = key).first():
+            if not UserConnector.query.filter_by(key = key).first():
+                connector = UserConnector(uid = userID, key = key)
+                db.session.add(connector)
+                break
+
+    db.session.commit()
+    return jsonify({'result': True}), 201
+
+@api.route("/login/", methods = ("POST",))
+def login():
+    data = request.get_json()
+    user = User.authenticate(**data)
+
+    if not user:
+        return jsonify({'result': 'Invalid username or password.'}), 401
+
+    token = jwt.encode({
+        'sub': user.username,
+        'iat': datetime.datetime.utcnow(),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes = 30)},
+        BaseConfig.SECRET_KEY)
+    return jsonify({'token': token.decode('UTF-8')})

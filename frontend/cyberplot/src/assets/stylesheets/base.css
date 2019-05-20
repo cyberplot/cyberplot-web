@@ -306,7 +306,7 @@ strong {
     font-weight: normal;
 }
 
-#overlay [type=text], #overlay [type=password] {
+#overlay [type=text], #overlay [type=password], #overlay [type=email] {
     margin-left: 4.1em;
     width: -moz-available;
     width: -webkit-fill-available;
@@ -389,7 +389,7 @@ strong {
     right: 12.5em;
 }
 
-[type=text], [type=password] {
+[type=text], [type=password], [type=email] {
     display: block;
     background-color: white;
     border: none;
@@ -419,7 +419,6 @@ strong {
 .errorText {
     font-size: 0.8em;
     font-weight: bold;
-    padding-left: 5em;
     color: red;
 }
 

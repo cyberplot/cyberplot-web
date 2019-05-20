@@ -2,22 +2,30 @@ import axios from 'axios'
 
 const API_URL = 'http://127.0.0.1:5000/api'
 
-export function apiDatasetList(uid) {
-    return axios.get(`${API_URL}/dataset_list/${uid}/`)
+export function apiLogin(userData) {
+    return axios.post(`${API_URL}/login/`, userData)
 }
 
-export function apiDataset(uid, did) {
-    return axios.get(`${API_URL}/dataset/${uid}/${did}/`)
+export function apiSignup(userData) {
+    return axios.post(`${API_URL}/signup/`, userData)
 }
 
-export function apiChangeDataset(uid, did, datasetData) {
-    return axios.put(`${API_URL}/dataset/${uid}/${did}/`, datasetData)
+export function apiDatasetList(uid, jwt) {
+    return axios.get(`${API_URL}/dataset_list/`, {headers: {Authorization: `Bearer: ${jwt}`}})
 }
 
-export function apiDeleteDataset(uid, did) {
-    return axios.post(`${API_URL}/dataset_delete/${uid}/${did}/`)
+export function apiDataset(uid, did, jwt) {
+    return axios.get(`${API_URL}/dataset/${did}/`, {headers: {Authorization: `Bearer: ${jwt}`}})
 }
 
-export function apiUserAutocomplete(phrase) {
-    return axios.get(`${API_URL}/user_autocomplete/${phrase}/`)
+export function apiChangeDataset(uid, did, datasetData, jwt) {
+    return axios.put(`${API_URL}/dataset/${did}/`, datasetData, {headers: {Authorization: `Bearer: ${jwt}`}})
+}
+
+export function apiDeleteDataset(uid, did, jwt) {
+    return axios.post(`${API_URL}/dataset_delete/${did}/`, {headers: {Authorization: `Bearer: ${jwt}`}})
+}
+
+export function apiUserAutocomplete(phrase, jwt) {
+    return axios.get(`${API_URL}/user_autocomplete/${phrase}/`, {headers: {Authorization: `Bearer: ${jwt}`}})
 }

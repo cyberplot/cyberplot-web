@@ -55,4 +55,8 @@ export default {
     padding-left: 0.5em;
     padding-right: 0.5em;
 }
+
+#overlay .errorText {
+    padding-left: 5em;
+}
 </style>
