@@ -3,8 +3,9 @@
     <header><img src="@/assets/images/icon_rename_blue.svg"> Rename attribute</header>
     <p>Please enter a new name for <strong>{{ attributeLabel }}</strong>.</p>
 
-    <input type="text" ref="labelInput" name="attribute_name" :placeholder="attributeLabel" v-model="inputtedLabel" @keyup.enter="renameAttribute">
-    <a href="#" id="button_rename" class="button_primary">Rename attribute</a>
+    <input :class="{inputError: labelAlreadyUsed}" type="text" ref="labelInput" name="attribute_name" :placeholder="attributeLabel" v-model="inputtedLabel" @keyup.enter="renameAttribute" @keyup="checkIfLabelAvailable">
+    <span class="errorText" v-if="labelAlreadyUsed">Label already used.</span>
+    <a @click="renameAttribute" id="button_rename" class="button_primary">Rename attribute</a>
 </form>
 </template>
 
@@ -13,12 +14,27 @@ export default {
     name: 'AttributeRenameModal',
     data() {
         return {
-            inputtedLabel: ''
+            inputtedLabel: '',
+            labelAlreadyUsed: false
         }
     },
     methods: {
         renameAttribute: function() {
-            /* #TODO */
+            if(!this.labelAlreadyUsed) {
+                this.currentDataset.attributes[this.selectedAttribute - 1].label = this.inputtedLabel
+                this.currentDataset.dataset.lastEdit = Math.floor(Date.now() / 1000)
+                this.$store.dispatch('changeCurrentDataset')
+            }
+        },
+
+        checkIfLabelAvailable: function() {
+            /* check if current dataset does not already contain attribute with same label */
+            this.labelAlreadyUsed = false
+            this.$store.state.currentDataset.attributes.forEach((attribute) => {
+                if(attribute.label == this.inputtedLabel) {
+                    this.labelAlreadyUsed = true
+                }
+            })
         }
     },
     computed: {
@@ -48,6 +64,7 @@ export default {
         modalOpened: function(val) {
             if(val == false) {
                 this.inputtedLabel = ''
+                this.labelAlreadyUsed = false
             }
             else {
                 this.$nextTick(() => {

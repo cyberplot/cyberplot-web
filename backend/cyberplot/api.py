@@ -47,6 +47,7 @@ def dataset(uid, did):
                         'statistics': [s.to_dict() for s in statistics] })
 
     elif request.method == "PUT":
+        datasetChanged = False
         data = request.get_json()
 
         proposedName = data["dataset"]["name"]
@@ -57,9 +58,22 @@ def dataset(uid, did):
                 return jsonify({'result': 'A dataset with specified name already exists.'}), 406
 
             dataset.name = data["dataset"]["name"]
-            dataset.last_edit = datetime.datetime.now()
+            datasetChanged = True
 
-        db.session.commit()
+        attributes = Attribute.query.filter_by(uid = uid, did = did)
+        for i, attribute in enumerate(attributes):
+           if data["attributes"][i]["label"] != attribute.label:
+               proposedLabel = data["attributes"][i]["label"]
+               # check if dataset does not include an attribute with the same label
+               if Attribute.query.filter_by(label = proposedLabel).first():
+                   return jsonify({'result': 'Dataset already contains an attribute with specified label.'}), 406
+               
+               attribute.label = data["attributes"][i]["label"]
+               datasetChanged = True
+
+        if datasetChanged:
+            dataset.last_edit = datetime.datetime.now()
+            db.session.commit()
 
         return jsonify({'result': True}), 201
 
