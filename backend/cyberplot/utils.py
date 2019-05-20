@@ -44,7 +44,7 @@ def getDatasetData(filename):
     import numpy as np
     dataset = np.genfromtxt(filename, delimiter = ",", skip_header = 1, usemask = True)
     np.warnings.filterwarnings("ignore")
-    data["item_count"] = len(dataset)
+    data["itemCount"] = len(dataset)
 
     median = np.median(dataset, axis = 0)
     mean = np.mean(dataset, axis = 0)

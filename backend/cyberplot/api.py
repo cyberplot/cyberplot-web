@@ -21,7 +21,7 @@ def dataset(uid, did):
         dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first().to_dict()
 
         lastVersion = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first().to_dict()
-        dataset["item_count"] = lastVersion["itemCount"]
+        dataset["itemCount"] = lastVersion["itemCount"]
         filename = lastVersion["filename"]
 
         attributes_original = Attribute.query.filter_by(uid = uid, did = did)
@@ -150,7 +150,7 @@ def uploadDataset():
                                            did = datasetID,
                                            filename = filename,
                                            upload_date = datetime.datetime.now(),
-                                           item_count = datasetData["item_count"])
+                                           item_count = datasetData["itemCount"])
         db.session.add(newDatasetVersion)
 
         for i, attribute in enumerate(datasetData["attributes"]):
