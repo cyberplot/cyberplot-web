@@ -55,7 +55,7 @@ export default {
 
         logout: function() {
             this.$store.state.jwt = ''
-            this.$router.push('/')
+            this.$router.push('/login/')
         }
     },
     computed: {
