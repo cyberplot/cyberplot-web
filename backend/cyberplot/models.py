@@ -20,7 +20,7 @@ class User(db.Model):
 
     @classmethod
     def authenticate(cls, **kwargs):
-        username = kwargs.get("username")
+        username = kwargs.get("username").lower()
         password = kwargs.get("password")
 
         if not username or not password:

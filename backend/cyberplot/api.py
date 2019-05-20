@@ -246,6 +246,7 @@ def userInfo(user):
 def signup():
     data = request.get_json()
     user = User(**data)
+    user.username = user.username.lower()
     if User.query.filter_by(username = user.username).first():
         return jsonify({'result': 'Specified username is already taken.'}), 406
 
