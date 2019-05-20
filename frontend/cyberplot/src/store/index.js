@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset, apiDeleteDataset, apiChangeDataset, apiLogin, apiSignup } from '../api'
+import { apiDatasetList, apiDataset, apiDeleteDataset, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo } from '../api'
 import { isValidJwt, EventBus } from '../utils'
 import router from '../router'
 
@@ -20,7 +20,7 @@ const state = {
     datasets: [],
     currentDataset: [],
     selectedAttribute: 0,
-    user_uid: 1,
+    currentUser: '',
     jwt: ''
 }
 
@@ -44,33 +44,40 @@ const actions = {
     },
 
     getDatasets(context) {
-        return apiDatasetList(this.state.user_uid, context.state.jwt.token)
+        return apiDatasetList(context.state.jwt.token)
             .then((response) => {
                 context.commit('setDatasets', { response: response.data })
             })
     },
 
     getCurrentDataset(context, { dataset_did }) {
-        return apiDataset(this.state.user_uid, dataset_did, context.state.jwt.token)
+        return apiDataset(dataset_did, context.state.jwt.token)
             .then((response) => {
                 context.commit('setCurrentDataset', { response: response.data })
             })
     },
+    
+    getUserInformation(context) {
+        return apiGetUserInfo(context.state.jwt.token)
+            .then((response) => {
+                context.commit('setCurrentUser', { response: response.data })
+            })
+    },
 
     deleteCurrentDataset(context) {
-        apiDeleteDataset(this.state.user_uid, this.state.currentDataset.dataset.DID, context.state.jwt.token)
-        .then((response) => {
-            context.dispatch('getDatasets')
-        })
+        apiDeleteDataset(this.state.currentDataset.dataset.DID, context.state.jwt.token)
+            .then((response) => {
+                context.dispatch('getDatasets')
+            })
         router.push({ path: `/` })
         context.commit('closeModals')
     },
 
     changeCurrentDataset(context) {
-        apiChangeDataset(this.state.user_uid, this.state.currentDataset.dataset.DID, this.state.currentDataset, context.state.jwt.token)
-        .then((response) => {
-            context.dispatch('getDatasets')
-        })
+        apiChangeDataset(this.state.currentDataset.dataset.DID, this.state.currentDataset, context.state.jwt.token)
+            .then((response) => {
+                context.dispatch('getDatasets')
+            })
         context.commit('closeModals')
     }
 }
@@ -116,6 +123,10 @@ const mutations = {
     setCurrentDataset(state, payload) {
         state.currentDataset = payload.response
         state.selectedAttribute = 0 /* deselect attribute when changing datasets */
+    },
+
+    setCurrentUser(state, payload) {
+        state.currentUser = payload.response.user
     },
 
     selectAttribute(state, attribute) {

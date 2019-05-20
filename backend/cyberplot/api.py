@@ -233,6 +233,12 @@ def deleteDataset(user, did):
 
     return jsonify({'result': True}), 201
 
+# Get information about user that is logged in
+@api.route("/user_info/")
+@tokenRequired
+def userInfo(user):
+    return jsonify({'user': user.to_dict()})
+
 @api.route("/signup/", methods = ("POST",))
 def signup():
     data = request.get_json()

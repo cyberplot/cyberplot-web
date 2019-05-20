@@ -8,7 +8,7 @@
         <a @click="logout" id="logout_button" class="button_secondary">Log out</a>
         <a @click="toggleNotifications" id="user_label" class="interactive">
             <img src="@/assets/images/icon_user_white_notification.svg" alt="User profile" id="icon_user">
-            {{ this.$parent.user.name }}
+            {{ this.currentUser.username }}
         </a>
     </nav>
     <NotificationCenter />
@@ -41,6 +41,9 @@ export default {
         DatasetOverlay,
         VueTitle
     },
+    beforeMount() {
+        this.$store.dispatch('getUserInformation')
+    },
     methods: {
         datasetSelected: function() {
             return this.$route.name === "Dataset"
@@ -58,6 +61,10 @@ export default {
     computed: {
         currentDataset() {
             return this.$store.state.currentDataset
+        },
+
+        currentUser() {
+            return this.$store.state.currentUser
         }
     }
 }
