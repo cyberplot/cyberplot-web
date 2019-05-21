@@ -86,7 +86,7 @@ export default {
 
 #attribute_statistics td {
     padding: 0.2em;
-    width: 3em;
+    width: 4em;
     text-align: center;
 }
 
@@ -120,9 +120,8 @@ export default {
 
 #attribute_statistics li {
     display: inline-block;
-    width: 8.6em;
+    width: 11em;
     border-radius: 0.3em;
-    border: 1px solid #4b4b4b;
     padding: 0.1em;
     margin-top: 0.5em;
     font-family: 'Libre Franklin Bold';
