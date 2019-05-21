@@ -422,6 +422,12 @@ strong {
     color: red;
 }
 
+.infoText {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #3765ff;
+}
+
 .inputError {
     border-color: red;
     color: red;

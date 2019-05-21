@@ -2,16 +2,18 @@
 <content>
     <VueTitle title="cyberplot" />
 
-    <main :class="{signup_main: signingUp}">
+    <main>
         <form id="login_form">
             <img src="@/assets/images/logo_blue.svg" alt="Cyberplot logo">
-            <input :class="{inputError: loginFailed}" type="text" ref="username" name="username" placeholder="Username" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_user_gray.svg')})`}" v-model="username" @keyup.enter="authenticate">
-            <input :class="{inputError: loginFailed || passwordsDoNotMatch}" type="password" name="password" placeholder="Password" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_password_gray.svg')})`}" v-model="password" @keyup.enter="authenticate">
-            <input v-if="signingUp" :class="{inputError: passwordsDoNotMatch}" type="password" name="password_confirm" placeholder="Confirm password" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_password_gray.svg')})`}" v-model="passwordConfirmation" @keyup.enter="authenticate">
-            <input v-if="signingUp" type="email" name="email" placeholder="E-mail" class="textbox_with_icon" v-model="email" @keyup.enter="authenticate">
+            <input :class="{inputError: loginFailed || signupFailed}" type="text" ref="username" name="username" placeholder="Username" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_user_gray.svg')})`}" v-model="username" @focus="signupFailed = false" @keyup="clearLoginFailed" @keyup.enter="authenticate">
+            <input :class="{inputError: loginFailed || passwordsDoNotMatch}" type="password" name="password" placeholder="Password" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_password_gray.svg')})`}" v-model="password" @keyup="clearLoginFailed" @focus="passwordsDoNotMatch = false" @blur="passwordsMatch" @keyup.enter="authenticate">
+            <input v-if="signingUp" :class="{inputError: passwordsDoNotMatch}" type="password" name="password_confirm" placeholder="Confirm password" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_password_gray.svg')})`}" v-model="passwordConfirmation" @focus="passwordsDoNotMatch = false" @blur="passwordsMatch" @keyup.enter="authenticate">
+            <input v-if="signingUp" :class="{inputError: invalidEmail}" type="email" name="email" placeholder="E-mail" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_email_gray.svg')})`}" v-model="email" @focus="invalidEmail = false" @blur="emailValid" @keyup.enter="authenticate">
             <span class="errorText" v-if="loginFailed">Incorrect username and/or password.</span>
-            <span class="errorText" v-if="usernameTaken">Username is already taken.</span>
+            <span class="errorText" v-if="signupFailed">Username is already taken.</span>
             <span class="errorText" v-if="passwordsDoNotMatch">Passwords do not match.</span>
+            <span class="errorText" v-if="invalidEmail">Invalid e-mail address.</span>
+            <span class="infoText" v-if="accountCreated">Account created. Please log in.</span>
             <a @click="authenticate" id="button_login" class="button_primary">{{ signingUp ? "Sign up" : "Log in" }}</a>
             <a v-if="!signingUp" href="#" id="button_forgot" class="button_secondary">Forgot password?</a>
         </form>
@@ -40,9 +42,11 @@ export default {
             passwordConfirmation: '',
             email: '',
             loginFailed: false,
+            signupFailed: false,
             passwordsDoNotMatch: false,
-            usernameTaken: false,
-            signingUp: false
+            invalidEmail: false,
+            signingUp: false,
+            accountCreated: false
         }
     },
     methods: {
@@ -53,15 +57,13 @@ export default {
                     .then(() => this.$router.push('/'))
             }
             else {
-                if(this.password != this.passwordConfirmation) {
-                    this.passwordsDoNotMatch = true
-                    return
+                if(this.passwordsMatch() && this.emailValid()) {
+                    this.$store.dispatch('signup', { username: this.username,
+                                                     password: this.password,
+                                                     email: this.email })
+                        .then(() => { this.changeContext()
+                                      this.accountCreated = true })
                 }
-
-                this.$store.dispatch('signup', { username: this.username,
-                                                 password: this.password,
-                                                 email: this.email })
-                    .then(() => this.$router.push('/'))
             }
         },
 
@@ -70,23 +72,52 @@ export default {
             this.signingUp = !this.signingUp
             this.username = ''
             this.password = ''
+            this.passwordConfirmation = ''
             this.email = ''
             this.loginFailed = false
+            this.signupFailed = false
             this.passwordsDoNotMatch = false
-            this.usernameTaken = false
+            this.invalidEmail = false
+            this.accountCreated = false
 
             this.$nextTick(() => {
                 this.$refs.username.focus()
             })
+        },
+
+        passwordsMatch: function() {
+            if(this.signingUp) {
+                let match = (this.password === this.passwordConfirmation)
+                this.passwordsDoNotMatch = !match
+                return match
+            }
+        },
+
+        emailValid: function() {
+            let re = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/
+            let valid = re.test(this.email)
+            this.invalidEmail = !valid
+            return valid
+        },
+
+        clearLoginFailed: function() {
+            if(!this.signingUp) {
+                this.loginFailed = false
+            }
         }
     },
     mounted() {
         EventBus.$on('failedAuthentication', (msg) => {
             this.loginFailed = true
         })
+        EventBus.$on('failedRegistering', (msg) => {
+            this.signupFailed = true
+        })
+        this.$refs.username.focus()
     },
     beforeDestroy () {
         EventBus.$off('failedAuthentication')
+        EventBus.$off('failedRegistering')
     }
 }
 </script>
@@ -115,11 +146,7 @@ main {
     margin: 0;
     position: relative;
     width: 22em;
-    height: 25em;
-}
-
-.signup_main {
-    height: 30em;
+    height: auto;
 }
 
 #login_form img {
@@ -150,7 +177,7 @@ p {
     color: white;
 }
 
-.errorText {
+.errorText, .infoText {
     display: block;
     padding-bottom: 1em;
 }

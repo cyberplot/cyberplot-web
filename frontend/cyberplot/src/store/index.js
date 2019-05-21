@@ -38,9 +38,8 @@ const actions = {
     signup(context, userData) {
         context.commit('setUserData', { userData })
         return apiSignup(userData)
-            .then(context.dispatch('login', userData))
             .catch(error => {
-                EventBus.$emit('failedRegistering: ', error)
+                EventBus.$emit('failedRegistering', error)
             })
     },
 

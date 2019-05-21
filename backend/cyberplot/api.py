@@ -6,6 +6,7 @@ import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets
 from functools import wraps
 import jwt
+from email.utils import parseaddr
 
 api = Blueprint("api", __name__)
 
@@ -256,6 +257,9 @@ def signup():
     user.username = user.username.lower()
     if User.query.filter_by(username = user.username).first():
         return jsonify({'result': 'Specified username is already taken.'}), 406
+
+    if not "@" in parseaddr(user.email)[1]:
+        return jsonify({'result': 'E-mail address is not valid.'}), 406
 
     user.account_type = 0
     db.session.add(user)
