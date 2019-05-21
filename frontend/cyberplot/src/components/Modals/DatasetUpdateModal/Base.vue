@@ -18,14 +18,14 @@
         </div>
     </label>
 
-    <label>
+    <!--label>
         <input type="radio" name="source" value="database" v-model="dataSource">
         <div class="button_secondary">
             <img src="@/assets/images/icon_source_database_white.svg" v-if="dataSource == 'database'">
             <img src="@/assets/images/icon_source_database_blue.svg" v-else>
             Remote database
         </div>
-    </label>
+    </label-->
 
     <label>
         <input type="radio" name="source" value="python" v-model="dataSource">
@@ -47,7 +47,6 @@
 
     <nav>
         <a href="#" id="button_next" @click="submitForm"><img src="@/assets/images/button_next.svg" alt="Next"></a>
-        <a href="#" id="button_back"><img src="@/assets/images/button_back.svg" alt="Back"></a>
     </nav>
 </form>
 </template>

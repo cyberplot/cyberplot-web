@@ -3,11 +3,13 @@
     <Base :updating="updating" v-show="selectedMethod == METHODS.DEFAULT" v-on:formSubmit="selectUpdateMethod" />
     <Python :updating="updating" v-show="selectedMethod == METHODS.PYTHON" v-on:backToInitial="returnToInitial" />
     <R :updating="updating" v-show="selectedMethod == METHODS.R" v-on:backToInitial="returnToInitial" />
+    <Local :updating="updating" v-show="selectedMethod == METHODS.LOCAL" v-on:backToInitial="returnToInitial" />
 </div>
 </template>
 
 <script>
 import Base from './DatasetUpdateModal/Base.vue'
+import Local from './DatasetUpdateModal/Local.vue'
 import Python from './DatasetUpdateModal/Python.vue'
 import R from './DatasetUpdateModal/R.vue'
 
@@ -15,6 +17,7 @@ export default {
     name: 'DatasetUpdateModal',
     components: {
         Base,
+        Local,
         Python,
         R
     },
