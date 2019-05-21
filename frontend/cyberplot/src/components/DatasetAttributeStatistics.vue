@@ -4,13 +4,25 @@
         <dt><img src="@/assets/images/icon_statistics_gray.svg"> Statistics</dt>
         <dd>
             <table>
-                <tr><td>{{ currentDataset.statistics[selectedAttribute].minimum.toFixed(1) }}</td><td>{{ currentDataset.statistics[selectedAttribute].Q1.toFixed(1) }}</td><td>{{ currentDataset.statistics[selectedAttribute].median.toFixed(1) }}</td><td>{{ currentDataset.statistics[selectedAttribute].Q3.toFixed(1) }}</td><td>{{ currentDataset.statistics[selectedAttribute].maximum.toFixed(1) }}</td></tr>
+                <tr>
+                    <td>{{ beautify(currentDataset.statistics[selectedAttribute].minimum) }}</td>
+                    <td>{{ beautify(currentDataset.statistics[selectedAttribute].Q1) }}</td>
+                    <td>{{ beautify(currentDataset.statistics[selectedAttribute].median) }}</td>
+                    <td>{{ beautify(currentDataset.statistics[selectedAttribute].Q3) }}</td>
+                    <td>{{ beautify(currentDataset.statistics[selectedAttribute].maximum) }}</td>
+                </tr>
                 <tr><td>min</td><td>1Q</td><td>med</td><td>3Q</td><td>max</td></tr>
             </table>
 
             <ul>
-                <li><img src="@/assets/images/icon_mean_gray.svg" alt="Arithmetic mean"> {{ currentDataset.statistics[selectedAttribute].mean.toFixed(2) }}</li>
-                <li><img src="@/assets/images/icon_standard_deviation_gray.svg" alt="Standard deviation"> {{ currentDataset.statistics[selectedAttribute].sdev.toFixed(2) }}</li>
+                <li>
+                    <img src="@/assets/images/icon_mean_gray.svg" alt="Arithmetic mean">
+                    {{ currentDataset.statistics[selectedAttribute].mean.toFixed(2) }}
+                </li>
+                <li>
+                    <img src="@/assets/images/icon_standard_deviation_gray.svg" alt="Standard deviation">
+                    {{ currentDataset.statistics[selectedAttribute].sdev.toFixed(2) }}
+                </li>
             </ul>
         </dd>
     </dl>
@@ -20,6 +32,22 @@
 <script>
 export default {
     name: 'DatasetAttributeStatistics',
+    methods: {
+        beautify: function(number) {
+            if(number > 1000000) {
+                return '~' + (number / 1000000).toFixed(0) + 'M'
+            }
+            else if(number > 1000) {
+                return '~' + (number / 1000).toFixed(0) + 'k'
+            }
+            else if(number * 10 % 10 == 0) {
+                return number.toFixed(0)
+            }
+            else {
+                return number.toFixed(1)
+            }
+        }
+    },
     computed: {
         currentDataset() {
             return this.$store.state.currentDataset
