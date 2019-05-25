@@ -15,7 +15,7 @@
    viewBox="0 0 7.0492334 6.614921"
    version="1.1"
    id="svg4633"
-   inkscape:version="0.92.4 (unknown)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="icon_close_blue.svg">
   <defs
      id="defs4627">
@@ -59,16 +59,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="31.678384"
-     inkscape:cx="11.451396"
-     inkscape:cy="12.845703"
+     inkscape:zoom="63.356768"
+     inkscape:cx="9.8314595"
+     inkscape:cy="12.463774"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1014"
-     inkscape:window-x="1920"
-     inkscape:window-y="33"
+     inkscape:window-height="1017"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata4630">
@@ -78,7 +78,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -87,20 +87,15 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-25.110161,12.735069)">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.89782095px;line-height:125%;font-family:Riffic;-inkscape-font-specification:Riffic;letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient7911-7-8-9-0-3);fill-opacity:1;stroke:none;stroke-width:0.19744553px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="11.271407"
-       y="-23.964334"
-       id="text2072-7-0-6-8-3-7-96-1-1-2-3-6-7-6-0-7-5"
+    <g
+       aria-label="+"
        transform="rotate(45)"
-       inkscape:export-filename="/home/tomires/g4365-3.png"
-       inkscape:export-xdpi="124.34"
-       inkscape:export-ydpi="124.34"><tspan
-         sodipodi:role="line"
-         id="tspan2070-4-7-4-3-3-8-1-2-1-0-3-7-4-0-1-2-3"
-         x="11.271407"
-         y="-23.964334"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libre Franklin';-inkscape-font-specification:'Libre Franklin Bold';fill:url(#linearGradient7911-7-8-9-0-3);fill-opacity:1;stroke:none;stroke-width:0.19744553px">+</tspan></text>
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.89782095px;line-height:125%;font-family:Riffic;-inkscape-font-specification:Riffic;letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient7911-7-8-9-0-3);fill-opacity:1;stroke:none;stroke-width:0.19744553px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="text2072-7-0-6-8-3-7-96-1-1-2-3-6-7-6-0-7-5">
+      <path
+         d="m 15.386172,-27.3525 q 0.05528,0 0.08688,0.03949 0.03159,0.03159 0.03159,0.08688 v 0.576541 q 0,0.09477 -0.05528,0.134263 -0.04739,0.03949 -0.157956,0.03949 h -1.271549 v 1.366323 q 0,0.05528 -0.03949,0.08688 -0.03159,0.03159 -0.08688,0.03159 h -0.576541 q -0.09477,0 -0.134263,-0.04739 -0.03949,-0.04739 -0.03949,-0.157957 v -1.271549 h -1.326834 q -0.08688,0 -0.126365,-0.03949 -0.03159,-0.03949 -0.03159,-0.118467 v -0.576541 q 0,-0.150059 0.118468,-0.150059 h 1.366323 v -1.318936 q 0,-0.09477 0.03159,-0.126365 0.03949,-0.03949 0.126365,-0.03949 h 0.576541 q 0.142161,0 0.142161,0.118467 v 1.366323 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libre Franklin';-inkscape-font-specification:'Libre Franklin Bold';fill:url(#linearGradient7911-7-8-9-0-3);fill-opacity:1;stroke:none;stroke-width:0.19744553px"
+         id="path822" />
+    </g>
   </g>
 </svg>
