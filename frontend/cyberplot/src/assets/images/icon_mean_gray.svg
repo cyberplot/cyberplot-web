@@ -15,7 +15,7 @@
    viewBox="0 0 7.0492334 6.614921"
    version="1.1"
    id="svg4633"
-   inkscape:version="0.92.4 (unknown)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="icon_mean_gray.svg">
   <defs
      id="defs4627">
@@ -79,16 +79,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="30.536013"
-     inkscape:cy="109.50714"
+     inkscape:zoom="15.839192"
+     inkscape:cx="5.5235646"
+     inkscape:cy="12.163517"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1014"
-     inkscape:window-x="1920"
-     inkscape:window-y="33"
+     inkscape:window-height="1017"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
      inkscape:window-maximized="1"
      showguides="false" />
   <metadata
@@ -99,7 +99,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -108,27 +108,25 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-25.110161,12.735069)">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.83598948px;line-height:125%;font-family:Riffic;-inkscape-font-specification:Riffic;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:none;stroke-width:0.09589973px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="27.525272"
-       y="-8.0024834"
-       id="text819-5-4-1-2-1-4-3-0-7-09-3"
-       inkscape:export-filename="/home/tomires/g4365-3.png"
-       inkscape:export-xdpi="99.025696"
-       inkscape:export-ydpi="99.025696"><tspan
-         sodipodi:role="line"
-         x="27.525272"
-         y="-8.0024834"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libre Franklin';-inkscape-font-specification:'Libre Franklin Bold';fill:#4d4d4d;fill-opacity:1;stroke-width:0.09589973px"
-         id="tspan903-3-1-2-0-8-1-9-54-3-6">x</tspan></text>
-    <path
-       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#4d4d4d;stroke-width:0.37617415px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 26.920347,-10.718399 h 3.428862"
-       id="path5139-60-0"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/tomires/g4365-3.png"
-       inkscape:export-xdpi="99.025696"
-       inkscape:export-ydpi="99.025696" />
+    <g
+       id="g828">
+      <g
+         id="text819-5-4-1-2-1-4-3-0-7-09-3"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.83598948px;line-height:125%;font-family:Riffic;-inkscape-font-specification:Riffic;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:none;stroke-width:0.09589973px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         aria-label="x">
+        <path
+           id="path825"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libre Franklin';-inkscape-font-specification:'Libre Franklin Bold';fill:#4d4d4d;fill-opacity:1;stroke-width:0.09589973px"
+           d="m 29.677262,-8.132907 q 0.04603,0.061376 0.04603,0.092064 0,0.03836 -0.07288,0.03836 h -0.491007 q -0.09206,0 -0.130424,-0.061376 l -0.395107,-0.5562185 q -0.03069,-0.049868 -0.04603,-0.049868 -0.01534,0 -0.04603,0.046032 l -0.402779,0.5600545 q -0.03836,0.061376 -0.126588,0.061376 h -0.314551 q -0.09206,0 -0.09206,-0.053704 0,-0.042196 0.04603,-0.099736 l 0.629102,-0.8093938 q 0.02302,-0.034524 0.02302,-0.053704 0,-0.026852 -0.02685,-0.065212 l -0.62143,-0.8439177 q -0.01534,-0.01918 -0.01534,-0.046032 0,-0.023016 0.01918,-0.042196 0.01918,-0.01918 0.0537,-0.01918 h 0.467991 q 0.04987,0 0.07288,0.01534 0.02685,0.01151 0.04987,0.046032 l 0.356747,0.5025147 q 0.01918,0.030688 0.03452,0.030688 0.01151,0 0.03069,-0.030688 l 0.337567,-0.5025147 q 0.02302,-0.034524 0.04603,-0.046032 0.02685,-0.01534 0.08056,-0.01534 h 0.345239 q 0.06521,0 0.06521,0.03836 0,0.01918 -0.02302,0.049868 l -0.571563,0.7748698 q -0.02302,0.026852 -0.02302,0.053704 0,0.01918 0.02685,0.061376 z" />
+      </g>
+      <path
+         inkscape:export-ydpi="99.025696"
+         inkscape:export-xdpi="99.025696"
+         inkscape:export-filename="/home/tomires/g4365-3.png"
+         inkscape:connector-curvature="0"
+         id="path5139-60-0"
+         d="m 26.920347,-10.718399 h 3.428862"
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#4d4d4d;stroke-width:0.37617415px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
   </g>
 </svg>

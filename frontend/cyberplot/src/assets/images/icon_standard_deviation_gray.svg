@@ -15,7 +15,7 @@
    viewBox="0 0 7.0492334 6.614921"
    version="1.1"
    id="svg4633"
-   inkscape:version="0.92.4 (unknown)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="icon_standard_deviation_gray.svg">
   <defs
      id="defs4627">
@@ -90,15 +90,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="15.839192"
-     inkscape:cx="13.172275"
+     inkscape:cx="3.4179896"
      inkscape:cy="14.963894"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1014"
-     inkscape:window-x="1920"
-     inkscape:window-y="33"
+     inkscape:window-height="1017"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
      inkscape:window-maximized="1"
      showguides="false" />
   <metadata
@@ -118,19 +118,18 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-25.110161,12.735069)">
-    <text
-       xml:space="preserve"
+    <g
+       aria-label="SD"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.00296426px;line-height:125%;font-family:Riffic;-inkscape-font-specification:Riffic;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:none;stroke-width:0.07507411px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="26.506075"
-       y="-8.313509"
-       id="text819-5-4-1-2-1-4-3-0-7-1-6"
-       inkscape:export-filename="/home/tomires/g4365-3.png"
-       inkscape:export-xdpi="99.025696"
-       inkscape:export-ydpi="99.025696"><tspan
-         sodipodi:role="line"
-         x="26.506075"
-         y="-8.313509"
+       id="text819-5-4-1-2-1-4-3-0-7-1-6">
+      <path
+         d="m 27.995545,-10.01619 q -0.07808,-0.08709 -0.180178,-0.135133 -0.0991,-0.05105 -0.261258,-0.05105 -0.18318,0 -0.279275,0.06607 -0.09609,0.06607 -0.09609,0.1741716 0,0.1561542 0.24324,0.2282253 l 0.474468,0.1351334 q 0.267264,0.075074 0.396392,0.2372342 0.13213,0.1621601 0.13213,0.3903853 0,0.2102075 -0.108107,0.3663617 -0.108106,0.1531512 -0.312308,0.2372342 -0.201199,0.084083 -0.474468,0.084083 -0.306303,0 -0.552546,-0.1021008 -0.246243,-0.1051038 -0.360355,-0.2852816 -0.01201,-0.021021 -0.01201,-0.039039 0,-0.024024 0.03003,-0.05105 l 0.231229,-0.1591571 q 0.03003,-0.018018 0.05405,-0.018018 0.02703,0 0.04504,0.024024 0.11111,0.1441422 0.225223,0.2042015 0.114112,0.060059 0.303299,0.060059 0.201199,0 0.315311,-0.063062 0.114113,-0.063062 0.114113,-0.1891868 0,-0.08108 -0.05706,-0.1381363 -0.05706,-0.057056 -0.19219,-0.099098 L 27.22078,-9.2684516 q -0.258255,-0.072071 -0.399394,-0.2402372 -0.141139,-0.1711689 -0.141139,-0.3873824 0,-0.1921898 0.105104,-0.3453408 0.108106,-0.153151 0.303299,-0.240237 0.195193,-0.09009 0.450445,-0.09009 0.252249,0 0.462456,0.08709 0.210208,0.08408 0.321317,0.228225 0.01802,0.02402 0.01802,0.04204 0,0.01802 -0.01802,0.03303 l -0.252249,0.186184 q -0.01802,0.012012 -0.02703,0.012012 -0.01502,0 -0.04805,-0.033033 z"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libre Franklin';-inkscape-font-specification:'Libre Franklin Bold';fill:#4d4d4d;fill-opacity:1;stroke-width:0.07507411px"
-         id="tspan903-3-1-2-0-8-1-9-54-2-2">SD</tspan></text>
+         id="path825" />
+      <path
+         d="m 28.81756,-10.541708 q 0.495489,0 0.669661,0.003 0.594587,0.01802 0.885874,0.3033 0.291288,0.2852815 0.291288,0.7987884 0,0.5285217 -0.3033,0.8258152 -0.303299,0.2972934 -0.888877,0.2972934 h -0.651643 q -0.03604,0 -0.05405,-0.015015 -0.01501,-0.018018 -0.01501,-0.057056 v -2.0960689 q 0,-0.03303 0.01501,-0.04504 0.01502,-0.01501 0.05105,-0.01501 z m 0.48648,0.372367 q -0.02703,0 -0.02703,0.04204 v 1.4023839 q 0,0.024024 0.006,0.033033 0.009,0.00901 0.03303,0.00901 h 0.05706 q 0.378374,0 0.558551,-0.1741719 0.183181,-0.1771749 0.183181,-0.5825751 0,-0.3753705 -0.153151,-0.5405336 -0.153151,-0.1651628 -0.474468,-0.1831808 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Libre Franklin';-inkscape-font-specification:'Libre Franklin Bold';fill:#4d4d4d;fill-opacity:1;stroke-width:0.07507411px"
+         id="path827" />
+    </g>
   </g>
 </svg>
