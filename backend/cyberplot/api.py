@@ -36,7 +36,7 @@ def tokenRequired(f):
 @api.route("/dataset_list/")
 @tokenRequired
 def datasetList(user):
-    datasets = Dataset.query.filter_by(uid = user.uid, deleted = False)
+    datasets = Dataset.query.filter_by(uid = user.uid, deleted = False).order_by(Dataset.last_edit.desc())
     return jsonify({ 'datasets': [d.to_dict() for d in datasets] })
 
 # GET: Returns metadata on specified dataset along with attributes and their stats
