@@ -23,7 +23,7 @@ def isValidCSV(filename):
     # TODO
     return True
 
-def getDatasetData(filename):
+def getDatasetData(filename, skipHeader):
     data = {}
 
     data["attributes"] = []
@@ -34,7 +34,9 @@ def getDatasetData(filename):
 
         for i, row in enumerate(reader):
             if i == 0: # first row contains labels
-                for label in row:
+                for y, label in enumerate(row):
+                    if not skipHeader:
+                        label = "Attribute" + str(y + 1)
                     data["attributes"].append(Attribute(label = label, 
                                                         missing_value_setting = 0,
                                                         type_mask = pow(2, len(attributeTypes)) - 1,
@@ -42,7 +44,7 @@ def getDatasetData(filename):
                 continue
     
     import numpy as np
-    dataset = np.genfromtxt(filename, delimiter = ",", skip_header = 1, usemask = True)
+    dataset = np.genfromtxt(filename, delimiter = ",", skip_header = skipHeader, usemask = True)
     np.warnings.filterwarnings("ignore")
     data["itemCount"] = len(dataset)
 
@@ -54,7 +56,7 @@ def getDatasetData(filename):
     q3 = np.quantile(dataset, .75, axis = 0)
     maximum = np.quantile(dataset, 1, axis = 0)
 
-    datasetStrings = np.genfromtxt(filename, delimiter = ",", skip_header = 1, usemask = True, dtype = str)
+    datasetStrings = np.genfromtxt(filename, delimiter = ",", skip_header = skipHeader, usemask = True, dtype = str)
 
     data["statistics"] = []
     from .models import Statistics

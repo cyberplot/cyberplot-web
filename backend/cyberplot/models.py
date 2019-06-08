@@ -147,6 +147,7 @@ class DatasetVersion(db.Model):
     filename = db.Column(db.String(255), nullable = False)
     upload_date = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     item_count = db.Column(db.Integer, nullable = False)
+    contains_header = db.Column(db.Boolean, nullable = False, default = True)
 
     def to_dict(self):
         return dict(VID = self.vid,
@@ -154,7 +155,8 @@ class DatasetVersion(db.Model):
                     UID = self.uid,
                     filename = self.filename,
                     uploadDate = int(datetime.timestamp(self.upload_date)),
-                    itemCount = self.item_count)
+                    itemCount = self.item_count,
+                    containsHeader = self.contains_header)
 
 class Statistics(db.Model):
     __tablename__ = "statistics"

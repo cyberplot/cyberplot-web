@@ -114,7 +114,7 @@ def userAutocomplete(user, phrase):
     return jsonify({ 'users': [u for u in users] })
 
 # Used to create a new dataset or update an existing one
-@api.route("/upload/", methods = ("POST",))
+@api.route("/dataset_upload/", methods = ("POST",))
 def uploadDataset():
     RequestForm = request.form
     data = RequestForm.to_dict(flat = False)
@@ -170,7 +170,8 @@ def uploadDataset():
             return jsonify({'result': 'Dataset with specified name already exists.'}), 406
 
         # get file data, attributes, item count, statistics
-        datasetData = getDatasetData(filename)
+        containsHeader = metadataDictionary["containsHeader"]
+        datasetData = getDatasetData(filename, containsHeader)
 
         newDataset = Dataset(uid = userID,
                              did = datasetID,
@@ -184,7 +185,8 @@ def uploadDataset():
                                            did = datasetID,
                                            filename = filename,
                                            upload_date = datetime.datetime.now(),
-                                           item_count = datasetData["itemCount"])
+                                           item_count = datasetData["itemCount"],
+                                           contains_header = containsHeader)
         db.session.add(newDatasetVersion)
 
         for i, attribute in enumerate(datasetData["attributes"]):
