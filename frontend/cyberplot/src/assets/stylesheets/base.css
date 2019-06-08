@@ -429,6 +429,6 @@ strong {
 }
 
 .inputError {
-    border-color: red;
-    color: red;
+    background-color: #fee;
+    border-color: #fbb;
 }
