@@ -59,10 +59,14 @@ def dataset(user, did):
             new_attribute["values"] = []
             attributes.append(new_attribute)
 
-        with open(filename) as csvfile:    
+        rowsToGet = BaseConfig.API_ATTRIBUTE_VALUE_PREVIEW_LENGTH
+        if lastVersion["containsHeader"]:
+            rowsToGet = rowsToGet + 1
+
+        with open(filename) as csvfile:
             reader = csv.reader(csvfile)
-            for i, row in enumerate(itertools.islice(reader, BaseConfig.API_ATTRIBUTE_VALUE_PREVIEW_LENGTH + 1)):
-                if i == 0:
+            for i, row in enumerate(itertools.islice(reader, rowsToGet)):
+                if i == 0 and lastVersion["containsHeader"]:
                     continue # ignore the header
                 for y, column in enumerate(row):
                     attributes[y]["values"].append(column)
