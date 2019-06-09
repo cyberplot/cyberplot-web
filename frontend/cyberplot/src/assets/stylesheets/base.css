@@ -407,11 +407,11 @@ strong {
     height: 0;
 }
   
-[type=radio] + div {
+[type=radio] + div, [type=radio] + a {
     cursor: pointer;
 }
   
-[type=radio]:checked + div {
+[type=radio]:checked + div, [type=radio] + a {
     background: linear-gradient(to bottom, #64dafa, #1fbbfb 15%, #3765ff 100%);
     color: white;
 }

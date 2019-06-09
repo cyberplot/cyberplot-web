@@ -3,7 +3,7 @@
     <Base :updating="updating" v-show="selectedMethod == METHODS.DEFAULT" v-on:formSubmit="selectUpdateMethod" />
     <Python :updating="updating" v-show="selectedMethod == METHODS.PYTHON" v-on:backToInitial="returnToInitial" />
     <R :updating="updating" v-show="selectedMethod == METHODS.R" v-on:backToInitial="returnToInitial" />
-    <Local :updating="updating" v-show="selectedMethod == METHODS.LOCAL" v-on:backToInitial="returnToInitial" />
+    <Local :updating="updating" :modalOpened="modalOpened" v-show="selectedMethod == METHODS.LOCAL" v-on:backToInitial="returnToInitial" />
 </div>
 </template>
 

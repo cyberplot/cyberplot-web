@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset, apiDeleteDataset, apiDownloadDataset, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo } from '../api'
+import { apiDatasetList, apiDataset, apiDeleteDataset, apiDownloadDataset, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset } from '../api'
 import { isValidJwt, EventBus } from '../utils'
 import router from '../router'
 
@@ -92,6 +92,17 @@ const actions = {
                 context.dispatch('getDatasets')
             })
         context.commit('closeModals')
+    },
+
+    uploadDataset(context, dataset) {
+        apiUploadDataset(dataset.name, dataset.identifier, dataset.containsHeader, dataset.file, context.state.jwt.token)
+            .then((response) => {
+                context.dispatch('getDatasets')
+                context.commit('closeModals')
+            })
+            .catch(error => {
+                EventBus.$emit('failedUpload', error)
+            })
     }
 }
 
