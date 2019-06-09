@@ -6,7 +6,7 @@
     <input :class="{inputError: inputError}" type="text" ref="nameInput" name="dataset_name" :placeholder="currentDataset.dataset.name" v-model="inputtedName" @keyup.enter="renameDataset" @keyup="checkIfNameAvailable">
     <span class="errorText" v-if="nameAlreadyUsed">Name already used.</span>
     <span class="errorText" v-if="nameEmpty">Name cannot be blank.</span>
-    <a @click="renameDataset" id="button_rename" class="button_primary">Rename dataset</a>
+    <a @click="renameDataset" id="button_rename" :class="[!inputError ? 'button_primary' : 'button_secondary_disabled']">Rename dataset</a>
 </form>
 </template>
 
@@ -76,3 +76,14 @@ export default {
     }
 }
 </script>
+
+<style>
+#button_rename {
+    display: block;
+    margin-left: auto;
+
+    width: intrinsic;
+    width: -moz-max-content;
+    width: -webkit-max-content;
+}
+</style>

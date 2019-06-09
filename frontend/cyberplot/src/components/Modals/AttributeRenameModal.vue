@@ -6,7 +6,7 @@
     <input :class="{inputError: inputError}" type="text" ref="labelInput" name="attribute_name" :placeholder="attributeLabel" v-model="inputtedLabel" @keyup.enter="renameAttribute" @keyup="checkIfLabelAvailable">
     <span class="errorText" v-if="labelAlreadyUsed">Label already used.</span>
     <span class="errorText" v-if="labelEmpty">Label cannot be blank.</span>
-    <a @click="renameAttribute" id="button_rename" class="button_primary">Rename attribute</a>
+    <a @click="renameAttribute" id="button_rename" class="button_primary" :class="[!inputError ? 'button_primary' : 'button_secondary_disabled']">Rename attribute</a>
 </form>
 </template>
 
@@ -89,3 +89,14 @@ export default {
     }
 }
 </script>
+
+<style>
+#button_rename {
+    display: block;
+    margin-left: auto;
+
+    width: intrinsic;
+    width: -moz-max-content;
+    width: -webkit-max-content;
+}
+</style>
