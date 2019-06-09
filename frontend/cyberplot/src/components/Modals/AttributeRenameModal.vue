@@ -3,8 +3,9 @@
     <header><img src="@/assets/images/icon_rename_blue.svg"> Rename attribute</header>
     <p>Please enter a new name for <strong>{{ attributeLabel }}</strong>.</p>
 
-    <input :class="{inputError: labelAlreadyUsed}" type="text" ref="labelInput" name="attribute_name" :placeholder="attributeLabel" v-model="inputtedLabel" @keyup.enter="renameAttribute" @keyup="checkIfLabelAvailable">
+    <input :class="{inputError: inputError}" type="text" ref="labelInput" name="attribute_name" :placeholder="attributeLabel" v-model="inputtedLabel" @keyup.enter="renameAttribute" @keyup="checkIfLabelAvailable">
     <span class="errorText" v-if="labelAlreadyUsed">Label already used.</span>
+    <span class="errorText" v-if="labelEmpty">Label cannot be blank.</span>
     <a @click="renameAttribute" id="button_rename" class="button_primary">Rename attribute</a>
 </form>
 </template>
@@ -15,12 +16,14 @@ export default {
     data() {
         return {
             inputtedLabel: '',
-            labelAlreadyUsed: false
+            labelAlreadyUsed: false,
+            labelEmpty: false
         }
     },
     methods: {
         renameAttribute: function() {
-            if(!this.labelAlreadyUsed) {
+            this.checkIfLabelAvailable()
+            if(!this.inputError) {
                 this.currentDataset.attributes[this.selectedAttribute - 1].label = this.inputtedLabel
                 this.currentDataset.dataset.lastEdit = Math.floor(Date.now() / 1000)
                 this.$store.dispatch('changeCurrentDataset')
@@ -28,6 +31,12 @@ export default {
         },
 
         checkIfLabelAvailable: function() {
+            if(this.inputtedLabel.length == 0) {
+                this.labelEmpty = true
+                return
+            }
+            this.labelEmpty = false
+
             /* check if current dataset does not already contain attribute with same label */
             this.labelAlreadyUsed = false
             this.$store.state.currentDataset.attributes.forEach((attribute) => {
@@ -58,6 +67,10 @@ export default {
                     return attribute.label
                 }
             }
+        },
+
+        inputError() {
+            return this.labelAlreadyUsed || this.labelEmpty
         }
     },
     watch: {
@@ -65,6 +78,7 @@ export default {
             if(val == false) {
                 this.inputtedLabel = ''
                 this.labelAlreadyUsed = false
+                this.labelEmpty = false
             }
             else {
                 this.$nextTick(() => {

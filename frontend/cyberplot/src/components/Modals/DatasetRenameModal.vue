@@ -3,8 +3,9 @@
     <header><img src="@/assets/images/icon_rename_blue.svg"> Rename dataset</header>
     <p>Please enter a new name for <strong>{{ currentDataset.dataset.name }}</strong>.</p>
 
-    <input :class="{inputError: nameAlreadyUsed}" type="text" ref="nameInput" name="dataset_name" :placeholder="currentDataset.dataset.name" v-model="inputtedName" @keyup.enter="renameDataset" @keyup="checkIfNameAvailable">
+    <input :class="{inputError: inputError}" type="text" ref="nameInput" name="dataset_name" :placeholder="currentDataset.dataset.name" v-model="inputtedName" @keyup.enter="renameDataset" @keyup="checkIfNameAvailable">
     <span class="errorText" v-if="nameAlreadyUsed">Name already used.</span>
+    <span class="errorText" v-if="nameEmpty">Name cannot be blank.</span>
     <a @click="renameDataset" id="button_rename" class="button_primary">Rename dataset</a>
 </form>
 </template>
@@ -15,12 +16,14 @@ export default {
     data() {
         return {
             inputtedName: '',
-            nameAlreadyUsed: false
+            nameAlreadyUsed: false,
+            nameEmpty: false
         }
     },
     methods: {
         renameDataset: function() {
-            if(!this.nameAlreadyUsed) {
+            this.checkIfNameAvailable()
+            if(!this.inputError) {
                 this.currentDataset.dataset.name = this.inputtedName
                 this.currentDataset.dataset.lastEdit = Math.floor(Date.now() / 1000)
                 this.$store.dispatch('changeCurrentDataset')
@@ -28,6 +31,13 @@ export default {
         },
 
         checkIfNameAvailable: function() {
+            /* check if name is not blank */
+            if(this.inputtedName.length == 0) {
+                this.nameEmpty = true
+                return
+            }
+            this.nameEmpty = false
+
             /* check if there is not a dataset with the same name */
             this.nameAlreadyUsed = false
             this.$store.state.datasets.forEach((dataset) => {
@@ -44,12 +54,18 @@ export default {
 
         currentDataset() {
             return this.$store.state.currentDataset
+        },
+
+        inputError() {
+            return this.nameAlreadyUsed || this.nameEmpty
         }
     },
     watch: {
         modalOpened: function(val) {
             if(val == false) {
                 this.inputtedName = ''
+                this.nameAlreadyUsed = false
+                this.nameEmpty = false
             }
             else {
                 this.$nextTick(() => {

@@ -93,6 +93,9 @@ def dataset(user, did):
             dataset.name = data["dataset"]["name"]
             datasetChanged = True
 
+        if len(proposedName) == 0:
+            return jsonify({'result': 'Dataset name cannot be blank.'}), 406
+
         attributes = Attribute.query.filter_by(uid = user.uid, did = did)
         for i, attribute in enumerate(attributes):
             if data["attributes"][i]["label"] != attribute.label:
@@ -100,6 +103,9 @@ def dataset(user, did):
                 # check if dataset does not include an attribute with the same label
                 if Attribute.query.filter_by(label = proposedLabel).first():
                     return jsonify({'result': 'Dataset already contains an attribute with specified label.'}), 406
+
+                if len(proposedLabel) == 0:
+                    return jsonify({'result': 'Attribute label cannot be blank.'}), 406
 
                 attribute.label = data["attributes"][i]["label"]
                 datasetChanged = True
