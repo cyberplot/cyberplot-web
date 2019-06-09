@@ -167,7 +167,12 @@ def uploadDataset():
     else:
         datasetID = connector.to_dict()["DID"]
 
-    filename = "datasets/" + str(userID) + "/" + str(datasetID) + "/data.csv"
+
+    versionNumber = 1
+    if not createDataset and Dataset.query.filter_by(uid = userID, did = datasetID).first().versioning_on:
+        versionNumber = DatasetVersion.query.filter_by(uid = userID, did = datasetID).order_by(DatasetVersion.vid.desc()).first().vid + 1
+
+    filename = "datasets/" + str(userID) + "/" + str(datasetID) + "/" + str(versionNumber) + "/data.csv"
 
     # save file
     datasetData = request.files["file"]
@@ -239,15 +244,26 @@ def uploadDataset():
         db.session.commit()
 
     else:
-        #TODO proper versioning
         datasetData = getDatasetData(filename, containsHeader)
         dataset = Dataset.query.filter_by(uid = userID, did = datasetID).first()
         dataset.last_edit = datetime.datetime.now()
-        datasetVersion = DatasetVersion.query.filter_by(uid = userID, did = datasetID).first()
-        datasetVersion.filename = filename
-        datasetVersion.upload_date = datetime.datetime.now()
-        datasetVersion.item_count = datasetData["itemCount"]
-        datasetVersion.containsHeader = containsHeader
+
+        if dataset.versioning_on:
+            newDatasetVersion = DatasetVersion(vid = versionNumber,
+                                               uid = userID,
+                                               did = datasetID,
+                                               filename = filename,
+                                               upload_date = datetime.datetime.now(),
+                                               item_count = datasetData["itemCount"],
+                                               contains_header = containsHeader)
+            db.session.add(newDatasetVersion)
+
+        else:
+            datasetVersion = DatasetVersion.query.filter_by(uid = userID, did = datasetID).first()
+            datasetVersion.filename = filename
+            datasetVersion.upload_date = datetime.datetime.now()
+            datasetVersion.item_count = datasetData["itemCount"]
+            datasetVersion.containsHeader = containsHeader
 
         if Attribute.query.filter_by(uid = userID, did = datasetID).count() != len(datasetData["attributes"]):
             os.unlink(filename)
