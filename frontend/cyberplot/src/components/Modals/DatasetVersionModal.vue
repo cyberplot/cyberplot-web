@@ -21,6 +21,7 @@
                 <img src="@/assets/images/icon_time_gray.svg"> {{ timestampToTime(version.uploadDate) }} <img src="@/assets/images/icon_rows_gray.svg"> {{ version.itemCount }} items
 
                 <span class="actions">
+                    <a @click="downloadVersion(version.vid)" class="interactive button_secondary"><img src="@/assets/images/icon_download_blue.svg" alt="Download version"></a>
                     <a @click="deleteVersion(version.vid)" class="interactive button_secondary"><img src="@/assets/images/icon_delete_blue.svg" alt="Delete version"></a>
                 </span>
             </li>
@@ -52,7 +53,15 @@ export default {
             if(this.nameMatches) {
                 this.currentDataset.dataset.versioningOn = false
                 this.$store.dispatch('changeCurrentDataset')
+
+                /* remove all versions but the last */
+                let lastVersion = this.currentDataset.datasetVersions.shift()
+                this.currentDataset.datasetVersions = [lastVersion]
             }
+        },
+
+        downloadVersion: function() {
+
         },
 
         deleteVersion: function() {

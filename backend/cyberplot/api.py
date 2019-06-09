@@ -46,7 +46,7 @@ def datasetList(user):
 def dataset(user, did):
     if request.method == "GET":
         dataset = Dataset.query.filter_by(uid = user.uid, did = did, deleted = False).first().to_dict()
-        datasetVersions = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc())
+        datasetVersions = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc())
 
         lastVersion = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first().to_dict()
         dataset["itemCount"] = lastVersion["itemCount"]
@@ -115,11 +115,19 @@ def dataset(user, did):
         if data["dataset"]["versioningOn"] != dataset.versioning_on:
             if not dataset.versioning_on:
                 dataset.versioning_on = True
-                datasetChanged = True
+
             else:
+                # remove all versions and associated files except for the last one
+                versions = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc())
+                for i, version in enumerate(versions):
+                    if(i == 0): # do not remove the last version
+                        continue
+                    os.unlink(version.filename)
+                    DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = version.vid).delete()
+
                 dataset.versioning_on = False
-                #TODO remove all previous versions and associated files
-                datasetChanged = True
+            
+            datasetChanged = True
 
         if datasetChanged:
             dataset.last_edit = datetime.datetime.now()
@@ -171,8 +179,11 @@ def uploadDataset():
 
 
     versionNumber = 1
-    if not createDataset and Dataset.query.filter_by(uid = userID, did = datasetID).first().versioning_on:
-        versionNumber = DatasetVersion.query.filter_by(uid = userID, did = datasetID).order_by(DatasetVersion.vid.desc()).first().vid + 1
+    if not createDataset:
+        versionNumber = DatasetVersion.query.filter_by(uid = userID, did = datasetID).order_by(DatasetVersion.vid.desc()).first().vid
+
+        if Dataset.query.filter_by(uid = userID, did = datasetID).first().versioning_on:
+            versionNumber = versionNumber + 1
 
     filename = "datasets/" + str(userID) + "/" + str(datasetID) + "/" + str(versionNumber) + "/data.csv"
 
