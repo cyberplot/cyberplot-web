@@ -8,6 +8,7 @@
         <DatasetUpdateModal />
         <DatasetDeleteModal />
         <DatasetShareModal />
+        <DatasetVersionModal />
         <AttributeRenameModal />
     </dialog>
 </div>
@@ -19,6 +20,7 @@ import DatasetRenameModal from './Modals/DatasetRenameModal.vue'
 import DatasetUpdateModal from './Modals/DatasetUpdateModal.vue'
 import DatasetDeleteModal from './Modals/DatasetDeleteModal.vue'
 import DatasetShareModal from './Modals/DatasetShareModal.vue'
+import DatasetVersionModal from './Modals/DatasetVersionModal.vue'
 import AttributeRenameModal from './Modals/AttributeRenameModal.vue'
 
 export default {
@@ -29,6 +31,7 @@ export default {
         DatasetUpdateModal,
         DatasetDeleteModal,
         DatasetShareModal,
+        DatasetVersionModal,
         AttributeRenameModal
     },
     methods: {

@@ -11,6 +11,7 @@
 
             <ul id="dataset_actions">
                 <a @click="showDatasetUpdateModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_update_blue.svg" alt="Update dataset"></li></a>
+                <a @click="showDatasetVersionModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_version_blue.svg" alt="Version history"></li></a>
                 <a @click="downloadDataset" class="interactive button_secondary"><li><img src="@/assets/images/icon_download_blue.svg" alt="Download dataset"></li></a>
                 <a @click="showDatasetShareModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_share_blue.svg" alt="Share dataset"></li></a>
                 <a @click="showDatasetRenameModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_rename_blue.svg" alt="Rename dataset"></li></a>
@@ -62,6 +63,10 @@ export default {
 
         showDatasetUpdateModal: function() {
             this.$store.commit('openModal', 'datasetUpdate')
+        },
+
+        showDatasetVersionModal: function() {
+            this.$store.commit('openModal', 'datasetVersion')
         },
 
         selectAttribute: function(attribute) {

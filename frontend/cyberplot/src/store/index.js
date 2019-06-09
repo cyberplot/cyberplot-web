@@ -13,6 +13,7 @@ const state = {
         datasetUpdate: false,
         datasetDelete: false,
         datasetShare: false,
+        datasetVersion: false,
         attributeRename: false
     },
     notificationsOpened: false,
