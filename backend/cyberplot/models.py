@@ -48,13 +48,15 @@ class Dataset(db.Model):
     name = db.Column(db.String(100), nullable = False)
     last_edit = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     deleted = db.Column(db.Boolean, nullable = False, default = False)
+    versioning_on = db.Column(db.Boolean, nullable = False, default = False)
 
     def to_dict(self):
         return dict(DID = self.did,
                     UID = self.uid,
                     name = self.name,
                     lastEdit = int(datetime.timestamp(self.last_edit)),
-                    deleted = self.deleted)
+                    deleted = self.deleted,
+                    versioningOn = self.versioning_on)
 
 class Space(db.Model):
     __tablename__ = "spaces"

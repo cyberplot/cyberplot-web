@@ -191,7 +191,8 @@ def uploadDataset():
                              did = datasetID,
                              name = datasetName,
                              last_edit = datetime.datetime.now(),
-                             deleted = False)
+                             deleted = False,
+                             versioning_on = False)
         db.session.add(newDataset)
 
         newDatasetVersion = DatasetVersion(vid = 1,
