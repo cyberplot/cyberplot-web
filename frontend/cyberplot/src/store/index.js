@@ -99,6 +99,7 @@ const actions = {
             .then((response) => {
                 context.dispatch('getDatasets')
                 context.commit('closeModals')
+                EventBus.$emit('successfulUpload')
             })
             .catch(error => {
                 EventBus.$emit('failedUpload', error)

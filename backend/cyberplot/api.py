@@ -133,6 +133,7 @@ def uploadDataset():
 
     createDataset = False
     apiKey = metadataDictionary["identifier"]
+    containsHeader = metadataDictionary["containsHeader"]
     connector = DatasetConnector.query.filter_by(key = apiKey).first()
 
     # if API key isn't associated with an existing dataset, 
@@ -184,7 +185,6 @@ def uploadDataset():
             datasetName = datasetName + " (" + str(appendedNumber) + ")"
 
         # get file data, attributes, item count, statistics
-        containsHeader = metadataDictionary["containsHeader"]
         datasetData = getDatasetData(filename, containsHeader)
 
         newDataset = Dataset(uid = userID,
@@ -229,8 +229,33 @@ def uploadDataset():
         db.session.commit()
 
     else:
-        print("update") #TODO
-        datasetData = getDatasetData(filename)
+        #TODO proper versioning
+        datasetData = getDatasetData(filename, containsHeader)
+        dataset = Dataset.query.filter_by(uid = userID, did = datasetID).first()
+        dataset.last_edit = datetime.datetime.now()
+        datasetVersion = DatasetVersion.query.filter_by(uid = userID, did = datasetID).first()
+        datasetVersion.filename = filename
+        datasetVersion.upload_date = datetime.datetime.now()
+        datasetVersion.item_count = datasetData["itemCount"]
+        datasetVersion.containsHeader = containsHeader
+
+        if Attribute.query.filter_by(uid = userID, did = datasetID).count() != len(datasetData["attributes"]):
+            os.unlink(filename)
+            return jsonify({'result': 'Number of attributes does not match the original dataset.'}), 406
+
+        for i, newAttribute in enumerate(datasetData["attributes"]):
+            attribute = Attribute.query.filter_by(uid = userID, did = datasetID, aid = i + 1).first()
+            if newAttribute.type_mask != attribute.type_mask:
+                os.unlink(filename)
+                return jsonify({'result': 'Attribute types do not match the original dataset.'}), 406
+
+        statistics = Statistics.query.filter_by(uid = userID, did = datasetID).delete()
+        for statistics in datasetData["statistics"]:
+            statistics.uid = userID
+            statistics.did = datasetID
+            db.session.add(statistics)
+
+        db.session.commit()
 
     return jsonify({'result': True}), 201
 

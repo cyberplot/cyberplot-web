@@ -154,6 +154,12 @@ export default {
             this.uploadFailedMessage = msg.response.data.result
             this.step = 0
         })
+
+        EventBus.$on('successfulUpload', (msg) => {
+            if(this.updating) {
+                this.$store.dispatch('getCurrentDataset', { dataset_did: this.currentDataset.dataset.DID })
+            }
+        })
     },
     watch: {
         modalOpened: function(value, oldValue) {
