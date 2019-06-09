@@ -16,12 +16,24 @@
 
     <div v-else>
         <p>Versions for <strong>{{ currentDataset.dataset.name }}</strong></p>
+        <ul id="versions">
+            <li class="version" v-for="version in currentDataset.datasetVersions" :key="version.vid">
+                <img src="@/assets/images/icon_time_gray.svg"> {{ timestampToTime(version.uploadDate) }} <img src="@/assets/images/icon_rows_gray.svg"> {{ version.itemCount }} items
+
+                <span class="actions">
+                    <a @click="deleteVersion(version.vid)" class="interactive button_secondary"><img src="@/assets/images/icon_delete_blue.svg" alt="Delete version"></a>
+                </span>
+            </li>
+        </ul>
+
         <a @click="disableTriggered = true" id="button_disable" class="button_secondary">Disable version history</a>
     </div>
 </form>
 </template>
 
 <script>
+import { prettifyHumanReadableTime } from '../../utils'
+
 export default {
     name: 'DatasetVersionModal',
     data() {
@@ -41,6 +53,15 @@ export default {
                 this.currentDataset.dataset.versioningOn = false
                 this.$store.dispatch('changeCurrentDataset')
             }
+        },
+
+        deleteVersion: function() {
+
+        },
+
+        timestampToTime: function(timestamp) {
+            var humanReadable = this.$moment(timestamp * 1000).tz(this.$moment.tz.guess()).calendar()
+            return prettifyHumanReadableTime(humanReadable)
         }
     },
     computed: {
@@ -83,5 +104,24 @@ export default {
     width: intrinsic;
     width: -moz-max-content;
     width: -webkit-max-content;
+}
+
+#versions {
+    padding: 0;
+    margin-left: 3em;
+    max-height: 13em;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    background-color: #eee;
+    border-radius: 0.3em;
+}
+
+#versions li {
+    padding: 0.5em;
+    list-style: none;
+}
+
+.actions {
+    float: right;
 }
 </style>

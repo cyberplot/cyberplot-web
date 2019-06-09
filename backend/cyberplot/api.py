@@ -46,6 +46,7 @@ def datasetList(user):
 def dataset(user, did):
     if request.method == "GET":
         dataset = Dataset.query.filter_by(uid = user.uid, did = did, deleted = False).first().to_dict()
+        datasetVersions = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc())
 
         lastVersion = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first().to_dict()
         dataset["itemCount"] = lastVersion["itemCount"]
@@ -77,6 +78,7 @@ def dataset(user, did):
         return jsonify({ 'dataset': dataset,
                         'attributes': attributes,
                         'statistics': [s.to_dict() for s in statistics],
+                        'datasetVersions': [v.to_dict() for v in datasetVersions],
                         'key': key })
 
     elif request.method == "PUT":
