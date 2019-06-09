@@ -87,12 +87,15 @@ const actions = {
             })
     },
 
-    changeCurrentDataset(context) {
+    changeCurrentDataset(context, leaveDialogOpen) {
         apiChangeDataset(this.state.currentDataset.dataset.DID, this.state.currentDataset, context.state.jwt.token)
             .then((response) => {
                 context.dispatch('getDatasets')
             })
-        context.commit('closeModals')
+
+        if(leaveDialogOpen != true) {
+            context.commit('closeModals')
+        }
     },
 
     uploadDataset(context, dataset) {
