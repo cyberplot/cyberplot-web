@@ -16,6 +16,7 @@
 
     <div v-else>
         <p>Versions for <strong>{{ currentDataset.dataset.name }}</strong></p>
+        <a @click="disableTriggered = true" id="button_disable" class="button_secondary">Disable version history</a>
     </div>
 </form>
 </template>
@@ -31,11 +32,15 @@ export default {
     },
     methods: {
         enableVersioning: function() {
-            /* #TODO */
+            this.currentDataset.dataset.versioningOn = true
+            this.$store.dispatch('changeCurrentDataset', true)
         },
 
         disableVersioning: function() {
-            /* #TODO */
+            if(this.nameMatches) {
+                this.currentDataset.dataset.versioningOn = false
+                this.$store.dispatch('changeCurrentDataset')
+            }
         }
     },
     computed: {
@@ -55,6 +60,7 @@ export default {
         modalOpened: function(val) {
             if(val == false) {
                 this.disableTriggered = false
+                this.inputtedName = ''
             }
         },
 

@@ -110,6 +110,15 @@ def dataset(user, did):
                 attribute.label = data["attributes"][i]["label"]
                 datasetChanged = True
 
+        if data["dataset"]["versioningOn"] != dataset.versioning_on:
+            if not dataset.versioning_on:
+                dataset.versioning_on = True
+                datasetChanged = True
+            else:
+                dataset.versioning_on = False
+                #TODO remove all previous versions and associated files
+                datasetChanged = True
+
         if datasetChanged:
             dataset.last_edit = datetime.datetime.now()
             db.session.commit()
