@@ -169,9 +169,13 @@ def uploadDataset():
             return jsonify({'result': 'Please provide a dataset name.'}), 406
 
         # do not allow the user to have two datasets with same name
-        if Dataset.query.filter_by(name = metadataDictionary["name"], uid = userID).first():
-            os.unlink(filename)
-            return jsonify({'result': 'Dataset with specified name already exists.'}), 406
+        if Dataset.query.filter_by(name = datasetName, uid = userID).first():
+            appendedNumber = 1
+            # increment number until we find one that is unused
+            while Dataset.query.filter_by(name = datasetName + " (" + str(appendedNumber) + ")").first():
+                appendedNumber = appendedNumber + 1
+            
+            datasetName = datasetName + " (" + str(appendedNumber) + ")"
 
         # get file data, attributes, item count, statistics
         containsHeader = metadataDictionary["containsHeader"]
