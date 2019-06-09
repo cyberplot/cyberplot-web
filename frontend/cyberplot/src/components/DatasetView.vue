@@ -2,19 +2,21 @@
 <section id="content" v-if="currentDataset.dataset">
     <div id="dataset_panel">
         <h2>{{ currentDataset.dataset.name }}</h2>
-        <ul id="dataset_details">
-            <li><img src="@/assets/images/icon_rows_gray.svg"> {{ currentDataset.dataset.itemCount }} items</li>
-            <li><img src="@/assets/images/icon_attribute_gray.svg"> {{ currentDataset.attributes.length }} attributes</li>
-            <li><img src="@/assets/images/icon_time_gray.svg"> Edited {{ lastEdit }}</li>
-        </ul>
+        <div id="dataset_menu">
+            <ul id="dataset_details">
+                <li><img src="@/assets/images/icon_rows_gray.svg"> {{ currentDataset.dataset.itemCount }} items</li>
+                <li><img src="@/assets/images/icon_attribute_gray.svg"> {{ currentDataset.attributes.length }} attributes</li>
+                <li><img src="@/assets/images/icon_time_gray.svg"> Edited {{ lastEdit }}</li>
+            </ul>
 
-        <ul id="dataset_actions">
-            <a @click="showDatasetUpdateModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_update_blue.svg" alt="Update dataset"></li></a>
-            <a @click="downloadDataset" class="interactive button_secondary"><li><img src="@/assets/images/icon_download_blue.svg" alt="Download dataset"></li></a>
-            <a @click="showDatasetShareModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_share_blue.svg" alt="Share dataset"></li></a>
-            <a @click="showDatasetRenameModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_rename_blue.svg" alt="Rename dataset"></li></a>
-            <a @click="showDatasetDeleteModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_delete_blue.svg" alt="Delete dataset"></li></a>
-        </ul>
+            <ul id="dataset_actions">
+                <a @click="showDatasetUpdateModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_update_blue.svg" alt="Update dataset"></li></a>
+                <a @click="downloadDataset" class="interactive button_secondary"><li><img src="@/assets/images/icon_download_blue.svg" alt="Download dataset"></li></a>
+                <a @click="showDatasetShareModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_share_blue.svg" alt="Share dataset"></li></a>
+                <a @click="showDatasetRenameModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_rename_blue.svg" alt="Rename dataset"></li></a>
+                <a @click="showDatasetDeleteModal" class="interactive button_secondary"><li><img src="@/assets/images/icon_delete_blue.svg" alt="Delete dataset"></li></a>
+            </ul>
+        </div>
 
         <ul id="attribute_listing">
             <li @click="selectAttribute(attribute.AID)" v-for="(attribute, index) in currentDataset.attributes" :key="index" class="interactive"><dl>
@@ -115,7 +117,7 @@ dt img {
 }
 
 #dataset_details li {
-    display: inline;
+    display: inline-block;
     margin-right: 2em;
     font-family: 'Libre Franklin Bold';
 }
@@ -207,5 +209,11 @@ dt img {
     font-size: 1.75em;
     margin-right: 0.5em;
     display: inline;
+}
+
+#dataset_menu {
+    background-color: #ddd;
+    padding: 1em;
+    border-radius: 0.3em;
 }
 </style>
