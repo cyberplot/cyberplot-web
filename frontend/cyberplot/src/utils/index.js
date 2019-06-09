@@ -11,3 +11,10 @@ export function isValidJwt(jwt) {
     const now = new Date()
     return now < exp
 }
+
+export function prettifyHumanReadableTime(humanReadable) {
+    if(!humanReadable.startsWith('Today') && !humanReadable.startsWith('Yesterday')) {
+        humanReadable = 'on ' + humanReadable
+    }
+    return humanReadable
+}

@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { prettifyHumanReadableTime } from '../utils'
 import DatasetAttributeDetails from './DatasetAttributeDetails.vue';
 
 export default {
@@ -79,14 +80,9 @@ export default {
     },
     computed: {
         lastEdit() {
-            var timestamp = this.currentDataset.dataset.lastEdit
+            let timestamp = this.currentDataset.dataset.lastEdit
             var humanReadable = this.$moment(timestamp * 1000).tz(this.$moment.tz.guess()).calendar()
-
-            if(!humanReadable.startsWith('Today') && !humanReadable.startsWith('Yesterday')) {
-                humanReadable = 'on ' + humanReadable
-            }
-
-            return humanReadable
+            return prettifyHumanReadableTime(humanReadable)
         },
 
         currentDataset() {
