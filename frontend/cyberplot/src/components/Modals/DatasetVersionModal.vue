@@ -3,7 +3,7 @@
     <header><img src="@/assets/images/icon_version_blue.svg"> Manage dataset versions</header>
     
     <div v-if="!currentDataset.dataset.versioningOn">
-        <p>Versioning enables you to keep multiple copies of a single dataset. With the feature turned on, you will be able to switch between different versions in VR. Would you like to enable version history for <strong>{{ currentDataset.dataset.name }}</strong> ?</p>
+        <p>Versioning enables you to keep multiple copies of a single dataset. With the feature turned on, you will be able to switch between different versions in VR. Would you like to enable version history for <strong>{{ currentDataset.dataset.name }}</strong>?</p>
         <a @click="enableVersioning" id="button_enable" class="button_primary">Enable version history</a>
     </div>
 
@@ -15,14 +15,14 @@
     </div>
 
     <div v-else>
-        <p>Versions for <strong>{{ currentDataset.dataset.name }}</strong></p>
+        <p>The following are versions of <strong>{{ currentDataset.dataset.name }}</strong>.</p>
         <ul id="versions">
-            <li class="version" v-for="version in currentDataset.datasetVersions" :key="version.VID">
+            <li class="version" v-for="(version, v) in currentDataset.datasetVersions" :key="version.VID">
                 <img src="@/assets/images/icon_time_gray.svg"> {{ timestampToTime(version.uploadDate) }} <img src="@/assets/images/icon_rows_gray.svg"> {{ version.itemCount }} items
 
                 <span class="actions">
-                    <a @click="downloadVersion(version.VID)" class="interactive button_secondary"><img src="@/assets/images/icon_download_blue.svg" alt="Download version"></a>
-                    <a @click="deleteVersion(version.VID)" class="interactive button_secondary"><img src="@/assets/images/icon_delete_blue.svg" alt="Delete version"></a>
+                    <a @click="downloadVersion(version.VID)" id="button_download" class="interactive button_secondary"><img src="@/assets/images/icon_download_blue.svg" alt="Download version"></a>
+                    <a v-if="v != 0" @click="deleteVersion(version.VID)" class="interactive button_secondary"><img src="@/assets/images/icon_delete_blue.svg" alt="Delete version"></a>
                 </span>
             </li>
         </ul>
@@ -64,8 +64,8 @@ export default {
             this.$store.dispatch('downloadDatasetVersion', vid)
         },
 
-        deleteVersion: function() {
-
+        deleteVersion: function(vid) {
+            this.$store.dispatch('deleteDatasetVersion', vid)
         },
 
         timestampToTime: function(timestamp) {
@@ -136,5 +136,9 @@ export default {
 
 .actions a {
     margin: 0.25em;
+}
+
+.version:nth-of-type(1) #button_download {
+    margin-right: 5em;
 }
 </style>

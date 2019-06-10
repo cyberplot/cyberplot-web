@@ -26,6 +26,10 @@ export function apiDeleteDataset(did, jwt) {
     return axios.post(`${API_URL}/dataset_delete/${did}/`, null, {headers: {Authorization: `Bearer: ${jwt}`}})
 }
 
+export function apiDeleteDatasetVersion(did, vid, jwt) {
+    return axios.post(`${API_URL}/dataset_version_delete/${did}/${vid}/`, null, {headers: {Authorization: `Bearer: ${jwt}`}})
+}
+
 export function apiDownloadDataset(did, jwt) {
     return axios.get(`${API_URL}/dataset_download/${did}/`, {headers: {Authorization: `Bearer: ${jwt}`}})
 }

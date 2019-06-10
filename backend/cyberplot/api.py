@@ -316,6 +316,17 @@ def deleteDataset(user, did):
 
     return jsonify({'result': True}), 201
 
+# deletes last dataset version nad associated file
+@api.route("/dataset_version_delete/<int:did>/<int:vid>/", methods = ("POST",))
+@tokenRequired
+def deleteDatasetVersion(user, did, vid):
+    version = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).first()
+    os.unlink(version.filename)
+    DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).delete()
+    db.session.commit()
+
+    return jsonify({'result': True}), 201
+
 # Provides data file of last dataset version
 @api.route("/dataset_download/<int:did>/")
 @tokenRequired
