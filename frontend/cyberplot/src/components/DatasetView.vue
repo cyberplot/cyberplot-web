@@ -149,6 +149,9 @@ dt img {
 #attribute_listing {
     list-style: none;
     padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    grid-gap: 1rem;
 }
 
 #attribute_listing li {
@@ -156,11 +159,8 @@ dt img {
     border-radius: 0.3em;
     background-color: #333;
     background: linear-gradient(180deg, #4b4b4b 00%, #333 100%);
-    width: 15em;
     padding: 1em;
     color: white;
-    margin-right: 1em;
-    margin-bottom: 1em;
 }
 
 #attribute_listing li:hover {
@@ -216,5 +216,12 @@ dt img {
     background-color: #ddd;
     padding: 1em;
     border-radius: 0.3em;
+}
+
+@media (max-width: 110em) {
+    #dataset_actions {
+        float: none;
+        line-height: 3em;
+    }
 }
 </style>
