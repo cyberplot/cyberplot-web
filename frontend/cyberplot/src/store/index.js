@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset } from '../api'
+import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset, apiUserAutocomplete } from '../api'
 import { isValidJwt, EventBus, downloadFile } from '../utils'
 import router from '../router'
 
@@ -116,6 +116,13 @@ const actions = {
             })
             .catch(error => {
                 EventBus.$emit('failedUpload', error)
+            })
+    },
+
+    userAutocomplete(context, phrase) {
+        apiUserAutocomplete(phrase, context.state.jwt.token)
+            .then((response) => {
+                EventBus.$emit('autocomplete', response.data.users)
             })
     }
 }
