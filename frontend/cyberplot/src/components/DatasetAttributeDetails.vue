@@ -62,7 +62,29 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+h2 {
+    font-family: 'Libre Franklin Bold';
+    font-size: 2em;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+
+#attribute_panel {
+    flex: 1;
+    background-color: #ddd;
+    padding-top: 2em;
+    padding-left: 7em;
+    padding-right: 7em;
+    display: flex;
+}
+
+#attribute_panel h2 {
+    font-size: 1.75em;
+    margin-right: 0.5em;
+    display: inline;
+}
+
 #attribute_settings {
     flex: auto;
 }

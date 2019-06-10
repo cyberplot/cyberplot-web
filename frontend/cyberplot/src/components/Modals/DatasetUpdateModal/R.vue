@@ -62,7 +62,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #form_update_r .button_secondary {
     margin-left: 4.1em;
 }

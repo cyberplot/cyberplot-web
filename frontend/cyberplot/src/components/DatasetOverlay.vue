@@ -48,6 +48,85 @@ export default {
 </script>
 
 <style>
+#overlay {
+    background: #000000de;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+#overlay dialog {
+    width: 35em;
+    background-color: #f9f9f9;
+    opacity: 1;
+    border-radius: 0.3em;
+    padding: 1em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    margin: 0;
+    position: relative;
+    border: none;
+}
+
+#overlay header {
+    font-size: 1.5em;
+    font-family: 'Libre Franklin Bold';
+    color: #3765ff;
+    background: linear-gradient(to bottom, #64dafa, #1fbbfb 15%, #3765ff 100%);
+    background-clip: border-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#overlay header img {
+    width: 2.5em;
+    vertical-align: middle;
+}
+
+#overlay p {
+    margin-left: 4.1em;
+    margin-top: 0;
+}
+
+#overlay form label img {
+    display: block;
+    width: 5em;
+    margin: auto;
+}
+
+#overlay #button_close {
+    float: right;
+    margin: 0.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+#overlay #button_close img {
+    width: 1.5em;
+}
+
+#overlay nav {
+    display: block;
+    height: 4em;
+}
+
+#overlay nav img {
+    width: 4em;
+}
+
+#overlay #button_next {
+    float: right;
+}
+
+#overlay #button_back {
+    float: left;
+}
+
 #overlay #form_update div {
     width: 9em;
     height: 8em;
@@ -61,5 +140,21 @@ export default {
 
 #overlay .errorText {
     padding-left: 5em;
+}
+
+#overlay [type=text], #overlay [type=password], #overlay [type=email] {
+    margin-left: 4.1em;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+}
+
+#overlay .button_primary {
+    display: block;
+    margin-left: auto;
+
+    width: intrinsic;
+    width: -moz-max-content;
+    width: -webkit-max-content;
 }
 </style>

@@ -92,22 +92,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 h2 {
     font-family: 'Libre Franklin Bold';
     font-size: 2.5em;
     margin: 0;
     margin-bottom: 0.5em;
-}
-
-li img {
-    vertical-align: middle;
-    width: 2em;
-}
-
-dt img {
-    vertical-align: middle;
-    width: 2em;
 }
 
 #dataset_details {
@@ -155,6 +145,10 @@ dt img {
     grid-gap: 1rem;
 }
 
+#attribute_listing dl {
+    margin: 0;
+}
+
 #attribute_listing li {
     display: inline-block;
     border-radius: 0.3em;
@@ -196,21 +190,6 @@ dt img {
 #attribute_listing img {
     float: right;
     width: 3em;
-}
-
-#attribute_panel {
-    flex: 1;
-    background-color: #ddd;
-    padding-top: 2em;
-    padding-left: 7em;
-    padding-right: 7em;
-    display: flex;
-}
-
-#attribute_panel h2 {
-    font-size: 1.75em;
-    margin-right: 0.5em;
-    display: inline;
 }
 
 #dataset_menu {

@@ -49,14 +49,26 @@ h2 {
     font-weight: normal;
 }
 
-#navigation_main {
-    height: 2.5em;
-    padding: 2em;
-    background: linear-gradient(135deg, #14e0f9, #3765ff);
+li img {
+    vertical-align: middle;
+    width: 2em;
 }
 
-#cyberplot_logo {
-    height: 2.5em;
+dt img {
+    vertical-align: middle;
+    width: 2em;
+}
+
+dt {
+    font-family: 'Libre Franklin Bold';
+}
+
+a img {
+    vertical-align: middle;
+}
+
+.selector a {
+    margin-right: 0.5em;
 }
 
 .button_primary {
@@ -115,176 +127,8 @@ h2 {
     background-color: #eee;
 }
 
-#dataset_listing {
-    list-style: none;
-    padding: 1em;
-    margin: 1em;
-    margin-right: 0;
-    margin: 0;
-    padding-right: 0;
-    flex-grow: 1;
-}
-
-#dataset_listing li {
-    border-bottom: 3px solid #eee;
-    padding: 1em;
-    font-family: 'Libre Franklin Bold';
-    color: #888;
-}
-
-#dataset_listing li:hover {
-    background-color: #eee;
-}
-
-#dataset_listing a {
-    text-decoration: none;
-}
-
-#user_label {
-    color: white;
-    padding: 0.5em;
-    text-decoration: none;
-    font-family: 'Libre Franklin Bold';
-    float: right;
-    margin-right: 1em;
-}
-
 .interactive {
     cursor: pointer;
-}
-
-#logout_button {
-    float: right;
-    color: #3765ff;
-}
-
-#dataset_add_button {
-    height: 3em;
-    display: block;
-    margin: 1em;
-    text-align: center;
-    line-height: 3em;
-    position: relative;
-}
-
-#sidebar {
-    width: 40em;
-    display: flex;
-    flex-direction: column;
-    align-content: stretch;
-    background-color: #f9f9f9;
-}
-
-#content {
-    width: 100%;
-    background-color: #ececec;
-    color: #4b4b4b;
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    display: flex;
-    height: 100%;
-    align-items: stretch;
-    align-content: stretch;
-    overflow: hidden;
-}
-
-.content_placeholder {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 15em;
-}
-
-#icon_user {
-    vertical-align: middle;
-}
-
-#dataset_listing .router-link-active li {
-    background-color: #ececec;
-    border-bottom: 5px solid #1fbbfb;
-}
-
-#overlay {
-    background: #000000de;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
-}
-
-#overlay dialog {
-    width: 35em;
-    background-color: #f9f9f9;
-    opacity: 1;
-    border-radius: 0.3em;
-    padding: 1em;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
-    margin: 0;
-    position: relative;
-    border: none;
-}
-
-#overlay header {
-    font-size: 1.5em;
-    font-family: 'Libre Franklin Bold';
-    color: #3765ff;
-    background: linear-gradient(to bottom, #64dafa, #1fbbfb 15%, #3765ff 100%);
-    background-clip: border-box;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-#overlay header img {
-    width: 2.5em;
-    vertical-align: middle;
-}
-
-#overlay p {
-    margin-left: 4.1em;
-    margin-top: 0;
-}
-
-#overlay form label img {
-    display: block;
-    width: 5em;
-    margin: auto;
-}
-
-#overlay #button_close {
-    float: right;
-    margin: 0.5em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-}
-
-#overlay #button_close img {
-    width: 1.5em;
-}
-
-#overlay nav {
-    display: block;
-    height: 4em;
-}
-
-#overlay nav img {
-    width: 4em;
-}
-
-#overlay #button_next {
-    float: right;
-}
-
-#overlay #button_back {
-    float: left;
 }
 
 .cli_box {
@@ -310,26 +154,6 @@ strong {
     font-weight: normal;
 }
 
-#overlay [type=text], #overlay [type=password], #overlay [type=email] {
-    margin-left: 4.1em;
-    width: -moz-available;
-    width: -webkit-fill-available;
-    width: fill-available;
-}
-
-#overlay .button_primary {
-    display: block;
-    margin-left: auto;
-
-    width: intrinsic;
-    width: -moz-max-content;
-    width: -webkit-max-content;
-}
-
-#form_user_settings p:nth-of-type(2) {
-    margin-top: 2em;
-}
-
 .textbox_with_icon {
     background-position: right;
     background-repeat: no-repeat;
@@ -337,60 +161,6 @@ strong {
     background-position-y: 0.25em;
     background-size: 1.75em;
     padding-left: 2.25em !important;
-}
-
-#notifications {
-    position: fixed;
-    right: 0;
-    top: 5.9em;
-    background-color: white;
-    border-radius: 0.3em;
-    margin-right: 2em;
-    padding: 1em;
-    padding-top: 0;
-    box-shadow: 0 0.2em 2em 0.1em #22222233;
-    width: 20em;
-}
-
-#notifications p {
-    margin: 0;
-    margin-bottom: 0.25em;
-    padding-left: 2.75em;
-}
-
-#notifications img {
-    vertical-align: middle;
-    width: 2.5em;
-}
-
-#notifications header {
-    font-family: 'Libre Franklin Bold';
-    color: #3765ff;
-    background: linear-gradient(to bottom, #64dafa, #1fbbfb 15%, #3765ff 100%);
-    background-clip: border-box;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-#notifications a {
-    float: right;
-}
-
-#notifications form {
-    display: inline-block;
-    width: 100%;
-    margin-top: 1em;
-}
-
-#notifications form a:nth-of-type(2) {
-    margin-right: 0.6em;
-}
-
-#notifications #arrow {
-    position: fixed;
-    width: 3em;
-    top: 4.9em;
-    right: 12.5em;
 }
 
 [type=text], [type=password], [type=email] {

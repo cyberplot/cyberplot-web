@@ -24,3 +24,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+#form_user_settings p:nth-of-type(2) {
+    margin-top: 2em;
+}
+</style>

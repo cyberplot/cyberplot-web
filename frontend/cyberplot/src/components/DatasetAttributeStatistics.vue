@@ -72,7 +72,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #attribute_statistics table {
     background-color: #eee;
     border-radius: 0.3em;

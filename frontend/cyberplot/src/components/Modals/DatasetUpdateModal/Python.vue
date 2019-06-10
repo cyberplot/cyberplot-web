@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #form_update_python .button_secondary {
     margin-left: 4.1em;
 }

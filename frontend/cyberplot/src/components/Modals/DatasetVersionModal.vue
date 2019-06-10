@@ -105,7 +105,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #button_disable {
     display: block;
     margin-left: auto;

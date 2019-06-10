@@ -70,9 +70,49 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 content {
     display: contents;
+}
+
+#content {
+    width: 100%;
+    background-color: #ececec;
+    color: #4b4b4b;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    display: flex;
+    height: 100%;
+    align-items: stretch;
+    align-content: stretch;
+    overflow: hidden;
+}
+
+#navigation_main {
+    height: 2.5em;
+    padding: 2em;
+    background: linear-gradient(135deg, #14e0f9, #3765ff);
+}
+
+#cyberplot_logo {
+    height: 2.5em;
+}
+
+#user_label {
+    color: white;
+    padding: 0.5em;
+    text-decoration: none;
+    font-family: 'Libre Franklin Bold';
+    float: right;
+    margin-right: 1em;
+}
+
+#logout_button {
+    float: right;
+    color: #3765ff;
 }
 
 #dataset_placeholder_icon {
@@ -84,17 +124,5 @@ content {
     margin: 0;
     position: relative;
     width: 16em;
-}
-
-dt {
-    font-family: 'Libre Franklin Bold';
-}
-
-a img {
-    vertical-align: middle;
-}
-
-.selector a {
-    margin-right: 0.5em;
 }
 </style>

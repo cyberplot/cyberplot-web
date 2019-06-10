@@ -174,7 +174,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #form_update_local .button_primary {
     margin-left: 0.5em;
     display: inline;
