@@ -64,7 +64,7 @@ export default {
 
 <style>
 #attribute_settings {
-    flex: 2;
+    flex: auto;
 }
 
 #attribute_rename_button {
@@ -74,5 +74,6 @@ export default {
 #attribute_settings dd {
     margin-bottom: 1em;
     margin-top: 0.3em;
+    line-height: 3em;
 }
 </style>

@@ -144,6 +144,7 @@ dt img {
     padding-bottom: 0;
     flex: 2;
     overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 #attribute_listing {
@@ -218,7 +219,7 @@ dt img {
     border-radius: 0.3em;
 }
 
-@media (max-width: 110em) {
+@media (max-width: 115em) {
     #dataset_actions {
         float: none;
         line-height: 3em;

@@ -73,10 +73,6 @@ export default {
 </script>
 
 <style>
-#attribute_statistics {
-    flex: 1;
-}
-
 #attribute_statistics table {
     background-color: #eee;
     border-radius: 0.3em;
@@ -116,6 +112,7 @@ export default {
 #attribute_statistics ul {
     list-style: none;
     padding: 0;
+    display: flex;
 }
 
 #attribute_statistics li {
@@ -125,6 +122,8 @@ export default {
     padding: 0.1em;
     margin-top: 0.5em;
     font-family: 'Libre Franklin Bold';
+    line-height: 3em;
+    flex: 2;
 }
 
 #attribute_statistics li:nth-of-type(1) {
@@ -133,5 +132,11 @@ export default {
 
 #attribute_statistics li:nth-of-type(2) {
     margin-left: 0.1em;
+}
+
+@media (max-width: 90em) {
+    #attribute_statistics {
+        display: none;
+    }
 }
 </style>
