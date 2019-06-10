@@ -316,11 +316,18 @@ def deleteDataset(user, did):
 
     return jsonify({'result': True}), 201
 
-# Provides data file with selected dataset
+# Provides data file of last dataset version
 @api.route("/dataset_download/<int:did>/")
 @tokenRequired
 def downloadDataset(user, did):
-    path = DatasetVersion.query.filter_by(uid = user.uid, did = did).first().filename
+    path = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc()).first().filename
+    return send_file(path, as_attachment = True)
+
+# Provides data file of selected dataset version
+@api.route("/dataset_version_download/<int:did>/<int:vid>/")
+@tokenRequired
+def downloadDatasetVersion(user, did, vid):
+    path = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).first().filename
     return send_file(path, as_attachment = True)
 
 # Get information about user that is logged in

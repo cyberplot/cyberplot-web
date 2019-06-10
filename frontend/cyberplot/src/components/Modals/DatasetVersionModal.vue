@@ -17,12 +17,12 @@
     <div v-else>
         <p>Versions for <strong>{{ currentDataset.dataset.name }}</strong></p>
         <ul id="versions">
-            <li class="version" v-for="version in currentDataset.datasetVersions" :key="version.vid">
+            <li class="version" v-for="version in currentDataset.datasetVersions" :key="version.VID">
                 <img src="@/assets/images/icon_time_gray.svg"> {{ timestampToTime(version.uploadDate) }} <img src="@/assets/images/icon_rows_gray.svg"> {{ version.itemCount }} items
 
                 <span class="actions">
-                    <a @click="downloadVersion(version.vid)" class="interactive button_secondary"><img src="@/assets/images/icon_download_blue.svg" alt="Download version"></a>
-                    <a @click="deleteVersion(version.vid)" class="interactive button_secondary"><img src="@/assets/images/icon_delete_blue.svg" alt="Delete version"></a>
+                    <a @click="downloadVersion(version.VID)" class="interactive button_secondary"><img src="@/assets/images/icon_download_blue.svg" alt="Download version"></a>
+                    <a @click="deleteVersion(version.VID)" class="interactive button_secondary"><img src="@/assets/images/icon_delete_blue.svg" alt="Delete version"></a>
                 </span>
             </li>
         </ul>
@@ -60,8 +60,8 @@ export default {
             }
         },
 
-        downloadVersion: function() {
-
+        downloadVersion: function(vid) {
+            this.$store.dispatch('downloadDatasetVersion', vid)
         },
 
         deleteVersion: function() {
@@ -132,5 +132,9 @@ export default {
 
 .actions {
     float: right;
+}
+
+.actions a {
+    margin: 0.25em;
 }
 </style>

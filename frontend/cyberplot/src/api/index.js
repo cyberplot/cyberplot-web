@@ -30,6 +30,10 @@ export function apiDownloadDataset(did, jwt) {
     return axios.get(`${API_URL}/dataset_download/${did}/`, {headers: {Authorization: `Bearer: ${jwt}`}})
 }
 
+export function apiDownloadDatasetVersion(did, vid, jwt) {
+    return axios.get(`${API_URL}/dataset_version_download/${did}/${vid}/`, {headers: {Authorization: `Bearer: ${jwt}`}})
+}
+
 export function apiUploadDataset(name, identifier, containsHeader, file, jwt) {
     let formData = new FormData()
     formData.append('json', JSON.stringify({json: {name: name, identifier: identifier, containsHeader: containsHeader}}))
