@@ -20,7 +20,7 @@
         </div>
 
         <ul id="attribute_listing">
-            <li @click="selectAttribute(attribute.AID)" v-for="(attribute, index) in currentDataset.attributes" :key="index" class="interactive"><dl>
+            <li @click="selectAttribute(attribute.AID)" v-for="(attribute, index) in currentDataset.attributes" :key="index" class="interactive" :class="{selected_attribute: selectedAttribute === attribute.AID}"><dl>
                 <dt>Name</dt><dd>{{ attribute.label }}</dd>
                 <dt>Type</dt><dd>
                     <img src="@/assets/images/icon_attribute_nominal_white.svg" :alt="attribute.type" v-show="attribute.type === 'nominal'">
@@ -87,6 +87,10 @@ export default {
 
         currentDataset() {
             return this.$store.state.currentDataset
+        },
+
+        selectedAttribute() {
+            return this.$store.state.selectedAttribute
         }
     }
 }
@@ -160,6 +164,14 @@ h2 {
 
 #attribute_listing li:hover {
     background: linear-gradient(180deg, #5c5c5c 0%, #474747 100%);
+}
+
+#attribute_listing li:active {
+    background: linear-gradient(0deg, #666 00%, #222 100%);
+}
+
+.selected_attribute {
+    background: linear-gradient(0deg, #666 00%, #222 100%) !important;
 }
 
 #attribute_listing dt {
