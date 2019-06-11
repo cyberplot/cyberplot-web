@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics
 from .config import BaseConfig
-from .utils import isValidCSV, getDatasetData
+from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets
 from functools import wraps
@@ -111,6 +111,17 @@ def dataset(user, did):
 
                 attribute.label = data["attributes"][i]["label"]
                 datasetChanged = True
+            
+            try:
+                proposedType = typeToInt(attributeTypes[data["attributes"][i]["type"].upper()])
+                if proposedType != attribute.type:
+                    if isFlagOnPosition(attribute.type_mask, proposedType):
+                        attribute.type = proposedType
+                        datasetChanged = True
+                    else:
+                        return jsonify({'result': 'Type is invalid for select attribute.'}), 406
+            except KeyError:
+                return jsonify({'result': 'Invalid attribute type given.'}), 406
 
         if data["dataset"]["versioningOn"] != dataset.versioning_on:
             if not dataset.versioning_on:

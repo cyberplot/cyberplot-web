@@ -6,10 +6,10 @@
         <dl>
             <dt><img src="@/assets/images/icon_data_type_gray.svg"> Data type</dt>
             <dd id="data_type_selector" class="selector">
-                <a href="#" id="data_type_nominal_button" :class="[currentDataset.attributes[selectedAttribute].possibleTypes.nominal ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[currentDataset.attributes[selectedAttribute].possibleTypes.nominal ? require('@/assets/images/label_attribute_nominal_blue.svg') : require('@/assets/images/label_attribute_nominal_white.svg')]" alt="Nominal"></a>
-                <a href="#" id="data_type_numerical_button" :class="[currentDataset.attributes[selectedAttribute].possibleTypes.numerical ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[currentDataset.attributes[selectedAttribute].possibleTypes.numerical ? require('@/assets/images/label_attribute_numerical_blue.svg') : require('@/assets/images/label_attribute_numerical_white.svg')]" alt="Numerical"></a>
-                <a href="#" id="data_type_categorical_button" :class="[currentDataset.attributes[selectedAttribute].possibleTypes.categorical ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[currentDataset.attributes[selectedAttribute].possibleTypes.categorical ? require('@/assets/images/label_attribute_categorical_blue.svg') : require('@/assets/images/label_attribute_categorical_white.svg')]" alt="Categorical"></a>
-                <a href="#" id="data_type_vector_button" :class="[currentDataset.attributes[selectedAttribute].possibleTypes.vector ? 'button_secondary' : 'button_secondary_disabled']"><img :src="[currentDataset.attributes[selectedAttribute].possibleTypes.vector ? require('@/assets/images/label_attribute_vector_blue.svg') : require('@/assets/images/label_attribute_vector_white.svg')]" alt="Vector"></a>
+                <a @click="changeAttributeType('nominal')" id="data_type_nominal_button" :class="nominalSelectorStyle"><img :src="[possibleTypes.nominal && this.type != 'nominal' ? require('@/assets/images/label_attribute_nominal_blue.svg') : require('@/assets/images/label_attribute_nominal_white.svg')]" alt="Nominal"></a>
+                <a @click="changeAttributeType('numerical')" id="data_type_numerical_button" :class="numericalSelectorStyle"><img :src="[possibleTypes.numerical && this.type != 'numerical' ? require('@/assets/images/label_attribute_numerical_blue.svg') : require('@/assets/images/label_attribute_numerical_white.svg')]" alt="Numerical"></a>
+                <a @click="changeAttributeType('categorical')" id="data_type_categorical_button" :class="categoricalSelectorStyle"><img :src="[possibleTypes.categorical && this.type != 'categorical' ? require('@/assets/images/label_attribute_categorical_blue.svg') : require('@/assets/images/label_attribute_categorical_white.svg')]" alt="Categorical"></a>
+                <a @click="changeAttributeType('vector')" id="data_type_vector_button" :class="vectorSelectorStyle"><img :src="[possibleTypes.vector && this.type != 'vector' ? require('@/assets/images/label_attribute_vector_blue.svg') : require('@/assets/images/label_attribute_vector_white.svg')]" alt="Vector"></a>
             </dd>
             <dt><img src="@/assets/images/icon_data_missing_gray.svg"> Missing values</dt>
             <dd id="data_missing_selector" class="selector">
@@ -38,11 +38,26 @@ export default {
     methods: {
         showAttributeRenameModal: function() {
             this.$store.commit('openModal', 'attributeRename')
+        },
+
+        changeAttributeType: function(type) {
+            if(this.possibleTypes[type]) {
+                this.currentDataset.attributes[this.selectedAttribute].type = type
+                this.$store.dispatch('changeCurrentDataset')
+            }
         }
     },
     computed: {
         currentDataset() {
             return this.$store.state.currentDataset
+        },
+
+        possibleTypes() {
+            return this.currentDataset.attributes[this.selectedAttribute].possibleTypes
+        },
+
+        type() {
+            return this.currentDataset.attributes[this.selectedAttribute].type
         },
 
         selectedAttribute() {
@@ -56,6 +71,38 @@ export default {
                 if(attribute.AID == attributeAID) {
                     return index
                 }
+            }
+        },
+
+        nominalSelectorStyle: function() {
+            return {
+                'button_primary': this.type === 'nominal',
+                'button_secondary': this.possibleTypes.nominal && this.type != 'nominal',
+                'button_secondary_disabled': !this.possibleTypes.nominal
+            }
+        },
+
+        numericalSelectorStyle: function() {
+            return {
+                'button_primary': this.type === 'numerical',
+                'button_secondary': this.possibleTypes.numerical && this.type != 'numerical',
+                'button_secondary_disabled': !this.possibleTypes.numerical
+            }
+        },
+
+        categoricalSelectorStyle: function() {
+            return {
+                'button_primary': this.type === 'categorical',
+                'button_secondary': this.possibleTypes.categorical && this.type != 'categorical',
+                'button_secondary_disabled': !this.possibleTypes.categorical
+            }
+        },
+
+        vectorSelectorStyle: function() {
+            return {
+                'button_primary': this.type === 'vector',
+                'button_secondary': this.possibleTypes.vector && this.type != 'vector',
+                'button_secondary_disabled': !this.possibleTypes.vector
             }
         }
     }
