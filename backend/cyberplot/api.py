@@ -150,7 +150,7 @@ def dataset(user, did):
 @api.route("/user_autocomplete/<string:phrase>/")
 @tokenRequired
 def userAutocomplete(user, phrase):
-    users = User.query.filter(User.username.startswith(phrase)).limit(5).with_entities(User.uid, User.username)
+    users = User.query.filter(User.username.startswith(phrase), User.username != user.username).limit(5).with_entities(User.uid, User.username)
     return jsonify({ 'users': [u for u in users] })
 
 # Used to create a new dataset or update an existing one
