@@ -8,7 +8,7 @@ axios.interceptors.response.use(
         return response
     },
     (error) => {
-        if (401 === error.response.status) {
+        if (error.response.status === 401 && error.response.data.result === 'Authentication token expired.') {
             window.location = '/login/'
         }
         else {
