@@ -118,7 +118,6 @@ h2 {
 }
 
 #attribute_panel {
-    flex: 1;
     background-color: #ddd;
     padding-top: 2em;
     padding-left: 7em;
