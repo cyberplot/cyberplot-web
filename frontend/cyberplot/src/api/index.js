@@ -2,6 +2,21 @@ import axios from 'axios'
 
 const API_URL = 'http://127.0.0.1:5000/api'
 
+/* when login token expires, redirect user to login */
+axios.interceptors.response.use(
+    (response) => {
+        return response
+    },
+    (error) => {
+        if (401 === error.response.status) {
+            window.location = '/login/'
+        }
+        else {
+            return Promise.reject(error)
+        }
+    }
+)
+
 export function apiLogin(userData) {
     return axios.post(`${API_URL}/login/`, userData)
 }

@@ -26,9 +26,9 @@ def tokenRequired(f):
                 raise RuntimeError("User not found")
             return f(user, *args, **kwargs)
         except jwt.ExpiredSignatureError:
-            jsonify({'result': 'Authentication token expired.'}), 401
+            return jsonify({'result': 'Authentication token expired.'}), 401
         except jwt.InvalidTokenError:
-            jsonify({'result': 'Authentication required.'}), 401
+            return jsonify({'result': 'Authentication required.'}), 401
 
     return _verify
 
