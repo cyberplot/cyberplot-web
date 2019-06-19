@@ -29,6 +29,7 @@ const state = {
 const actions = {
     login(context, userData) {
         context.commit('setUserData', { userData })
+        context.commit('unsetCurrentDataset')
         return apiLogin(userData)
             .then(response => context.commit('setJwtToken', { jwt: response.data }))
             .catch(error => {
