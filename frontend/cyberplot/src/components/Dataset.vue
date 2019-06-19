@@ -46,7 +46,7 @@ export default {
     },
     methods: {
         datasetSelected: function() {
-            return this.$route.name === "Dataset"
+            return this.currentDataset.length != 0
         },
 
         toggleNotifications: function() {
