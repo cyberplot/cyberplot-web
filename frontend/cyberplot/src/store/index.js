@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset, apiUserAutocomplete } from '../api'
+import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset, apiUserAutocomplete, apiShareDataset } from '../api'
 import { isValidJwt, EventBus, downloadFile } from '../utils'
 import router from '../router'
 
@@ -119,6 +119,16 @@ const actions = {
             })
             .catch(error => {
                 EventBus.$emit('failedUpload', error)
+            })
+    },
+
+    shareCurrentDataset(context, uidReceiver) {
+        apiShareDataset(this.state.currentDataset.dataset.DID, uidReceiver, context.state.jwt.token)
+            .then((response) => {
+                context.commit('closeModals')
+            })
+            .catch(error => {
+                EventBus.$emit('failedShare')
             })
     },
 

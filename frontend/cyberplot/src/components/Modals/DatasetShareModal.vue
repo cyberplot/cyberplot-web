@@ -3,13 +3,16 @@
     <header><img src="@/assets/images/icon_share_blue.svg"> Share a copy of dataset</header>
     <p>Please enter name of the user you want to share <strong>{{ currentDataset.dataset.name }}</strong> with.</p>
 
-    <input type="text" ref="usernameInput" id="usernameInput" name="user_name" placeholder="Enter user name" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_user_gray.svg')})`}" v-model="inputtedUsername" @keyup.enter="confirmSelection" @keydown.down="selectNext" @keydown.up="selectPrevious" @keyup="getUserAutocomplete">
+    <input :class="{inputError: userNotSelected || requestAlreadySent}" type="text" ref="usernameInput" id="usernameInput" name="user_name" placeholder="Enter user name" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_user_gray.svg')})`}" v-model="inputtedUsername" @keyup.enter="confirmSelection" @keydown.down="selectNext" @keydown.up="selectPrevious" @keyup="getUserAutocomplete">
 
     <ul id="autocomplete">
         <li @click="select(u)" v-for="(user, u) in userAutocomplete" :key="user.UID" :class="{highlightedItem: (u === selectedPosition)}"><img src="@/assets/images/icon_user_blue.svg">{{ user.username }}</li>
     </ul>
 
-    <a href="#" id="button_share" class="button_primary">Share dataset</a>
+    <span class="errorText" v-if="userNotSelected">Please type in a valid username.</span>
+    <span class="errorText" v-if="requestAlreadySent">You have already shared the dataset with this user.</span>
+
+    <a @click="shareDataset" id="button_share" class="button_primary">Share dataset</a>
 </form>
 </template>
 
@@ -22,12 +25,30 @@ export default {
         return {
             inputtedUsername: '',
             userAutocomplete: [],
-            selectedPosition: -1
+            selectedPosition: -1,
+            shareInitiated: false,
+            userNotSelected: false,
+            requestAlreadySent: false
         }
     },
     methods: {
         shareDataset: function() {
-            /* #TODO */
+            this.shareInitiated = true
+            if(this.inputtedUsername != '') {
+                this.$store.dispatch('userAutocomplete', this.inputtedUsername)
+            }
+        },
+
+        completeShare: function() {
+            this.shareInitiated = false
+
+            if(this.userAutocomplete.length === 0) {
+                this.userNotSelected = true
+                return
+            }
+
+            this.$store.dispatch('shareCurrentDataset', this.userAutocomplete[0].uid)
+            this.userAutocomplete = []
         },
 
         getUserAutocomplete: function(e) {
@@ -43,6 +64,8 @@ export default {
             }
 
             this.selectedPosition = -1
+            this.userNotSelected = false
+            this.requestAlreadySent = false
         },
 
         selectNext: function(e) {
@@ -87,6 +110,13 @@ export default {
     mounted: function() {
         EventBus.$on('autocomplete', (autocomplete) => {
             this.userAutocomplete = autocomplete
+            if(this.userAutocomplete.length != 0) {
+                this.selectedPosition = 0
+            }
+        })
+
+        EventBus.$on('failedShare', (msg) => {
+            this.requestAlreadySent = true
         })
     },
     watch: {
@@ -95,11 +125,20 @@ export default {
                 this.inputtedUsername = ''
                 this.selectedPosition = -1
                 this.userAutocomplete = []
+                this.shareInitiated = false
+                this.userNotSelected = false
+                this.requestAlreadySent = false
             }
             else {
                 this.$nextTick(() => {
                     this.$refs.usernameInput.focus()
                 })
+            }
+        },
+
+        userAutocomplete: function(val) {
+            if(this.shareInitiated) {
+                this.completeShare()
             }
         }
     }
@@ -140,5 +179,10 @@ export default {
 .highlightedItem {
     background-color: #ddd;
     border-radius: 0 0 0.3em 0.3em;
+}
+
+.errorText, .infoText {
+    display: block;
+    padding-top: 1em;
 }
 </style>

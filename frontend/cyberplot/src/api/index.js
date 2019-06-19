@@ -61,6 +61,10 @@ export function apiUploadDataset(name, identifier, containsHeader, file, jwt) {
                                                             'Content-Type': 'multipart/form-data'}})
 }
 
+export function apiShareDataset(did, uidReceiver, jwt) {
+    return axios.post(`${API_URL}/dataset_share/${did}/${uidReceiver}/`, null, {headers: {Authorization: `Bearer: ${jwt}`}})
+}
+
 export function apiUserAutocomplete(phrase, jwt) {
     return axios.get(`${API_URL}/user_autocomplete/${phrase}/`, {headers: {Authorization: `Bearer: ${jwt}`}})
 }
