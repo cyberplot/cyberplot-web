@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, send_file
-from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics
+from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest
 from .config import BaseConfig
 from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes
 import simplejson as json
@@ -322,6 +322,7 @@ def deleteDataset(user, did):
     Attribute.query.filter_by(uid = user.uid, did = did).delete()
     DatasetVersion.query.filter_by(uid = user.uid, did = did).delete()
     DatasetConnector.query.filter_by(uid = user.uid, did = did).delete()
+    ShareRequest.query.filter_by(uid_sender = user.uid, did = did).delete()
     Dataset.query.filter_by(uid = user.uid, did = did).delete()
     db.session.commit()
 
@@ -351,6 +352,31 @@ def downloadDataset(user, did):
 def downloadDatasetVersion(user, did, vid):
     path = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).first().filename
     return send_file(path, as_attachment = True)
+
+# Creates a share request to selected user
+@api.route("/dataset_share/<int:did>/<int:uidReceiver>/", methods = ("POST",))
+@tokenRequired
+def shareDataset(user, did, uidReceiver):
+    if user.uid == uidReceiver:
+        return jsonify({'result': 'Dataset receiver must be different from sender.'})
+
+    if not Dataset.query.filter_by(did = did, uid = user.uid).first():
+        return jsonify({'result': 'Specified dataset does not exist.'}), 406
+    
+    if not User.query.filter_by(uid = uidReceiver).first():
+        return jsonify({'result': 'Receiving user does not exist.'}), 406
+
+    if ShareRequest.query.filter_by(did = did, uid_sender = user.uid, uid_receiver = uidReceiver).first():
+        return jsonify({'result': 'Specified share request already exists.'}), 406
+
+    newShareRequest = ShareRequest(did = did,
+                                   uid_sender = user.uid,
+                                   uid_receiver = uidReceiver,
+                                   timestamp = datetime.datetime.now())
+    db.session.add(newShareRequest)
+    db.session.commit()
+
+    return jsonify({'result': True}), 201
 
 # Get information about user that is logged in
 @api.route("/user_info/")

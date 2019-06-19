@@ -189,3 +189,21 @@ class Statistics(db.Model):
                     maximum = self.maximum,
                     mean = self.mean,
                     sdev = self.sdev)
+
+class ShareRequest(db.Model):
+    __tablename__ = "share_requests"
+    __table_args__ = (
+        db.UniqueConstraint("did", "uid_sender", "uid_receiver", name = "uc_sharerequests"),
+        db.ForeignKeyConstraint(["did", "uid_sender"],
+                                ["datasets.did", "datasets.uid"]),
+    )
+    did = db.Column(db.Integer, primary_key = True)
+    uid_sender = db.Column(db.Integer, primary_key = True)
+    uid_receiver = db.Column(db.Integer, db.ForeignKey("users.uid"), primary_key = True)
+    timestamp = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+
+    def to_dict(self):
+        return dict(DID = self.did,
+                    UIDsender = self.uid_sender,
+                    UIDreceiver = self.uid_receiver,
+                    timestamp = self.timestamp)
