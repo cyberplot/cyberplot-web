@@ -6,12 +6,13 @@
         <form id="login_form">
             <img src="@/assets/images/logo_blue.svg" alt="Cyberplot logo">
             <input :class="{inputError: loginFailed || signupFailed}" type="text" ref="username" name="username" placeholder="Username" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_user_gray.svg')})`}" v-model="username" @focus="signupFailed = false" @keyup="clearLoginFailed" @keyup.enter="authenticate">
-            <input :class="{inputError: loginFailed || passwordsDoNotMatch}" type="password" name="password" placeholder="Password" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_password_gray.svg')})`}" v-model="password" @keyup="clearLoginFailed" @focus="passwordsDoNotMatch = false" @blur="passwordsMatch" @keyup.enter="authenticate">
-            <input v-if="signingUp" :class="{inputError: passwordsDoNotMatch}" type="password" name="password_confirm" placeholder="Confirm password" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_password_gray.svg')})`}" v-model="passwordConfirmation" @focus="passwordsDoNotMatch = false" @blur="passwordsMatch" @keyup.enter="authenticate">
+            <input :class="{inputError: loginFailed || passwordsDoNotMatch || passwordEmpty}" type="password" name="password" placeholder="Password" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_password_gray.svg')})`}" v-model="password" @keyup="clearLoginFailed" @focus="passwordsDoNotMatch = false; passwordEmpty = false" @blur="passwordsMatch" @keyup.enter="authenticate">
+            <input v-if="signingUp" :class="{inputError: passwordsDoNotMatch || passwordEmpty}" type="password" name="password_confirm" placeholder="Confirm password" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_password_gray.svg')})`}" v-model="passwordConfirmation" @focus="passwordsDoNotMatch = false; passwordEmpty = false" @blur="passwordsMatch" @keyup.enter="authenticate">
             <input v-if="signingUp" :class="{inputError: invalidEmail}" type="email" name="email" placeholder="E-mail" class="textbox_with_icon" :style="{'background-image': `url(${require('@/assets/images/icon_email_gray.svg')})`}" v-model="email" @focus="invalidEmail = false" @blur="emailValid" @keyup.enter="authenticate">
             <span class="errorText" v-if="loginFailed">Incorrect username and/or password.</span>
             <span class="errorText" v-if="signupFailed">Username is already taken.</span>
             <span class="errorText" v-if="passwordsDoNotMatch">Passwords do not match.</span>
+            <span class="errorText" v-if="passwordEmpty">Please enter a password.</span>
             <span class="errorText" v-if="invalidEmail">Invalid e-mail address.</span>
             <span class="infoText" v-if="accountCreated">Account created. Please log in.</span>
             <a @click="authenticate" id="button_login" class="button_primary">{{ signingUp ? "Sign up" : "Log in" }}</a>
@@ -44,6 +45,7 @@ export default {
             loginFailed: false,
             signupFailed: false,
             passwordsDoNotMatch: false,
+            passwordEmpty: false,
             invalidEmail: false,
             signingUp: false,
             accountCreated: false
@@ -57,12 +59,11 @@ export default {
                     .then(() => this.$router.push('/'))
             }
             else {
-                if(this.passwordsMatch() && this.emailValid()) {
+                if(this.passwordNotEmpty() && this.passwordsMatch() && this.emailValid()) {
+                    console.log(this.passwordNotEmpty())
                     this.$store.dispatch('signup', { username: this.username,
                                                      password: this.password,
                                                      email: this.email })
-                        .then(() => { this.changeContext()
-                                      this.accountCreated = true })
                 }
             }
         },
@@ -79,10 +80,17 @@ export default {
             this.passwordsDoNotMatch = false
             this.invalidEmail = false
             this.accountCreated = false
+            this.passwordEmpty = false
 
             this.$nextTick(() => {
                 this.$refs.username.focus()
             })
+        },
+
+        passwordNotEmpty: function() {
+            let empty = (this.password.length === 0)
+            this.passwordEmpty = empty
+            return !empty
         },
 
         passwordsMatch: function() {
@@ -112,6 +120,10 @@ export default {
         })
         EventBus.$on('failedRegistering', (msg) => {
             this.signupFailed = true
+        })
+        EventBus.$on('completeRegistering', () => {
+            this.changeContext()
+            this.accountCreated = true
         })
         this.$refs.username.focus()
     },
