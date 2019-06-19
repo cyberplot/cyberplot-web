@@ -68,9 +68,10 @@ const actions = {
     deleteCurrentDataset(context) {
         apiDeleteDataset(this.state.currentDataset.dataset.DID, context.state.jwt.token)
             .then((response) => {
+                context.commit('unsetCurrentDataset')
                 context.dispatch('getDatasets')
+                router.push({ path: `/` })
             })
-        router.push({ path: `/` })
         context.commit('closeModals')
     },
 
@@ -168,6 +169,10 @@ const mutations = {
     setCurrentDataset(state, payload) {
         state.currentDataset = payload.response
         state.selectedAttribute = 0 /* deselect attribute when changing datasets */
+    },
+
+    unsetCurrentDataset(state) {
+        state.currentDataset = []
     },
 
     setCurrentUser(state, payload) {
