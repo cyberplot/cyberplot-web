@@ -10,7 +10,7 @@ class User(db.Model):
     uid = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(30), unique = True, nullable = False)
     password = db.Column(db.String(255), nullable = False)
-    email = db.Column(db.String(60), unique = True, nullable = False)
+    email = db.Column(db.String(60), nullable = False)
     account_type = db.Column(db.SmallInteger, nullable = False)
 
     def __init__(self, username, email, password):
