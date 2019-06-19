@@ -2,7 +2,14 @@
 <form id="form_update">
     <span v-if="updating">
         <header><img src="@/assets/images/icon_update_blue.svg"> Update dataset</header>
-        <p>Please select data source to update <strong>{{ currentDataset.dataset.name }}</strong>.</p>
+        <p>Please select data source to update <strong>{{ currentDataset.dataset.name }}</strong>.
+            <span v-if="currentDataset.dataset.versioningOn">
+                This action will add a new version to the dataset.
+            </span>
+            <span v-else>
+                Updating will replace existing data. If you wish to retain the current copy of dataset, please enable version history.
+            </span>
+        </p>
     </span>
     <span v-else>
         <header><img src="@/assets/images/icon_dataset_new_blue.svg"> Add new dataset</header>
