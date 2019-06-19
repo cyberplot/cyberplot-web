@@ -1,5 +1,5 @@
 <template>
-<div id="overlay" v-show="overlayOpened">
+<div id="overlay" v-show="overlayOpened" @click.self="closeOverlay">
     <dialog>
         <a @click="closeOverlay" id="button_close" class="button_secondary"><img src="@/assets/images/icon_close_blue.svg" alt="Close dialog"></a>
 
@@ -43,6 +43,14 @@ export default {
         overlayOpened() {
             return this.$store.getters.overlayOpened
         }
+    },
+    mounted() {
+        /* close overlay when user presses escape key */
+        window.addEventListener('keydown', (e) => {
+            if(e.keyCode === 27) {
+                this.closeOverlay()
+            }
+        })
     }
 }
 </script>
