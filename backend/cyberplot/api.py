@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest
 from .config import BaseConfig
-from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes
+from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, getDatasetFilepath
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets
 from functools import wraps
@@ -48,9 +48,9 @@ def dataset(user, did):
         dataset = Dataset.query.filter_by(uid = user.uid, did = did, deleted = False).first().to_dict()
         datasetVersions = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc())
 
-        lastVersion = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first().to_dict()
-        dataset["itemCount"] = lastVersion["itemCount"]
-        filename = lastVersion["filename"]
+        lastVersion = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first()
+        dataset["itemCount"] = lastVersion.to_dict()["itemCount"]
+        filepath = lastVersion.filepath()
 
         attributes_original = Attribute.query.filter_by(uid = user.uid, did = did)
         attributes = []
@@ -61,13 +61,13 @@ def dataset(user, did):
             attributes.append(new_attribute)
 
         rowsToGet = BaseConfig.API_ATTRIBUTE_VALUE_PREVIEW_LENGTH
-        if lastVersion["containsHeader"]:
+        if lastVersion.to_dict()["containsHeader"]:
             rowsToGet = rowsToGet + 1
 
-        with open(filename) as csvfile:
+        with open(filepath) as csvfile:
             reader = csv.reader(csvfile)
             for i, row in enumerate(itertools.islice(reader, rowsToGet)):
-                if i == 0 and lastVersion["containsHeader"]:
+                if i == 0 and lastVersion.to_dict()["containsHeader"]:
                     continue # ignore the header
                 for y, column in enumerate(row):
                     attributes[y]["values"].append(column)
@@ -133,7 +133,7 @@ def dataset(user, did):
                 for i, version in enumerate(versions):
                     if(i == 0): # do not remove the last version
                         continue
-                    os.unlink(version.filename)
+                    os.unlink(version.filepath())
                     DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = version.vid).delete()
 
                 dataset.versioning_on = False
@@ -196,21 +196,21 @@ def uploadDataset():
         if Dataset.query.filter_by(uid = userID, did = datasetID).first().versioning_on:
             versionNumber = versionNumber + 1
 
-    filename = "datasets/" + str(userID) + "/" + str(datasetID) + "/" + str(versionNumber) + "/data.csv"
+    filepath = getDatasetFilepath("data.csv", userID, datasetID, versionNumber)
 
     # save file
     datasetData = request.files["file"]
-    os.makedirs(os.path.dirname(filename), exist_ok = True)
-    datasetData.save(filename)
+    os.makedirs(os.path.dirname(filepath), exist_ok = True)
+    datasetData.save(filepath)
 
-    if not isValidCSV(filename):
-        os.unlink(filename)
+    if not isValidCSV(filepath):
+        os.unlink(filepath)
         return jsonify({'result': 'Provided file is not a valid CSV file.'}), 406
 
     if createDataset:
         datasetName = metadataDictionary["name"]
         if not datasetName:
-            os.unlink(filename)
+            os.unlink(filepath)
             return jsonify({'result': 'Please provide a dataset name.'}), 406
 
         # do not allow the user to have two datasets with same name
@@ -223,7 +223,7 @@ def uploadDataset():
             datasetName = datasetName + " (" + str(appendedNumber) + ")"
 
         # get file data, attributes, item count, statistics
-        datasetData = getDatasetData(filename, containsHeader)
+        datasetData = getDatasetData(filepath, containsHeader)
 
         newDataset = Dataset(uid = userID,
                              did = datasetID,
@@ -236,7 +236,7 @@ def uploadDataset():
         newDatasetVersion = DatasetVersion(vid = 1,
                                            uid = userID,
                                            did = datasetID,
-                                           filename = filename,
+                                           filename = "data.csv",
                                            upload_date = datetime.datetime.now(),
                                            item_count = datasetData["itemCount"],
                                            contains_header = containsHeader)
@@ -268,7 +268,7 @@ def uploadDataset():
         db.session.commit()
 
     else:
-        datasetData = getDatasetData(filename, containsHeader)
+        datasetData = getDatasetData(filepath, containsHeader)
         dataset = Dataset.query.filter_by(uid = userID, did = datasetID).first()
         dataset.last_edit = datetime.datetime.now()
 
@@ -276,7 +276,7 @@ def uploadDataset():
             newDatasetVersion = DatasetVersion(vid = versionNumber,
                                                uid = userID,
                                                did = datasetID,
-                                               filename = filename,
+                                               filename = "data.csv",
                                                upload_date = datetime.datetime.now(),
                                                item_count = datasetData["itemCount"],
                                                contains_header = containsHeader)
@@ -284,19 +284,19 @@ def uploadDataset():
 
         else:
             datasetVersion = DatasetVersion.query.filter_by(uid = userID, did = datasetID).first()
-            datasetVersion.filename = filename
+            datasetVersion.filename = "data.csv"
             datasetVersion.upload_date = datetime.datetime.now()
             datasetVersion.item_count = datasetData["itemCount"]
             datasetVersion.containsHeader = containsHeader
 
         if Attribute.query.filter_by(uid = userID, did = datasetID).count() != len(datasetData["attributes"]):
-            os.unlink(filename)
+            os.unlink(filepath)
             return jsonify({'result': 'Number of attributes does not match the original dataset.'}), 406
 
         for i, newAttribute in enumerate(datasetData["attributes"]):
             attribute = Attribute.query.filter_by(uid = userID, did = datasetID, aid = i + 1).first()
             if newAttribute.type_mask != attribute.type_mask:
-                os.unlink(filename)
+                os.unlink(filepath)
                 return jsonify({'result': 'Attribute types do not match the original dataset.'}), 406
 
         statistics = Statistics.query.filter_by(uid = userID, did = datasetID).delete()
@@ -315,7 +315,7 @@ def uploadDataset():
 def deleteDataset(user, did):
     datasetVersions = DatasetVersion.query.filter_by(uid = user.uid, did = did)
     for version in datasetVersions:
-        os.unlink(version.filename)
+        os.unlink(version.filepath())
 
     Space.query.filter_by(dataset_uid = user.uid, did = did).delete()
     Statistics.query.filter_by(uid = user.uid, did = did).delete()
@@ -333,7 +333,7 @@ def deleteDataset(user, did):
 @tokenRequired
 def deleteDatasetVersion(user, did, vid):
     version = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).first()
-    os.unlink(version.filename)
+    os.unlink(version.filepath())
     DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).delete()
     db.session.commit()
 
@@ -343,14 +343,14 @@ def deleteDatasetVersion(user, did, vid):
 @api.route("/dataset_download/<int:did>/")
 @tokenRequired
 def downloadDataset(user, did):
-    path = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc()).first().filename
+    path = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc()).first().filepath()
     return send_file(path, as_attachment = True)
 
 # Provides data file of selected dataset version
 @api.route("/dataset_version_download/<int:did>/<int:vid>/")
 @tokenRequired
 def downloadDatasetVersion(user, did, vid):
-    path = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).first().filename
+    path = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).first().filepath()
     return send_file(path, as_attachment = True)
 
 # Creates a share request to selected user

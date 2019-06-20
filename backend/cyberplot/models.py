@@ -1,6 +1,6 @@
 from datetime import datetime  
 from flask_sqlalchemy import SQLAlchemy
-from .utils import isFlagOnPosition, intToType, typeToInt, attributeTypes
+from .utils import isFlagOnPosition, intToType, typeToInt, attributeTypes, getDatasetFilepath
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
@@ -159,6 +159,9 @@ class DatasetVersion(db.Model):
                     uploadDate = int(datetime.timestamp(self.upload_date)),
                     itemCount = self.item_count,
                     containsHeader = self.contains_header)
+    
+    def filepath(self):
+        return getDatasetFilepath(self.filename, self.uid, self.did, self.vid)
 
 class Statistics(db.Model):
     __tablename__ = "statistics"
