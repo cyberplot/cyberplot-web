@@ -2,10 +2,12 @@
 <div id="notifications" v-show="notificationsOpened">
     <img id="arrow" src="@/assets/images/popup_arrow.svg">
 
-    <form>
+    <span v-if="shareRequests.length === 0">No notifications.</span>
+
+    <form v-for="(request, r) in shareRequests" :key="r">
         <header><img src="@/assets/images/icon_share_incoming_blue.svg"> Shared dataset</header>
         <p>
-            georgecost shared <strong>Revenue Q3</strong> with you.
+            {{ request.username }} shared <strong>{{ request.datasetName }}</strong> with you.
         </p>
     
         <a href="#" id="button_accept" class="button_primary">Accept</a>
@@ -17,9 +19,16 @@
 <script>
 export default {
     name: 'NotificationCenter',
+    beforeMount() {
+        this.$store.dispatch('getShareRequests')
+    },
     computed: {
         notificationsOpened() {
             return this.$store.state.notificationsOpened
+        },
+
+        shareRequests() {
+            return this.$store.state.shareRequests
         }
     }
 }
@@ -37,6 +46,7 @@ export default {
     padding-top: 0;
     box-shadow: 0 0.2em 2em 0.1em #22222233;
     width: 20em;
+    z-index: 5;
 }
 
 #notifications p {

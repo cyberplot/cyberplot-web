@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset, apiUserAutocomplete, apiShareDataset } from '../api'
+import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset, apiUserAutocomplete, apiShareDataset, apiShareRequests } from '../api'
 import { isValidJwt, EventBus, downloadFile } from '../utils'
 import router from '../router'
 
@@ -17,6 +17,7 @@ const state = {
         attributeRename: false
     },
     notificationsOpened: false,
+    shareRequests: [],
     datasetUpdateUpdating: false, /* are we updating an existing dataset? */
     datasets: [],
     currentDataset: [],
@@ -132,6 +133,13 @@ const actions = {
             })
     },
 
+    getShareRequests(context) {
+        return apiShareRequests(context.state.jwt.token)
+            .then((response) => {
+                context.commit('setShareRequests', { response: response.data })
+            })
+    },
+
     userAutocomplete(context, phrase) {
         apiUserAutocomplete(phrase, context.state.jwt.token)
             .then((response) => {
@@ -190,6 +198,10 @@ const mutations = {
     setCurrentUser(state, payload) {
         state.currentUser = payload.response.user
         state.userKey = payload.response.key
+    },
+
+    setShareRequests(state, payload) {
+        state.shareRequests = payload.response.requests
     },
 
     selectAttribute(state, attribute) {
