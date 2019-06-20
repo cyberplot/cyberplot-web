@@ -378,6 +378,22 @@ def shareDataset(user, did, uidReceiver):
 
     return jsonify({'result': True}), 201
 
+# Gets all pending share requests for user
+@api.route("/share_requests/")
+@tokenRequired
+def shareRequests(user):
+    requestsOriginal = ShareRequest.query.filter_by(uid_receiver = user.uid).order_by(ShareRequest.timestamp.desc())
+
+    requests = []
+
+    for request in requestsOriginal:
+        newRequest = request.to_dict()
+        newRequest["username"] = User.query.filter_by(uid = newRequest["UIDsender"]).first().to_dict()["username"]
+        newRequest["datasetName"] = Dataset.query.filter_by(did = newRequest["DID"]).first().to_dict()["name"]
+        requests.append(newRequest)
+
+    return jsonify({ 'requests': requests })
+
 # Get information about user that is logged in
 @api.route("/user_info/")
 @tokenRequired
