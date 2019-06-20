@@ -394,6 +394,23 @@ def shareRequests(user):
 
     return jsonify({ 'requests': requests })
 
+@api.route("/share_request_answer/", methods = ("POST",))
+@tokenRequired
+def answerShareRequest(user):
+    _request = request.get_json()["request"]
+    originalRequest = ShareRequest.query.filter_by(did = _request["DID"], uid_sender = _request["UIDsender"], uid_receiver = _request["UIDreceiver"])
+
+    if not originalRequest:
+        return jsonify({'result': 'Specified request does not exist.'}), 406
+
+    #if _request["accepted"]:
+        # copy dataset
+
+    originalRequest.delete()
+    db.session.commit()
+
+    return jsonify({'result': True}), 201
+
 # Get information about user that is logged in
 @api.route("/user_info/")
 @tokenRequired
