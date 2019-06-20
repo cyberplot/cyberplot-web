@@ -69,6 +69,10 @@ export function apiShareRequests(jwt) {
     return axios.get(`${API_URL}/share_requests/`, {headers: {Authorization: `Bearer: ${jwt}`}})
 }
 
+export function apiAnswerShareRequest(request, jwt) {
+    return axios.post(`${API_URL}/share_request_answer/`, request, {headers: {Authorization: `Bearer: ${jwt}`}})
+}
+
 export function apiUserAutocomplete(phrase, jwt) {
     return axios.get(`${API_URL}/user_autocomplete/${phrase}/`, {headers: {Authorization: `Bearer: ${jwt}`}})
 }

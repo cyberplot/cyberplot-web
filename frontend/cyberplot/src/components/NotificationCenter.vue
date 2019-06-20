@@ -10,8 +10,8 @@
             {{ request.username }} shared <strong>{{ request.datasetName }}</strong> with you.
         </p>
     
-        <a href="#" id="button_accept" class="button_primary">Accept</a>
-        <a href="#" id="button_ignore" class="button_secondary">Ignore</a>
+        <a @click="acceptRequest(request)" id="button_accept" class="button_primary">Accept</a>
+        <a @click="declineRequest(request)" id="button_ignore" class="button_secondary">Ignore</a>
     </form>
 </div>
 </template>
@@ -21,6 +21,19 @@ export default {
     name: 'NotificationCenter',
     beforeMount() {
         this.$store.dispatch('getShareRequests')
+    },
+    methods: {
+        acceptRequest: function(request) {
+            let processedRequest = request
+            processedRequest.accepted = true
+            this.$store.dispatch('answerShareRequest', { request: processedRequest })
+        },
+
+        declineRequest: function(request) {
+            let processedRequest = request
+            processedRequest.accepted = false
+            this.$store.dispatch('answerShareRequest', { request: processedRequest })
+        }
     },
     computed: {
         notificationsOpened() {
@@ -71,6 +84,7 @@ export default {
 
 #notifications a {
     float: right;
+    margin-top: 0.5em;
 }
 
 #notifications form {

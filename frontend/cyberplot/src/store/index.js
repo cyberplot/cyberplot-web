@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset, apiUserAutocomplete, apiShareDataset, apiShareRequests } from '../api'
+import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset, apiUserAutocomplete, apiShareDataset, apiShareRequests, apiAnswerShareRequest } from '../api'
 import { isValidJwt, EventBus, downloadFile } from '../utils'
 import router from '../router'
 
@@ -137,6 +137,14 @@ const actions = {
         return apiShareRequests(context.state.jwt.token)
             .then((response) => {
                 context.commit('setShareRequests', { response: response.data })
+            })
+    },
+
+    answerShareRequest(context, request) {
+        context.commit('removeShareRequest', { request: request })
+        return apiAnswerShareRequest(request, context.state.jwt.token)
+            .then((response) => {
+                context.dispatch('getShareRequests')
             })
     },
 
