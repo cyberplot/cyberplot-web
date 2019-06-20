@@ -7,7 +7,7 @@
         <img src="@/assets/images/logo_white.svg" alt="Cyberplot logo" id="cyberplot_logo">
         <a @click="logout" id="logout_button" class="button_secondary">Log out</a>
         <a @click="toggleNotifications" id="user_label" class="interactive">
-            <img src="@/assets/images/icon_user_white_notification.svg" alt="User profile" id="icon_user">
+            <img :src="[pendingNotifications ? require('@/assets/images/icon_user_white_notification.svg') : require('@/assets/images/icon_user_white.svg')]" alt="User profile" id="icon_user">
             {{ this.currentUser.username }}
         </a>
     </nav>
@@ -65,6 +65,10 @@ export default {
 
         currentUser() {
             return this.$store.state.currentUser
+        },
+
+        pendingNotifications() {
+            return this.$store.state.shareRequests.length != 0
         }
     }
 }
