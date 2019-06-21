@@ -7,6 +7,7 @@ import csv, itertools, ast, werkzeug, os, datetime, secrets
 from functools import wraps
 import jwt
 from email.utils import parseaddr
+from shutil import copyfile
 
 api = Blueprint("api", __name__)
 
@@ -403,8 +404,44 @@ def answerShareRequest(user):
     if not originalRequest:
         return jsonify({'result': 'Specified request does not exist.'}), 406
 
-    #if _request["accepted"]:
-        # copy dataset
+    if _request["accepted"]:
+        datasetCopyDID = 1
+        if Dataset.query.filter_by(uid = user.uid).order_by(Dataset.did.desc()).first():
+            datasetCopyDID = Dataset.query.filter_by(uid = user.uid).order_by(Dataset.did.desc()).first().to_dict()["DID"] + 1
+
+        dataset = Dataset.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]).first()
+        dataset.uid = user.uid
+        dataset.did = datasetCopyDID
+        db.session.add(dataset)
+
+        for attribute in Attribute.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]):
+            attribute.uid = user.uid
+            attribute.did = datasetCopyDID
+            db.session.add(attribute)
+        
+        for statistics in Attribute.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]):
+            statistics.uid = user.uid
+            statistics.did = datasetCopyDID
+            db.session.add(statistics)
+
+        for version in DatasetVersion.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]):
+            oldFilepath = version.filepath()
+            version.uid = user.uid
+            version.did = datasetCopyDID
+            os.makedirs(version.dirpath(), exist_ok = True)
+            copyfile(oldFilepath, version.filepath())
+
+        # generate API key for dataset
+        #TODO DRY - reused from dataset_upload
+        while True:
+            key = secrets.token_hex(nbytes = 16)
+
+            # make sure we generate a unique key
+            if not DatasetConnector.query.filter_by(key = key).first():
+                if not UserConnector.query.filter_by(key = key).first():
+                    connector = DatasetConnector(uid = user.uid, did = datasetCopyDID, key = key)
+                    db.session.add(connector)
+                    break
 
     originalRequest.delete()
     db.session.commit()
