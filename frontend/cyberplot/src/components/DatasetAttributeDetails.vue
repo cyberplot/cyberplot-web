@@ -13,10 +13,10 @@
             </dd>
             <dt><img src="@/assets/images/icon_data_missing_gray.svg"> Missing values</dt>
             <dd id="data_missing_selector" class="selector">
-                <a href="#" id="data_missing_ignore_button" class="button_secondary">Ignore</a>
-                <a href="#" id="data_missing_mean_button" class="button_secondary">Use mean</a>
-                <a href="#" id="data_missing_median_button" class="button_secondary">Use median</a>
-                <a href="#" id="data_missing_custom_button" class="button_secondary">Custom</a>
+                <a @click="changeMissingValueSetting('ignore')" id="data_missing_ignore_button" :class="ignoreSelectorStyle">Ignore</a>
+                <a @click="changeMissingValueSetting('mean')" id="data_missing_mean_button" :class="meanSelectorStyle">Use mean</a>
+                <a @click="changeMissingValueSetting('median')" id="data_missing_median_button" :class="medianSelectorStyle">Use median</a>
+                <a @click="changeMissingValueSetting('custom')" id="data_missing_custom_button" :class="customSelectorStyle">Custom<span v-if="missingValueCustom != null">: {{ missingValueCustom }}</span></a>
             </dd>
         </dl>
     </div>
@@ -45,6 +45,14 @@ export default {
                 this.currentDataset.attributes[this.selectedAttribute].type = type
                 this.$store.dispatch('changeCurrentDataset')
             }
+        },
+
+        changeMissingValueSetting: function(setting, customValue) {
+            this.currentDataset.attributes[this.selectedAttribute].missingValueSetting = setting
+            if(customValue) {
+                this.currentDataset.attributes[this.selectedAttribute].missingValueCustom = customValue
+            }
+            this.$store.dispatch('changeCurrentDataset')
         }
     },
     computed: {
@@ -58,6 +66,14 @@ export default {
 
         type() {
             return this.currentDataset.attributes[this.selectedAttribute].type
+        },
+
+        missingValueSetting() {
+            return this.currentDataset.attributes[this.selectedAttribute].missingValueSetting
+        },
+
+        missingValueCustom() {
+            return this.currentDataset.attributes[this.selectedAttribute].missingValueCustom
         },
 
         selectedAttribute() {
@@ -103,6 +119,34 @@ export default {
                 'button_primary': this.type === 'vector',
                 'button_secondary': this.possibleTypes.vector && this.type != 'vector',
                 'button_secondary_disabled': !this.possibleTypes.vector
+            }
+        },
+
+        ignoreSelectorStyle: function() {
+            return {
+                'button_primary': this.missingValueSetting === 'ignore',
+                'button_secondary': this.missingValueSetting != 'ignore'
+            }
+        },
+
+        meanSelectorStyle: function() {
+            return {
+                'button_primary': this.missingValueSetting === 'mean',
+                'button_secondary': this.missingValueSetting != 'mean'
+            }
+        },
+
+        medianSelectorStyle: function() {
+            return {
+                'button_primary': this.missingValueSetting === 'median',
+                'button_secondary': this.missingValueSetting != 'median'
+            }
+        },
+
+        customSelectorStyle: function() {
+            return {
+                'button_primary': this.missingValueSetting === 'custom',
+                'button_secondary': this.missingValueSetting != 'custom'
             }
         }
     }
