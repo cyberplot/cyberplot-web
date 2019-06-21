@@ -7,6 +7,12 @@ class attributeTypes(enum.Enum):
     CATEGORICAL = 3
     VECTOR = 4
 
+class attributeMissingvalueSettings(enum.Enum):
+    IGNORE = 1
+    CUSTOM = 2
+    MEAN = 3
+    MEDIAN = 4
+
 def isFlagOnPosition(mask, pos):
     return ((mask >> pos - 1) & 1) != 0
 
@@ -18,6 +24,20 @@ def intToType(_int):
 
 def typeToInt(_type):
     return _type.value
+
+def intToMissingValueSetting(_int):
+    return attributeMissingvalueSettings(_int).name
+
+def missingValueSettingToInt(_missingSetting):
+    return _missingSetting.value
+
+def checkAttributeMissingValueValidity(attribute, value):
+    if intToType(attribute.type) == attributeTypes.NUMERICAL:
+        try:
+            assert float(value)
+        except ValueError:
+            return False
+    return True
 
 def isValidCSV(filename):
     # TODO
@@ -44,7 +64,8 @@ def getDatasetData(filename, skipHeader):
                     if not skipHeader:
                         label = "Attribute" + str(y + 1)
                     data["attributes"].append(Attribute(label = label, 
-                                                        missing_value_setting = 0,
+                                                        missing_value_setting = 1,
+                                                        missing_value_custom = 0,
                                                         type_mask = pow(2, len(attributeTypes)) - 1,
                                                         type = typeToInt(attributeTypes.NUMERICAL)))
                 continue

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest
 from .config import BaseConfig
-from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, getDatasetFilepath
+from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, attributeMissingvalueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets
 from functools import wraps
@@ -123,6 +123,21 @@ def dataset(user, did):
                         return jsonify({'result': 'Type is invalid for select attribute.'}), 406
             except KeyError:
                 return jsonify({'result': 'Invalid attribute type given.'}), 406
+
+            try:
+                proposedMissingValueSetting = missingValueSettingToInt(attributeMissingvalueSettings[data["attributes"][i]["missingValueSetting"].upper()])
+                if proposedMissingValueSetting != attribute.missing_value_setting:
+                    attribute.missing_value_setting = proposedMissingValueSetting
+                    datasetChanged = True
+            except KeyError:
+                return jsonify({'result': 'Invalid attribute missing value setting given.'}), 406
+            
+            proposedMissingValueCustom = data["attributes"][i]["missingValueCustom"]
+            if proposedMissingValueCustom != attribute.missing_value_custom:
+                if checkAttributeMissingValueValidity(attribute, proposedMissingValueCustom):
+                    return jsonify({'result': 'Provided missing value setting is not valid'}), 406
+                attribute.missing_value_custom = proposedMissingValueCustom
+                datasetChange = True
 
         if data["dataset"]["versioningOn"] != dataset.versioning_on:
             if not dataset.versioning_on:
@@ -247,7 +262,6 @@ def uploadDataset():
             attribute.uid = userID
             attribute.did = datasetID
             attribute.aid = i + 1 # SQL increments from 1
-            attribute.missing_value_setting = 0
             db.session.add(attribute)
 
         for statistics in datasetData["statistics"]:

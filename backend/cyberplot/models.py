@@ -1,6 +1,6 @@
 from datetime import datetime  
 from flask_sqlalchemy import SQLAlchemy
-from .utils import isFlagOnPosition, intToType, typeToInt, attributeTypes, getDatasetFilepath, getDatasetDirectory
+from .utils import isFlagOnPosition, intToType, typeToInt, attributeTypes, getDatasetFilepath, getDatasetDirectory, intToMissingValueSetting
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
@@ -116,7 +116,7 @@ class Attribute(db.Model):
                         categorical = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.CATEGORICAL)),
                         vector = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.VECTOR))
                     ),
-                    missingValueSetting = self.missing_value_setting,
+                    missingValueSetting = intToMissingValueSetting(self.missing_value_setting).lower(),
                     missingValueCustom = self.missing_value_custom)
     
     def copy(self, aid, did, uid):
