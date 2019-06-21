@@ -141,10 +141,10 @@ const actions = {
     },
 
     answerShareRequest(context, request) {
-        context.commit('removeShareRequest', { request: request })
         return apiAnswerShareRequest(request, context.state.jwt.token)
             .then((response) => {
                 context.dispatch('getShareRequests')
+                context.dispatch('getDatasets')
             })
     },
 
@@ -210,6 +210,13 @@ const mutations = {
 
     setShareRequests(state, payload) {
         state.shareRequests = payload.response.requests
+
+        if(state.shareRequests.length === 0) {
+            state.notificationsOpened = false
+        }
+        else {
+            state.notificationsOpened = true
+        }
     },
 
     selectAttribute(state, attribute) {

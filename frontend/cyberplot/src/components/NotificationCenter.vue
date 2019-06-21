@@ -2,7 +2,7 @@
 <div id="notifications" v-show="notificationsOpened">
     <img id="arrow" src="@/assets/images/popup_arrow.svg">
 
-    <span v-if="shareRequests.length === 0">No notifications.</span>
+    <span v-if="shareRequests.length === 0" id="no_notifications">No unread notifications.</span>
 
     <form v-for="(request, r) in shareRequests" :key="r">
         <header><img src="@/assets/images/icon_share_incoming_blue.svg"> Shared dataset</header>
@@ -102,5 +102,13 @@ export default {
     width: 3em;
     top: 4.9em;
     right: 12.5em;
+}
+
+#no_notifications {
+    text-align: center;
+    display: block;
+    margin-top: 1em;
+    color: #777;
+    font-family: 'Libre Franklin Bold';
 }
 </style>
