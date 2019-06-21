@@ -410,26 +410,24 @@ def answerShareRequest(user):
             datasetCopyDID = Dataset.query.filter_by(uid = user.uid).order_by(Dataset.did.desc()).first().to_dict()["DID"] + 1
 
         dataset = Dataset.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]).first()
-        dataset.uid = user.uid
-        dataset.did = datasetCopyDID
-        db.session.add(dataset)
+        newDataset = dataset.copy(datasetCopyDID, user.uid)
+        newDataset.last_edit = datetime.datetime.now()
+        db.session.add(newDataset)
 
         for attribute in Attribute.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]):
-            attribute.uid = user.uid
-            attribute.did = datasetCopyDID
-            db.session.add(attribute)
+            newAttribute = attribute.copy(attribute.aid, datasetCopyDID, user.uid)
+            db.session.add(newAttribute)
         
-        for statistics in Attribute.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]):
-            statistics.uid = user.uid
-            statistics.did = datasetCopyDID
-            db.session.add(statistics)
+        for statistics in Statistics.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]):
+            newStatistics = statistics.copy(statistics.aid, datasetCopyDID, user.uid)
+            db.session.add(newStatistics)
 
         for version in DatasetVersion.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]):
-            oldFilepath = version.filepath()
-            version.uid = user.uid
-            version.did = datasetCopyDID
-            os.makedirs(version.dirpath(), exist_ok = True)
-            copyfile(oldFilepath, version.filepath())
+            newVersion = version.copy(version.vid, datasetCopyDID, user.uid)
+            db.session.add(newVersion)
+
+            os.makedirs(newVersion.dirpath(), exist_ok = True)
+            copyfile(version.filepath(), newVersion.filepath())
 
         # generate API key for dataset
         #TODO DRY - reused from dataset_upload

@@ -57,6 +57,14 @@ class Dataset(db.Model):
                     lastEdit = int(datetime.timestamp(self.last_edit)),
                     deleted = self.deleted,
                     versioningOn = self.versioning_on)
+    
+    def copy(self, did, uid):
+        return Dataset(did = did,
+                       uid = uid,
+                       name = self.name,
+                       last_edit = self.last_edit,
+                       deleted = self.deleted,
+                       versioning_on = self.versioning_on)
 
 class Space(db.Model):
     __tablename__ = "spaces"
@@ -110,6 +118,16 @@ class Attribute(db.Model):
                     ),
                     missingValueSetting = self.missing_value_setting,
                     missingValueCustom = self.missing_value_custom)
+    
+    def copy(self, aid, did, uid):
+        return Attribute(aid = aid,
+                         did = did,
+                         uid = uid,
+                         label = self.label,
+                         type = self.type,
+                         type_mask = self.type_mask,
+                         missing_value_setting = self.missing_value_setting,
+                         missing_value_custom = self.missing_value_custom)
 
 class DatasetConnector(db.Model):
     __tablename__ = "dataset_connectors"
@@ -160,6 +178,15 @@ class DatasetVersion(db.Model):
                     itemCount = self.item_count,
                     containsHeader = self.contains_header)
     
+    def copy(self, vid, did, uid):
+        return DatasetVersion(vid = vid,
+                              did = did,
+                              uid = uid,
+                              filename = self.filename,
+                              upload_date = self.upload_date,
+                              item_count = self.item_count,
+                              contains_header = self.contains_header)
+    
     def filepath(self):
         return getDatasetFilepath(self.filename, self.uid, self.did, self.vid)
     
@@ -195,6 +222,18 @@ class Statistics(db.Model):
                     maximum = self.maximum,
                     mean = self.mean,
                     sdev = self.sdev)
+
+    def copy(self, aid, did, uid):
+        return Statistics(aid = aid,
+                          did = did,
+                          uid = uid,
+                          minimum = self.minimum,
+                          q1 = self.q1,
+                          median = self.median,
+                          q3 = self.q3,
+                          maximum = self.maximum,
+                          mean = self.mean,
+                          sdev = self.sdev)
 
 class ShareRequest(db.Model):
     __tablename__ = "share_requests"
