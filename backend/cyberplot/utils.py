@@ -24,7 +24,10 @@ def isValidCSV(filename):
     return True
 
 def getDatasetFilepath(filename, uid, did, vid):
-    return "datasets/" + str(uid) + "/" + str(did) + "/" + str(vid) + "/" + str(filename)
+    return getDatasetDirectory(uid, did, vid) + "/" + str(filename)
+
+def getDatasetDirectory(uid, did, vid):
+    return "datasets/" + str(uid) + "/" + str(did) + "/" + str(vid)
 
 def getDatasetData(filename, skipHeader):
     data = {}
