@@ -102,7 +102,7 @@ class Attribute(db.Model):
     type = db.Column(db.SmallInteger, nullable = False)
     type_mask = db.Column(db.Integer, nullable = False)
     missing_value_setting = db.Column(db.SmallInteger, nullable = False)
-    missing_value_custom = db.Column(db.Numeric)
+    missing_value_custom = db.Column(db.String(255))
 
     def to_dict(self):
         return dict(AID = self.aid,

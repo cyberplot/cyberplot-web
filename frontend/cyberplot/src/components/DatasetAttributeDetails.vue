@@ -14,9 +14,9 @@
             <dt><img src="@/assets/images/icon_data_missing_gray.svg"> Missing values</dt>
             <dd id="data_missing_selector" class="selector">
                 <a @click="changeMissingValueSetting('ignore')" id="data_missing_ignore_button" :class="ignoreSelectorStyle">Ignore</a>
-                <a @click="changeMissingValueSetting('mean')" id="data_missing_mean_button" :class="meanSelectorStyle">Use mean</a>
-                <a @click="changeMissingValueSetting('median')" id="data_missing_median_button" :class="medianSelectorStyle">Use median</a>
-                <a @click="changeMissingValueSetting('custom')" id="data_missing_custom_button" :class="customSelectorStyle">Custom<span v-if="missingValueCustom != null">: {{ missingValueCustom }}</span></a>
+                <a @click="changeMissingValueSetting('mean')" id="data_missing_mean_button" v-if="type === 'numerical'" :class="meanSelectorStyle">Use mean</a>
+                <a @click="changeMissingValueSetting('median')" id="data_missing_median_button" v-if="type === 'numerical'" :class="medianSelectorStyle">Use median</a>
+                <a @click="showMissingValueModal" id="data_missing_custom_button" :class="customSelectorStyle">Custom<span v-if="missingValueCustom != null">: {{ missingValueCustom }}</span></a>
             </dd>
         </dl>
     </div>
@@ -40,18 +40,21 @@ export default {
             this.$store.commit('openModal', 'attributeRename')
         },
 
+        showMissingValueModal: function() {
+            this.$store.commit('openModal', 'attributeMissingValue')
+        },
+
         changeAttributeType: function(type) {
             if(this.possibleTypes[type]) {
                 this.currentDataset.attributes[this.selectedAttribute].type = type
+                this.currentDataset.attributes[this.selectedAttribute].missingValueSetting = 'ignore'
+                this.currentDataset.attributes[this.selectedAttribute].missingValueCustom = null
                 this.$store.dispatch('changeCurrentDataset')
             }
         },
 
-        changeMissingValueSetting: function(setting, customValue) {
+        changeMissingValueSetting: function(setting) {
             this.currentDataset.attributes[this.selectedAttribute].missingValueSetting = setting
-            if(customValue) {
-                this.currentDataset.attributes[this.selectedAttribute].missingValueCustom = customValue
-            }
             this.$store.dispatch('changeCurrentDataset')
         }
     },

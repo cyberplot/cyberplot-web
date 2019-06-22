@@ -7,7 +7,7 @@ class attributeTypes(enum.Enum):
     CATEGORICAL = 3
     VECTOR = 4
 
-class attributeMissingvalueSettings(enum.Enum):
+class attributeMissingValueSettings(enum.Enum):
     IGNORE = 1
     CUSTOM = 2
     MEAN = 3
@@ -26,7 +26,7 @@ def typeToInt(_type):
     return _type.value
 
 def intToMissingValueSetting(_int):
-    return attributeMissingvalueSettings(_int).name
+    return attributeMissingValueSettings(_int).name
 
 def missingValueSettingToInt(_missingSetting):
     return _missingSetting.value
@@ -36,6 +36,12 @@ def checkAttributeMissingValueValidity(attribute, value):
         try:
             assert float(value)
         except ValueError:
+            return False
+    return True
+
+def missingValueSettingValidForAttribute(attribute, setting):
+    if attribute.type != attributeTypes.NUMERICAL.value:
+        if setting == attributeMissingValueSettings.MEAN.value or setting == attributeMissingValueSettings.MEDIAN.value:
             return False
     return True
 
@@ -65,7 +71,6 @@ def getDatasetData(filename, skipHeader):
                         label = "Attribute" + str(y + 1)
                     data["attributes"].append(Attribute(label = label, 
                                                         missing_value_setting = 1,
-                                                        missing_value_custom = 0,
                                                         type_mask = pow(2, len(attributeTypes)) - 1,
                                                         type = typeToInt(attributeTypes.NUMERICAL)))
                 continue

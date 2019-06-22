@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest
 from .config import BaseConfig
-from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, attributeMissingvalueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity
+from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets
 from functools import wraps
@@ -112,32 +112,36 @@ def dataset(user, did):
 
                 attribute.label = data["attributes"][i]["label"]
                 datasetChanged = True
-            
+
+            try:
+                proposedMissingValueSetting = missingValueSettingToInt(attributeMissingValueSettings[data["attributes"][i]["missingValueSetting"].upper()])
+                if proposedMissingValueSetting != attribute.missing_value_setting:
+                    if not missingValueSettingValidForAttribute(attribute, proposedMissingValueSetting):
+                        return jsonify({'result': 'Missing value setting not valid for selected type.'}), 406
+                    attribute.missing_value_setting = proposedMissingValueSetting
+                    datasetChanged = True
+            except KeyError:
+                return jsonify({'result': 'Invalid attribute missing value setting given.'}), 406
+
+            proposedMissingValueCustom = data["attributes"][i]["missingValueCustom"]
+            if proposedMissingValueCustom != attribute.missing_value_custom:
+                if not checkAttributeMissingValueValidity(attribute, proposedMissingValueCustom):
+                    return jsonify({'result': 'Provided missing value setting is not valid.'}), 406
+                attribute.missing_value_custom = proposedMissingValueCustom
+                datasetChanged = True
+
             try:
                 proposedType = typeToInt(attributeTypes[data["attributes"][i]["type"].upper()])
                 if proposedType != attribute.type:
                     if isFlagOnPosition(attribute.type_mask, proposedType):
                         attribute.type = proposedType
+                        attribute.missing_value_custom = None
+                        attribute.missing_value_setting = missingValueSettingToInt(attributeMissingValueSettings["IGNORE"])
                         datasetChanged = True
                     else:
                         return jsonify({'result': 'Type is invalid for select attribute.'}), 406
             except KeyError:
                 return jsonify({'result': 'Invalid attribute type given.'}), 406
-
-            try:
-                proposedMissingValueSetting = missingValueSettingToInt(attributeMissingvalueSettings[data["attributes"][i]["missingValueSetting"].upper()])
-                if proposedMissingValueSetting != attribute.missing_value_setting:
-                    attribute.missing_value_setting = proposedMissingValueSetting
-                    datasetChanged = True
-            except KeyError:
-                return jsonify({'result': 'Invalid attribute missing value setting given.'}), 406
-            
-            proposedMissingValueCustom = data["attributes"][i]["missingValueCustom"]
-            if proposedMissingValueCustom != attribute.missing_value_custom:
-                if checkAttributeMissingValueValidity(attribute, proposedMissingValueCustom):
-                    return jsonify({'result': 'Provided missing value setting is not valid'}), 406
-                attribute.missing_value_custom = proposedMissingValueCustom
-                datasetChange = True
 
         if data["dataset"]["versioningOn"] != dataset.versioning_on:
             if not dataset.versioning_on:

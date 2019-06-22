@@ -60,13 +60,7 @@ export default {
         },
 
         attributeLabel() {
-            var attributeAID = this.selectedAttribute
-
-            for(let [index, attribute] of this.currentDataset.attributes.entries()) {
-                if(attribute.AID == attributeAID) {
-                    return attribute.label
-                }
-            }
+            return this.$store.getters.selectedAttributeData.label
         },
 
         inputError() {

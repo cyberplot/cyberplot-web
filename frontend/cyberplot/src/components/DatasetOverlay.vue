@@ -10,6 +10,7 @@
         <DatasetShareModal />
         <DatasetVersionModal />
         <AttributeRenameModal />
+        <AttributeMissingValueModal />
     </dialog>
 </div>
 </template>
@@ -22,6 +23,7 @@ import DatasetDeleteModal from './Modals/DatasetDeleteModal.vue'
 import DatasetShareModal from './Modals/DatasetShareModal.vue'
 import DatasetVersionModal from './Modals/DatasetVersionModal.vue'
 import AttributeRenameModal from './Modals/AttributeRenameModal.vue'
+import AttributeMissingValueModal from './Modals/AttributeMissingValueModal.vue'
 
 export default {
     name: 'DatasetOverlay',
@@ -32,7 +34,8 @@ export default {
         DatasetDeleteModal,
         DatasetShareModal,
         DatasetVersionModal,
-        AttributeRenameModal
+        AttributeRenameModal,
+        AttributeMissingValueModal
     },
     methods: {
         closeOverlay: function() {

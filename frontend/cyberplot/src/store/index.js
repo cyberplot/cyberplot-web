@@ -14,7 +14,8 @@ const state = {
         datasetDelete: false,
         datasetShare: false,
         datasetVersion: false,
-        attributeRename: false
+        attributeRename: false,
+        attributeMissingValue: false
     },
     notificationsOpened: false,
     shareRequests: [],
@@ -237,6 +238,15 @@ const getters = {
             }
         }
         return false
+    },
+
+    selectedAttributeData() {
+        var attributeAID = state.selectedAttribute
+        for(let [index, attribute] of state.currentDataset.attributes.entries()) {
+            if(attribute.AID == attributeAID) {
+                return attribute
+            }
+        }
     }
 }
 
