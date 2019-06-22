@@ -115,41 +115,43 @@ def getDatasetData(filename, skipHeader):
     from .models import Statistics
 
     for i in range(len(data["attributes"])):
+        generateStatistics = True
+
         if np.isnan(median[i]):
+            generateStatistics = False # only generate statistics for numbers
             data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.NUMERICAL))
             if len(np.unique(datasetStrings[:,i])) <= BaseConfig.ATTRIBUTE_CLASSIFICATION_CATEGORY_MAX_UNIQUE_COUNT:
                 data["attributes"][i].type = typeToInt(attributeTypes.CATEGORICAL)
             else:
                 data["attributes"][i].type = typeToInt(attributeTypes.NOMINAL)
 
-            # vector checks
-            isVector = True
-            for item in datasetStrings[:,i]:
-                vectorValues = item.split()
-                if len(vectorValues) != 3:
+        # vector checks
+        isVector = True
+        for item in datasetStrings[:,i]:
+            vectorValues = item.split()
+            if len(vectorValues) != 3:
+                isVector = False
+
+            for value in vectorValues:
+                if not value.replace('.','',1).isdigit():
                     isVector = False
 
-                for value in vectorValues:
-                    if not value.replace('.','',1).isdigit():
-                        isVector = False
+            if not isVector:
+                break
 
-                if not isVector:
-                    break
+        if isVector: # vector takes priority over any other type
+            data["attributes"][i].type = typeToInt(attributeTypes.VECTOR)
+        else:
+            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.VECTOR))
 
-            if isVector: # vector takes priority over any other type
-                data["attributes"][i].type = typeToInt(attributeTypes.VECTOR)
-            else:
-                data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.VECTOR))
-
-            continue #if attribute is not a number, do not generate statistics
-
-        data["statistics"].append(Statistics(aid = i + 1, # SQL increments from 1
-                                             minimum = minimum[i],
-                                             q1 = q1[i],
-                                             median = median[i],
-                                             q3 = q3[i],
-                                             maximum = maximum[i],
-                                             mean = mean[i],
-                                             sdev = sdev[i]))
+        if generateStatistics:
+            data["statistics"].append(Statistics(aid = i + 1, # SQL increments from 1
+                                                minimum = minimum[i],
+                                                q1 = q1[i],
+                                                median = median[i],
+                                                q3 = q3[i],
+                                                maximum = maximum[i],
+                                                mean = mean[i],
+                                                sdev = sdev[i]))
 
     return data
