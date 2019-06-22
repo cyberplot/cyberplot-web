@@ -69,24 +69,33 @@ class Dataset(db.Model):
 class Space(db.Model):
     __tablename__ = "spaces"
     __table_args__ = (
-        db.UniqueConstraint("sid", "did", "dataset_uid", "owner_uid", name = "uc_spaces"),
-        db.ForeignKeyConstraint(["did", "dataset_uid"],
-                                ["datasets.did", "datasets.uid"]),
+        db.UniqueConstraint("sid", "uid", name = "uc_spaces"),
     )
     sid = db.Column(db.Integer, primary_key = True, nullable = False)
-    did = db.Column(db.Integer, primary_key = True)
-    dataset_uid = db.Column(db.Integer, primary_key = True)
-    owner_uid = db.Column(db.Integer, db.ForeignKey("users.uid"), primary_key = True)
+    uid = db.Column(db.Integer, db.ForeignKey("users.uid"), primary_key = True)
     name = db.Column(db.String(100), nullable = False)
     filename = db.Column(db.String(255), nullable = False)
+    last_edit = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
 
     def to_dict(self):
         return dict(SID = self.sid,
                     DID = self.did,
-                    datasetUID = self.dataset_uid,
-                    ownerUID = self.owner_uid,
                     name = self.name,
-                    filename = self.filename)
+                    filename = self.filename,
+                    lastEdit = self.last_edit)
+
+class SpaceDependency(db.Model):
+    __tablename__ = "space_dependencies"
+    __table_args__ = (
+        db.UniqueConstraint("sid", "did", "uid", name = "uc_space_dependencies"),
+        db.ForeignKeyConstraint(["sid", "uid"],
+                                ["spaces.sid", "spaces.uid"]),
+        db.ForeignKeyConstraint(["did", "uid"],
+                                ["datasets.did", "datasets.uid"]),
+    )
+    sid = db.Column(db.Integer, primary_key = True)
+    uid = db.Column(db.Integer, primary_key = True)
+    did = db.Column(db.Integer, primary_key = True)
 
 class Attribute(db.Model):
     __tablename__ = "attributes"
