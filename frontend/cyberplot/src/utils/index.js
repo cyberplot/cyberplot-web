@@ -12,13 +12,6 @@ export function isValidJwt(jwt) {
     return now < exp
 }
 
-export function prettifyHumanReadableTime(humanReadable) {
-    if(!humanReadable.startsWith('Today') && !humanReadable.startsWith('Yesterday')) {
-        humanReadable = 'on ' + humanReadable
-    }
-    return humanReadable
-}
-
 export function downloadFile(response) {
     const url = window.URL.createObjectURL(new Blob([response.data]))
     const link = document.createElement('a')

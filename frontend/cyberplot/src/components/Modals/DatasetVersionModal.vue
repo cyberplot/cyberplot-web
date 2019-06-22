@@ -69,8 +69,7 @@ export default {
         },
 
         timestampToTime: function(timestamp) {
-            var humanReadable = this.$moment(timestamp * 1000).tz(this.$moment.tz.guess()).calendar()
-            return prettifyHumanReadableTime(humanReadable)
+            return this.$moment(timestamp * 1000).tz(this.$moment.tz.guess()).calendar()
         }
     },
     computed: {
@@ -121,13 +120,14 @@ export default {
     max-height: 13em;
     overflow-y: scroll;
     scrollbar-width: none;
-    background-color: #eee;
-    border-radius: 0.3em;
 }
 
 #versions li {
     padding: 0.5em;
     list-style: none;
+    background-color: #eee;
+    border-radius: 0.3em;
+    margin-bottom: 0.5em;
 }
 
 .actions {

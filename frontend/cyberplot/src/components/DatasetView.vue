@@ -81,8 +81,7 @@ export default {
     computed: {
         lastEdit() {
             let timestamp = this.currentDataset.dataset.lastEdit
-            var humanReadable = this.$moment(timestamp * 1000).tz(this.$moment.tz.guess()).calendar()
-            return prettifyHumanReadableTime(humanReadable)
+            return this.$moment(timestamp * 1000).tz(this.$moment.tz.guess()).calendar()
         },
 
         currentDataset() {
