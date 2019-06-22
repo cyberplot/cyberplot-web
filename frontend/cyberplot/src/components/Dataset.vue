@@ -43,6 +43,12 @@ export default {
     },
     beforeMount() {
         this.$store.dispatch('getUserInformation')
+
+        /* refresh notifications and datasets every 30s */
+        setInterval(() => {
+            this.$store.dispatch('getShareRequests')
+            this.$store.dispatch('getDatasets')
+        }, 30000)
     },
     methods: {
         datasetSelected: function() {
