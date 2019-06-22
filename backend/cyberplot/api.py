@@ -90,7 +90,7 @@ def dataset(user, did):
         dataset = Dataset.query.filter_by(uid = user.uid, did = did).first()
         if proposedName != dataset.name:
             # check if another dataset does not have the same name
-            if Dataset.query.filter_by(name = proposedName).first():
+            if Dataset.query.filter_by(uid = user.uid, name = proposedName).first():
                 return jsonify({'result': 'A dataset with specified name already exists.'}), 406
 
             dataset.name = data["dataset"]["name"]
@@ -402,7 +402,7 @@ def shareRequests(user):
     for request in requestsOriginal:
         newRequest = request.to_dict()
         newRequest["username"] = User.query.filter_by(uid = newRequest["UIDsender"]).first().to_dict()["username"]
-        newRequest["datasetName"] = Dataset.query.filter_by(did = newRequest["DID"]).first().to_dict()["name"]
+        newRequest["datasetName"] = Dataset.query.filter_by(uid = newRequest["UIDsender"], did = newRequest["DID"]).first().to_dict()["name"]
         requests.append(newRequest)
 
     return jsonify({ 'requests': requests })
