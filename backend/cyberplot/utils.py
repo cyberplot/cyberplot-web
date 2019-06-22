@@ -55,6 +55,18 @@ def getDatasetFilepath(filename, uid, did, vid):
 def getDatasetDirectory(uid, did, vid):
     return "datasets/" + str(uid) + "/" + str(did) + "/" + str(vid)
 
+def generateNonconflictingName(datasetName, uid):
+    from .models import Dataset
+
+    if Dataset.query.filter_by(name = datasetName, uid = uid).first():
+        appendedNumber = 1
+        # increment number until we find one that is unused
+        while Dataset.query.filter_by(name = datasetName + " (" + str(appendedNumber) + ")", uid = uid).first():
+            appendedNumber = appendedNumber + 1
+        
+        datasetName = datasetName + " (" + str(appendedNumber) + ")"
+    return datasetName
+
 def getDatasetData(filename, skipHeader):
     data = {}
 

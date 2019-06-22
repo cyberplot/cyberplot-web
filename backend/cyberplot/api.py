@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest
 from .config import BaseConfig
-from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute
+from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets
 from functools import wraps
@@ -234,13 +234,7 @@ def uploadDataset():
             return jsonify({'result': 'Please provide a dataset name.'}), 406
 
         # do not allow the user to have two datasets with same name
-        if Dataset.query.filter_by(name = datasetName, uid = userID).first():
-            appendedNumber = 1
-            # increment number until we find one that is unused
-            while Dataset.query.filter_by(name = datasetName + " (" + str(appendedNumber) + ")").first():
-                appendedNumber = appendedNumber + 1
-            
-            datasetName = datasetName + " (" + str(appendedNumber) + ")"
+        datasetName = generateNonconflictingName(datasetName, userID)
 
         # get file data, attributes, item count, statistics
         datasetData = getDatasetData(filepath, containsHeader)
