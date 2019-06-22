@@ -424,6 +424,7 @@ def answerShareRequest(user):
         dataset = Dataset.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]).first()
         newDataset = dataset.copy(datasetCopyDID, user.uid)
         newDataset.last_edit = datetime.datetime.now()
+        newDataset.name = generateNonconflictingName(dataset.name, user.uid)
         db.session.add(newDataset)
 
         for attribute in Attribute.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]):
