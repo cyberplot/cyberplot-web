@@ -21,8 +21,8 @@
                 <img src="@/assets/images/icon_time_gray.svg"> {{ timestampToTime(version.uploadDate) }} <img src="@/assets/images/icon_rows_gray.svg"> {{ version.itemCount }} items
 
                 <span class="actions">
-                    <a @click="downloadVersion(version.VID)" id="button_download" class="interactive button_secondary"><img src="@/assets/images/icon_download_blue.svg" alt="Download version"></a>
                     <a v-if="v != 0" @click="deleteVersion(version.VID)" class="interactive button_secondary"><img src="@/assets/images/icon_delete_blue.svg" alt="Delete version"></a>
+                    <a @click="downloadVersion(version.VID)" id="button_download" class="interactive button_secondary"><img src="@/assets/images/icon_download_blue.svg" alt="Download version"></a>
                 </span>
             </li>
         </ul>
@@ -135,10 +135,6 @@ export default {
 }
 
 .actions a {
-    margin: 0.25em;
-}
-
-.version:nth-of-type(1) #button_download {
-    margin-right: 5em;
+    margin-left: 0.5em;
 }
 </style>
