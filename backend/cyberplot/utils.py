@@ -106,17 +106,34 @@ def getDatasetData(filename, skipHeader):
     from .models import Statistics
 
     for i in range(len(data["attributes"])):
-        # TODO ignore vectors for now
-        data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.VECTOR))
-        
         if np.isnan(median[i]):
             data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.NUMERICAL))
             if len(np.unique(datasetStrings[:,i])) <= BaseConfig.ATTRIBUTE_CLASSIFICATION_CATEGORY_MAX_UNIQUE_COUNT:
                 data["attributes"][i].type = typeToInt(attributeTypes.CATEGORICAL)
             else:
                 data["attributes"][i].type = typeToInt(attributeTypes.NOMINAL)
-            continue
-        
+
+            # vector checks
+            isVector = True
+            for item in datasetStrings[:,i]:
+                vectorValues = item.split()
+                if len(vectorValues) != 3:
+                    isVector = False
+
+                for value in vectorValues:
+                    if not value.replace('.','',1).isdigit():
+                        isVector = False
+
+                if not isVector:
+                    break
+
+            if isVector: # vector takes priority over any other type
+                data["attributes"][i].type = typeToInt(attributeTypes.VECTOR)
+            else:
+                data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.VECTOR))
+
+            continue #if attribute is not a number, do not generate statistics
+
         data["statistics"].append(Statistics(aid = i + 1, # SQL increments from 1
                                              minimum = minimum[i],
                                              q1 = q1[i],
