@@ -16,7 +16,8 @@
                 <a @click="changeMissingValueSetting('ignore')" id="data_missing_ignore_button" :class="ignoreSelectorStyle">Ignore</a>
                 <a @click="changeMissingValueSetting('mean')" id="data_missing_mean_button" v-if="type === 'numerical'" :class="meanSelectorStyle">Use mean</a>
                 <a @click="changeMissingValueSetting('median')" id="data_missing_median_button" v-if="type === 'numerical'" :class="medianSelectorStyle">Use median</a>
-                <a @click="showMissingValueModal" id="data_missing_custom_button" :class="customSelectorStyle">Custom<span v-if="missingValueCustom != null">: {{ missingValueCustom }}</span></a>
+                <a @click="changeMissingValueSetting('zerovector')" id="data_missing_zerovector_button" v-if="type === 'vector'" :class="zerovectorSelectorStyle">Zero vector</a>
+                <a @click="showMissingValueModal" id="data_missing_custom_button" v-if="type != 'vector'" :class="customSelectorStyle">Custom<span v-if="missingValueCustom != null">: {{ missingValueCustom }}</span></a>
             </dd>
         </dl>
     </div>
@@ -150,6 +151,13 @@ export default {
             return {
                 'button_primary': this.missingValueSetting === 'custom',
                 'button_secondary': this.missingValueSetting != 'custom'
+            }
+        },
+
+        zerovectorSelectorStyle: function() {
+            return {
+                'button_primary': this.missingValueSetting === 'zerovector',
+                'button_secondary': this.missingValueSetting != 'zerovector'
             }
         }
     }

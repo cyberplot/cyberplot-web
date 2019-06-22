@@ -12,6 +12,7 @@ class attributeMissingValueSettings(enum.Enum):
     CUSTOM = 2
     MEAN = 3
     MEDIAN = 4
+    ZEROVECTOR = 5
 
 def isFlagOnPosition(mask, pos):
     return ((mask >> pos - 1) & 1) != 0
@@ -43,6 +44,14 @@ def missingValueSettingValidForAttribute(attribute, setting):
     if attribute.type != attributeTypes.NUMERICAL.value:
         if setting == attributeMissingValueSettings.MEAN.value or setting == attributeMissingValueSettings.MEDIAN.value:
             return False
+
+    if attribute.type == attributeTypes.VECTOR.value:
+        if setting == attributeMissingValueSettings.CUSTOM.value:
+            return False
+    else:
+        if setting == attributeMissingValueSettings.ZEROVECTOR.value:
+            return False
+
     return True
 
 def isValidCSV(filename):
