@@ -181,24 +181,22 @@ def uploadDataset():
     metadata = str(data["json"][0])
     metadataDictionary = ast.literal_eval(metadata)["json"]
 
-    createDataset = False
+    createDataset = not metadataDictionary["updating"]
     apiKey = metadataDictionary["identifier"]
     containsHeader = metadataDictionary["containsHeader"]
-    connector = DatasetConnector.query.filter_by(key = apiKey).first()
 
-    # if API key isn't associated with an existing dataset, 
-    # presume we are creating a new table and look for user's API key
-    if not connector: 
+    connector = None
+    if createDataset:
         connector = UserConnector.query.filter_by(key = apiKey).first()
-        createDataset = True
+    else:
+        connector = DatasetConnector.query.filter_by(key = apiKey).first()
 
-        # if it's not there either, give up
-        if not connector:
-            return jsonify({'result': 'Provided API key is not valid.'}), 406
+    if not connector:
+        return jsonify({'result': 'Provided API key is not valid.'}), 406
 
     userID = connector.to_dict()["UID"]
     datasetID = 0
-    
+
     if createDataset:
         lastDataset = Dataset.query.filter_by(uid = userID).order_by(Dataset.did.desc()).first()
         if not lastDataset:
