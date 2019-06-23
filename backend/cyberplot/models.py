@@ -1,6 +1,6 @@
 from datetime import datetime  
 from flask_sqlalchemy import SQLAlchemy
-from .utils import isFlagOnPosition, intToType, typeToInt, attributeTypes, getDatasetFilepath, getDatasetDirectory, intToMissingValueSetting
+from .utils import isFlagOnPosition, intToType, typeToInt, attributeTypes, getDatasetFilepath, getDatasetDirectory, getSpaceFilepath, getSpaceDirectory, intToMissingValueSetting
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
@@ -79,10 +79,16 @@ class Space(db.Model):
 
     def to_dict(self):
         return dict(SID = self.sid,
-                    DID = self.did,
+                    UID = self.uid,
                     name = self.name,
                     filename = self.filename,
                     lastEdit = self.last_edit)
+
+    def filepath(self):
+        return getSpaceFilepath(self.filename, self.uid, self.sid)
+    
+    def dirpath(self):
+        return getSpaceDirectory(self.uid, self.sid)
 
 class SpaceDependency(db.Model):
     __tablename__ = "space_dependencies"
@@ -96,6 +102,11 @@ class SpaceDependency(db.Model):
     sid = db.Column(db.Integer, primary_key = True)
     uid = db.Column(db.Integer, primary_key = True)
     did = db.Column(db.Integer, primary_key = True)
+
+    def to_dict(self):
+        return dict(SID = self.sid,
+                    UID = self.uid,
+                    DID = self.did)
 
 class Attribute(db.Model):
     __tablename__ = "attributes"

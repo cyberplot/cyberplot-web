@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, send_file
-from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest
+from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest, SpaceDependency
 from .config import BaseConfig
 from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
 import simplejson as json
@@ -322,7 +322,7 @@ def uploadDataset():
 
     return jsonify({'result': True}), 201
 
-# deletes dataset files and all metadata associated with it
+# Deletes dataset files and all metadata associated with it
 @api.route("/dataset_delete/<int:did>/", methods = ("POST",))
 @tokenRequired
 def deleteDataset(user, did):
@@ -330,7 +330,7 @@ def deleteDataset(user, did):
     for version in datasetVersions:
         os.unlink(version.filepath())
 
-    Space.query.filter_by(dataset_uid = user.uid, did = did).delete()
+    SpaceDependency.query.filter_by(uid = user.uid, did = did).delete()
     Statistics.query.filter_by(uid = user.uid, did = did).delete()
     Attribute.query.filter_by(uid = user.uid, did = did).delete()
     DatasetVersion.query.filter_by(uid = user.uid, did = did).delete()
@@ -387,6 +387,118 @@ def shareDataset(user, did, uidReceiver):
                                    uid_receiver = uidReceiver,
                                    timestamp = datetime.datetime.now())
     db.session.add(newShareRequest)
+    db.session.commit()
+
+    return jsonify({'result': True}), 201
+
+# Returns metadata on all spaces belonging to user
+@api.route("/space_list/")
+@tokenRequired
+def spaceList(user):
+    spaces = Space.query.filter_by(uid = user.uid).order_by(Space.last_edit.desc())
+    return jsonify({ 'spaces': [s.to_dict() for s in spaces] })
+
+# Creates a new space
+@api.route("/space_create/", methods = ("POST",))
+@tokenRequired
+def createSpace(user):
+    RequestForm = request.form
+    data = RequestForm.to_dict(flat = False)
+    metadata = str(data["json"][0])
+    metadataDictionary = ast.literal_eval(metadata)["json"]
+    spaceName = metadataDictionary["name"]
+
+    spaceID = 1
+    lastSpace = Space.query.filter_by(uid = user.uid).order_by(Space.sid.desc()).first()
+    if lastSpace:
+        spaceID = lastSpace.to_dict()["SID"] + 1
+
+    space = Space(sid = spaceID,
+                  uid = user.uid,
+                  name = spaceName,
+                  filename = "space.cps",
+                  last_edit = datetime.datetime.now())
+
+    os.makedirs(os.path.dirname(space.dirpath()), exist_ok = True)
+    open(space.filepath(), "w+").close() # create empty space file
+    db.session.add(space)
+    db.session.commit()
+
+    return jsonify({'result': True}), 201
+
+# Returns space metadata and its dependencies
+@api.route("/space/<int:sid>/")
+@tokenRequired
+def space(user, sid):
+    space = Space.query.filter_by(uid = user.uid, sid = sid).first().to_dict()
+    dependencies = SpaceDependency.query.filter_by(uid = user.uid, sid = sid)
+
+    return jsonify({ 'space': space,
+                     'dependencies': [d.to_dict() for d in dependencies] })
+
+# Adds space dependency
+@api.route("/space_dependency_add/<int:sid>/<int:did>/", methods = ("PUT",))
+@tokenRequired
+def addSpaceDependency(user, sid, did):
+    if SpaceDependency.query.filter_by(uid = user.uid, sid = sid, did = did).first():
+        return jsonify({'result': 'Dependency already exists.'}), 406
+
+    if not Space.query.filter_by(uid = user.uid, sid = sid).first():
+        return jsonify({'result': 'Space with specified SID does not exists.'}), 406
+
+    if not Dataset.query.filter_by(uid = user.uid, did = did).first():
+        return jsonify({'result': 'Dataset with specified DID does not exists.'}), 406
+
+    dependency = SpaceDependency(uid = user.uid,
+                                 sid = sid,
+                                 did = did)
+    db.session.add(dependency)
+    db.session.commit()
+
+    return jsonify({'result': True}), 201
+
+# Removes space dependency
+@api.route("/space_dependency_remove/<int:sid>/<int:did>/", methods = ("PUT",))
+@tokenRequired
+def removeSpaceDependency(user, sid, did):
+    dependency = SpaceDependency.query.filter_by(uid = user.uid, sid = sid, did = did).delete()
+    db.session.commit()
+
+    return jsonify({'result': True}), 201
+
+# Allows for upload of new version of space file
+@api.route("/space_upload/<int:sid>/", methods = ("POST",))
+@tokenRequired
+def uploadSpace(user, sid):
+    space = Space.query.filter_by(uid = user.uid, sid = sid).order_by(Space.sid.desc()).first()
+    if not space:
+        return jsonify({'result': 'Space with specified SID does not exist.'}), 406
+    
+    RequestForm = request.form
+    data = RequestForm.to_dict(flat = False)
+    spaceData = request.files["file"]
+    spaceData.save(space.filepath())
+
+    return jsonify({'result': True}), 201
+
+# Provides data file of space
+@api.route("/space_download/<int:sid>/")
+@tokenRequired
+def downloadSpace(user, sid):
+    path = Space.query.filter_by(uid = user.uid, sid = sid).order_by(Space.sid.desc()).first().filepath()
+    return send_file(path, as_attachment = True)
+
+# Deletes space file and metadata
+@api.route("/space_delete/<int:sid>/", methods = ("POST",))
+@tokenRequired
+def deleteSpace(user, sid):
+    space = Space.query.filter_by(uid = user.uid, sid = sid)
+    if not space:
+        return jsonify({'result': 'Space with specified SID does not exist.'}), 406
+
+    SpaceDependency.query.filter_by(uid = user.uid, sid = sid).delete()
+    os.unlink(space.first().filepath())
+    space.delete()
     db.session.commit()
 
     return jsonify({'result': True}), 201

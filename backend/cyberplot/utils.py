@@ -62,7 +62,13 @@ def getDatasetFilepath(filename, uid, did, vid):
     return getDatasetDirectory(uid, did, vid) + "/" + str(filename)
 
 def getDatasetDirectory(uid, did, vid):
-    return "datasets/" + str(uid) + "/" + str(did) + "/" + str(vid)
+    return "datasets/" + str(uid) + "/" + str(did) + "/" + str(vid) + "/"
+
+def getSpaceFilepath(filename, uid, sid):
+    return getSpaceDirectory(uid, sid) + "/" + str(filename)
+
+def getSpaceDirectory(uid, sid):
+    return "spaces/" + str(uid) + "/" + str(sid) + "/"
 
 def generateNonconflictingName(datasetName, uid):
     from .models import Dataset
