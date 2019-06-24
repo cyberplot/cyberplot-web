@@ -111,9 +111,11 @@ export default {
         uploadFile: function() {
             let datasetName = this.file.name.split(".")[0]
             let containsHeader = this.labelsCorrect == 'yes' ? 1 : 0
+            let updating = this.updating ? 1 : 0
             this.$store.dispatch('uploadDataset', { name: datasetName,
                                                     identifier: this.apiKey,
                                                     containsHeader: containsHeader,
+                                                    updating: updating,
                                                     file: this.file })
             this.step = 2
         },

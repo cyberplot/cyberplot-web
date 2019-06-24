@@ -113,7 +113,7 @@ const actions = {
     },
 
     uploadDataset(context, dataset) {
-        apiUploadDataset(dataset.name, dataset.identifier, dataset.containsHeader, dataset.file, context.state.jwt.token)
+        apiUploadDataset(dataset.name, dataset.identifier, dataset.containsHeader, dataset.updating, dataset.file, context.state.jwt.token)
             .then((response) => {
                 context.dispatch('getDatasets')
                 context.commit('closeModals')
