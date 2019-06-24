@@ -49,7 +49,7 @@ def dataset(user, did):
         dataset = Dataset.query.filter_by(uid = user.uid, did = did, deleted = False).first().to_dict()
         datasetVersions = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc())
 
-        lastVersion = DatasetVersion.query.filter_by(did = did).order_by(DatasetVersion.vid.desc()).first()
+        lastVersion = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc()).first()
         dataset["itemCount"] = lastVersion.to_dict()["itemCount"]
         filepath = lastVersion.filepath()
 
