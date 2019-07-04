@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset, apiUserAutocomplete, apiShareDataset, apiShareRequests, apiAnswerShareRequest } from '../api'
+import { apiDatasetList, apiDataset, apiDeleteDataset, apiDeleteDatasetVersion, apiDownloadDataset, apiDownloadDatasetVersion, apiChangeDataset, apiLogin, apiSignup, apiGetUserInfo, apiUploadDataset, apiUserAutocomplete, apiShareDataset, apiAssociateHeadsetConnector, apiRemoveHeadsetConnector, apiShareRequests, apiAnswerShareRequest } from '../api'
 import { isValidJwt, EventBus, downloadFile } from '../utils'
 import router from '../router'
 
@@ -15,11 +15,13 @@ const state = {
         datasetShare: false,
         datasetVersion: false,
         attributeRename: false,
-        attributeMissingValue: false
+        attributeMissingValue: false,
+        userHeadsets: false
     },
     notificationsOpened: false,
     notificationsToggled: false,
     shareRequests: [],
+    headsets: [],
     datasetUpdateUpdating: false, /* are we updating an existing dataset? */
     datasets: [],
     currentDataset: [],
@@ -127,6 +129,25 @@ const actions = {
             })
     },
 
+    associateHeadsetConnector(context, setupKey) {
+        apiAssociateHeadsetConnector(setupKey, context.state.jwt.token)
+            .then((response) => {
+                EventBus.$emit('successfulHeadsetAssociation')
+                context.dispatch('getUserInformation')
+            })
+            .catch(error => {
+                EventBus.$emit('failedHeadsetAssociation')
+            })
+    },
+
+    removeHeadsetConnector(context, hid) {
+        apiRemoveHeadsetConnector(hid, context.state.jwt.token)
+            .then((response) => {
+                let index = this.state.headsets.findIndex(element => element.HID === hid)
+                this.state.headsets.splice(index, 1)
+            })
+    },
+
     shareCurrentDataset(context, uidReceiver) {
         apiShareDataset(this.state.currentDataset.dataset.DID, uidReceiver, context.state.jwt.token)
             .then((response) => {
@@ -211,18 +232,19 @@ const mutations = {
     setCurrentUser(state, payload) {
         state.currentUser = payload.response.user
         state.userKey = payload.response.key
+        state.headsets = payload.response.headsets
     },
 
     setShareRequests(state, payload) {
         state.shareRequests = payload.response.requests
 
         if(!state.notificationsToggled) {
-        if(state.shareRequests.length === 0) {
-            state.notificationsOpened = false
-        }
-        else {
-            state.notificationsOpened = true
-        }
+            if(state.shareRequests.length === 0) {
+                state.notificationsOpened = false
+            }
+            else {
+                state.notificationsOpened = true
+            }
         }
     },
 
@@ -232,7 +254,7 @@ const mutations = {
 
     doLoginProcedures(state) {
         state.notificationsToggled = false
-    }  
+    }
 }
 
 const getters = {

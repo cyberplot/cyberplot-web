@@ -13,6 +13,10 @@
         <a @click="acceptRequest(request)" id="button_accept" class="button_primary">Accept</a>
         <a @click="declineRequest(request)" id="button_ignore" class="button_secondary">Ignore</a>
     </form>
+
+    <div id="settings">
+        <a @click="showUserHeadsetsModal" id="button_vr" class="button_secondary">Manage VR headsets</a>
+    </div>
 </div>
 </template>
 
@@ -33,6 +37,11 @@ export default {
             let processedRequest = request
             processedRequest.accepted = false
             this.$store.dispatch('answerShareRequest', { request: processedRequest })
+        },
+
+        showUserHeadsetsModal: function(request) {
+            this.$store.commit('openModal', 'userHeadsets')
+            this.$store.commit('toggleNotifications', false)
         }
     },
     computed: {
@@ -110,5 +119,14 @@ export default {
     margin-top: 1em;
     color: #777;
     font-family: 'Libre Franklin Bold';
+}
+
+#settings {
+    margin-top: 1em;
+}
+
+#settings a {
+    width: 18em;
+    text-align: center;
 }
 </style>

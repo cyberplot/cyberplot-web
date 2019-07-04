@@ -65,6 +65,14 @@ export function apiShareDataset(did, uidReceiver, jwt) {
     return axios.post(`${API_URL}/dataset_share/${did}/${uidReceiver}/`, null, {headers: {Authorization: `Bearer: ${jwt}`}})
 }
 
+export function apiAssociateHeadsetConnector(setupCode, jwt) {
+    return axios.put(`${API_URL}/headset_connector_associate/${setupCode}/`, null, {headers: {Authorization: `Bearer: ${jwt}`}})
+}
+
+export function apiRemoveHeadsetConnector(hid, jwt) {
+    return axios.put(`${API_URL}/headset_connector_remove/${hid}/`, null, {headers: {Authorization: `Bearer: ${jwt}`}})
+}
+
 export function apiShareRequests(jwt) {
     return axios.get(`${API_URL}/share_requests/`, {headers: {Authorization: `Bearer: ${jwt}`}})
 }
