@@ -88,11 +88,6 @@ export default {
         },
 
         validateFile: function() {
-            if(this.file.type != 'text/csv') {
-                this.invalidFile = true
-                return
-            }
-
             this.invalidFile = false
 
             let reader = new FileReader()
