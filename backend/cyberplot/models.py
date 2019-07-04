@@ -272,3 +272,20 @@ class ShareRequest(db.Model):
                     UIDsender = self.uid_sender,
                     UIDreceiver = self.uid_receiver,
                     timestamp = self.timestamp)
+
+class HeadsetConnector(db.Model):
+    __tablename__ = "headset_connectors"
+    hid = db.Column(db.Integer, primary_key = True, nullable = False)
+    uid = db.Column(db.Integer, db.ForeignKey("users.uid"))
+    key = db.Column(db.String(255), nullable = False, unique = True)
+    setup_code = db.Column(db.String(10), nullable = False)
+    device_name = db.Column(db.String(100), nullable = False)
+    last_used = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+
+    def to_dict(self):
+        return dict(HID = self.hid,
+                    UID = self.uid,
+                    key = self.key,
+                    setupCode = self.setup_code,
+                    deviceName = self.device_name,
+                    lastUsed = int(datetime.timestamp(self.last_used)))

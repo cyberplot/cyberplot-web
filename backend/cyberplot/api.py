@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request, send_file
-from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest, SpaceDependency
+from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest, SpaceDependency, HeadsetConnector
 from .config import BaseConfig
 from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
 import simplejson as json
-import csv, itertools, ast, werkzeug, os, datetime, secrets
+import csv, itertools, ast, werkzeug, os, datetime, secrets, random
 from functools import wraps
 import jwt
 from email.utils import parseaddr
@@ -569,12 +569,74 @@ def answerShareRequest(user):
 
     return jsonify({'result': True}), 201
 
+# Generate new headset connector and return it
+@api.route("/headset_connector_generate/", methods = ("POST",))
+def generateHeadsetConnector():
+    # housekeeping - remove old unassociated connectors
+    timeBound = datetime.datetime.now() - datetime.timedelta(minutes = BaseConfig.HEADSET_CONNECTOR_MINUTES_TILL_REMOVE_UNUSED)
+    HeadsetConnector.query.filter(HeadsetConnector.uid == None, HeadsetConnector.last_used <= timeBound).delete()
+
+    RequestForm = request.form
+    data = RequestForm.to_dict(flat = False)
+    metadata = str(data["json"][0])
+    metadataDictionary = ast.literal_eval(metadata)["json"]
+    deviceName = metadataDictionary["deviceName"]
+
+    # generate a unique setup code
+    setupCode = ""
+    while True:
+        number = random.randint(0, 10)
+        setupCode += str(number)
+
+        if len(setupCode) == BaseConfig.HEADSET_SETUP_KEY_LENGTH:
+            if not HeadsetConnector.query.filter_by(setup_code = setupCode, uid = None).first():
+                break
+            else:
+                setupCode = ""
+
+    while True:
+        key = secrets.token_hex(nbytes = 16)
+
+        # make sure we generate a unique key
+        if not HeadsetConnector.query.filter_by(key = key).first():
+            connector = HeadsetConnector(key = key,
+                                         setup_code = setupCode,
+                                         device_name = deviceName,
+                                         last_used = datetime.datetime.now())
+            db.session.add(connector)
+            db.session.commit()
+            return jsonify({'connector': connector.to_dict()})
+
+# Associate previously generated headset connector with user
+@api.route("/headset_connector_associate/<int:setupCode>/", methods = ("PUT",))
+@tokenRequired
+def associateHeadsetConnector(user, setupCode):
+    connector = HeadsetConnector.query.filter_by(setup_code = setupCode, uid = None).first()
+
+    if not connector:
+        return jsonify({'result': 'Specified setup code is invalid.'}), 406
+
+    connector.uid = user.uid
+    db.session.commit()
+    return jsonify({'result': True}), 201
+
+# Remove a headset connector
+@api.route("/headset_connector_remove/<int:hid>/", methods = ("PUT",))
+@tokenRequired
+def removeHeadsetConnector(user, hid):
+    connector = HeadsetConnector.query.filter_by(hid = hid, uid = user.uid).delete()
+    db.session.commit()
+    return jsonify({'result': True}), 201
+
 # Get information about user that is logged in
 @api.route("/user_info/")
 @tokenRequired
 def userInfo(user):
     key = UserConnector.query.filter_by(uid = user.uid).first().key
-    return jsonify({'user': user.to_dict(), 'key': key})
+    headsets = HeadsetConnector.query.filter_by(uid = user.uid)
+    return jsonify({'user': user.to_dict(),
+                    'key': key,
+                    'headsets': [h.to_dict() for h in headsets]})
 
 @api.route("/signup/", methods = ("POST",))
 def signup():
