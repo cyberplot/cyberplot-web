@@ -18,7 +18,8 @@
         <p>The following are versions of <strong>{{ currentDataset.dataset.name }}</strong>.</p>
         <ul id="versions">
             <li class="version" v-for="(version, v) in currentDataset.datasetVersions" :key="version.VID">
-                <img src="@/assets/images/icon_time_gray.svg"> {{ timestampToTime(version.uploadDate) }} <img src="@/assets/images/icon_rows_gray.svg"> {{ version.itemCount }} items
+                <span class="metadata"><img src="@/assets/images/icon_time_gray.svg"> {{ timestampToTime(version.uploadDate) }}</span>
+                <span class="metadata"><img src="@/assets/images/icon_rows_gray.svg"> {{ version.itemCount }} items</span>
 
                 <span class="actions">
                     <a v-if="v != 0" @click="deleteVersion(version.VID)" class="interactive button_secondary"><img src="@/assets/images/icon_delete_blue.svg" alt="Delete version"></a>
@@ -128,6 +129,11 @@ export default {
     background-color: #eee;
     border-radius: 0.3em;
     margin-bottom: 0.5em;
+}
+
+#versions li .metadata:not(:first-child)::before {
+    content: "\a";
+    white-space: pre;
 }
 
 .actions {
