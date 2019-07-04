@@ -18,6 +18,7 @@ const state = {
         attributeMissingValue: false
     },
     notificationsOpened: false,
+    notificationsToggled: false,
     shareRequests: [],
     datasetUpdateUpdating: false, /* are we updating an existing dataset? */
     datasets: [],
@@ -32,6 +33,8 @@ const actions = {
     login(context, userData) {
         context.commit('setUserData', { userData })
         context.commit('unsetCurrentDataset')
+        context.commit('doLoginProcedures')
+
         return apiLogin(userData)
             .then(response => context.commit('setJwtToken', { jwt: response.data }))
             .catch(error => {
@@ -189,6 +192,7 @@ const mutations = {
     
     toggleNotifications(state) {
         state.notificationsOpened = !state.notificationsOpened
+        state.notificationsToggled = true
     },
 
     setDatasets(state, payload) {
@@ -212,16 +216,22 @@ const mutations = {
     setShareRequests(state, payload) {
         state.shareRequests = payload.response.requests
 
+        if(!state.notificationsToggled) {
         if(state.shareRequests.length === 0) {
             state.notificationsOpened = false
         }
         else {
             state.notificationsOpened = true
         }
+        }
     },
 
     selectAttribute(state, attribute) {
         state.selectedAttribute = attribute
+    },
+
+    doLoginProcedures(state) {
+        state.notificationsToggled = false
     }  
 }
 
