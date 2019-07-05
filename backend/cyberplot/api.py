@@ -576,11 +576,7 @@ def generateHeadsetConnector():
     timeBound = datetime.datetime.now() - datetime.timedelta(minutes = BaseConfig.HEADSET_CONNECTOR_MINUTES_TILL_REMOVE_UNUSED)
     HeadsetConnector.query.filter(HeadsetConnector.uid == None, HeadsetConnector.last_used <= timeBound).delete()
 
-    RequestForm = request.form
-    data = RequestForm.to_dict(flat = False)
-    metadata = str(data["json"][0])
-    metadataDictionary = ast.literal_eval(metadata)["json"]
-    deviceName = metadataDictionary["deviceName"]
+    deviceName = request.json["deviceName"]
 
     # generate a unique setup code
     setupCode = ""
@@ -605,7 +601,7 @@ def generateHeadsetConnector():
                                          last_used = datetime.datetime.now())
             db.session.add(connector)
             db.session.commit()
-            return jsonify({'connector': connector.to_dict()})
+            return jsonify({'setupCode': setupCode, 'key': key})
 
 # Associate previously generated headset connector with user
 @api.route("/headset_connector_associate/<int:setupCode>/", methods = ("PUT",))
