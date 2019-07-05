@@ -33,6 +33,43 @@ def tokenRequired(f):
 
     return _verify
 
+def getDatasetData(uid, did):
+    dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first().to_dict()
+    datasetVersions = DatasetVersion.query.filter_by(uid = uid, did = did).order_by(DatasetVersion.vid.desc())
+
+    lastVersion = DatasetVersion.query.filter_by(uid = uid, did = did).order_by(DatasetVersion.vid.desc()).first()
+    dataset["itemCount"] = lastVersion.to_dict()["itemCount"]
+    filepath = lastVersion.filepath()
+
+    attributes_original = Attribute.query.filter_by(uid = uid, did = did)
+    attributes = []
+
+    for attribute in attributes_original:
+        new_attribute = attribute.to_dict()
+        new_attribute["values"] = []
+        attributes.append(new_attribute)
+
+    rowsToGet = BaseConfig.API_ATTRIBUTE_VALUE_PREVIEW_LENGTH
+    if lastVersion.to_dict()["containsHeader"]:
+        rowsToGet = rowsToGet + 1
+
+    with open(filepath) as csvfile:
+        reader = csv.reader(csvfile)
+        for i, row in enumerate(itertools.islice(reader, rowsToGet)):
+            if i == 0 and lastVersion.to_dict()["containsHeader"]:
+                continue # ignore the header
+            for y, column in enumerate(row):
+                attributes[y]["values"].append(column)
+
+    statistics = Statistics.query.filter_by(uid = uid, did = did)
+    key = DatasetConnector.query.filter_by(uid = uid, did = did).first().key
+
+    return jsonify({ 'dataset': dataset,
+                    'attributes': attributes,
+                    'statistics': [s.to_dict() for s in statistics],
+                    'datasetVersions': [v.to_dict() for v in datasetVersions],
+                    'key': key })
+
 # Returns metadata on all datasets belonging to user
 @api.route("/dataset_list/")
 @tokenRequired
@@ -46,41 +83,7 @@ def datasetList(user):
 @tokenRequired
 def dataset(user, did):
     if request.method == "GET":
-        dataset = Dataset.query.filter_by(uid = user.uid, did = did, deleted = False).first().to_dict()
-        datasetVersions = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc())
-
-        lastVersion = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc()).first()
-        dataset["itemCount"] = lastVersion.to_dict()["itemCount"]
-        filepath = lastVersion.filepath()
-
-        attributes_original = Attribute.query.filter_by(uid = user.uid, did = did)
-        attributes = []
-
-        for attribute in attributes_original:
-            new_attribute = attribute.to_dict()
-            new_attribute["values"] = []
-            attributes.append(new_attribute)
-
-        rowsToGet = BaseConfig.API_ATTRIBUTE_VALUE_PREVIEW_LENGTH
-        if lastVersion.to_dict()["containsHeader"]:
-            rowsToGet = rowsToGet + 1
-
-        with open(filepath) as csvfile:
-            reader = csv.reader(csvfile)
-            for i, row in enumerate(itertools.islice(reader, rowsToGet)):
-                if i == 0 and lastVersion.to_dict()["containsHeader"]:
-                    continue # ignore the header
-                for y, column in enumerate(row):
-                    attributes[y]["values"].append(column)
-
-        statistics = Statistics.query.filter_by(uid = user.uid, did = did)
-        key = DatasetConnector.query.filter_by(uid = user.uid, did = did).first().key
-
-        return jsonify({ 'dataset': dataset,
-                        'attributes': attributes,
-                        'statistics': [s.to_dict() for s in statistics],
-                        'datasetVersions': [v.to_dict() for v in datasetVersions],
-                        'key': key })
+        return getDatasetData(user.uid, did)
 
     elif request.method == "PUT":
         datasetChanged = False
@@ -569,40 +572,6 @@ def answerShareRequest(user):
 
     return jsonify({'result': True}), 201
 
-# Generate new headset connector and return it
-@api.route("/headset_connector_generate/", methods = ("POST",))
-def generateHeadsetConnector():
-    # housekeeping - remove old unassociated connectors
-    timeBound = datetime.datetime.now() - datetime.timedelta(minutes = BaseConfig.HEADSET_CONNECTOR_MINUTES_TILL_REMOVE_UNUSED)
-    HeadsetConnector.query.filter(HeadsetConnector.uid == None, HeadsetConnector.last_used <= timeBound).delete()
-
-    deviceName = request.json["deviceName"]
-
-    # generate a unique setup code
-    setupCode = ""
-    while True:
-        number = random.randint(0, 10)
-        setupCode += str(number)
-
-        if len(setupCode) == BaseConfig.HEADSET_SETUP_KEY_LENGTH:
-            if not HeadsetConnector.query.filter_by(setup_code = setupCode, uid = None).first():
-                break
-            else:
-                setupCode = ""
-
-    while True:
-        key = secrets.token_hex(nbytes = 16)
-
-        # make sure we generate a unique key
-        if not HeadsetConnector.query.filter_by(key = key).first():
-            connector = HeadsetConnector(key = key,
-                                         setup_code = setupCode,
-                                         device_name = deviceName,
-                                         last_used = datetime.datetime.now())
-            db.session.add(connector)
-            db.session.commit()
-            return jsonify({'setupCode': setupCode, 'key': key})
-
 # Associate previously generated headset connector with user
 @api.route("/headset_connector_associate/<int:setupCode>/", methods = ("PUT",))
 @tokenRequired
@@ -673,3 +642,88 @@ def login():
 
     token = jwt.encode({'sub': user.username, 'iat': datetime.datetime.utcnow(), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes = 30)}, BaseConfig.SECRET_KEY)
     return jsonify({'token': token.decode('UTF-8')})
+
+# Navigator-related endpoints
+
+# Generate new headset connector and return it
+@api.route("/navigator/headset_connector_generate/", methods = ("POST",))
+def navigatorGenerateHeadsetConnector():
+    # housekeeping - remove old unassociated connectors
+    timeBound = datetime.datetime.now() - datetime.timedelta(minutes = BaseConfig.HEADSET_CONNECTOR_MINUTES_TILL_REMOVE_UNUSED)
+    HeadsetConnector.query.filter(HeadsetConnector.uid == None, HeadsetConnector.last_used <= timeBound).delete()
+
+    deviceName = request.json["deviceName"]
+
+    # generate a unique setup code
+    setupCode = ""
+    while True:
+        number = random.randint(0, 10)
+        setupCode += str(number)
+
+        if len(setupCode) == BaseConfig.HEADSET_SETUP_KEY_LENGTH:
+            if not HeadsetConnector.query.filter_by(setup_code = setupCode, uid = None).first():
+                break
+            else:
+                setupCode = ""
+
+    while True:
+        key = secrets.token_hex(nbytes = 16)
+
+        # make sure we generate a unique key
+        if not HeadsetConnector.query.filter_by(key = key).first():
+            connector = HeadsetConnector(key = key,
+                                         setup_code = setupCode,
+                                         device_name = deviceName,
+                                         last_used = datetime.datetime.now())
+            db.session.add(connector)
+            db.session.commit()
+            return jsonify({'setupCode': setupCode, 'key': key})
+
+# Returns metadata on datasets belonging to user that were updated since time provided
+@api.route("/navigator/dataset_list/", methods = ("POST",))
+def navigatorDatasetList():
+    key = request.json["key"]
+    editedSince = datetime.datetime.fromtimestamp(request.json["since"])
+
+    connector = HeadsetConnector.query.filter_by(key = key).first()
+    if not connector:
+        return jsonify({'result': 'Invalid key.'}), 401
+
+    uid = connector.to_dict()["UID"]
+    datasets = Dataset.query.filter(Dataset.uid == uid, Dataset.deleted == False, Dataset.last_edit > editedSince).order_by(Dataset.last_edit.desc())
+    return jsonify({ 'datasets': [d.to_dict() for d in datasets] })
+
+# Get information about user that is logged in
+@api.route("/navigator/user_info/", methods = ("POST",))
+def navigatorUserInfo():
+    key = request.json["key"]
+    connector = HeadsetConnector.query.filter_by(key = key).first()
+    if not connector:
+        return jsonify({'result': 'Invalid key.'}), 401
+
+    uid = connector.to_dict()["UID"]
+    user = User.query.filter_by(uid = uid).first()
+    return jsonify({'user': user.to_dict()})
+
+# Provides data file of selected dataset version
+@api.route("/navigator/dataset_version_download/<int:did>/<int:vid>/", methods = ("POST",))
+def navigatorDownloadDatasetVersion(did, vid):
+    key = request.json["key"]
+    connector = HeadsetConnector.query.filter_by(key = key).first()
+    if not connector:
+        return jsonify({'result': 'Invalid key.'}), 401
+
+    uid = connector.to_dict()["UID"]
+    path = DatasetVersion.query.filter_by(uid = uid, did = did, vid = vid).first().filepath()
+    return send_file(path, as_attachment = True)
+
+# Returns metadata on specified dataset along with attributes and their stats
+@api.route("/navigator/dataset/<int:did>/", methods = ("POST",))
+def navigatorDataset(did):
+    key = request.json["key"]
+    connector = HeadsetConnector.query.filter_by(key = key).first()
+    if not connector:
+        return jsonify({'result': 'Invalid key.'}), 401
+
+    uid = connector.to_dict()["UID"]
+    return getDatasetData(uid, did)
