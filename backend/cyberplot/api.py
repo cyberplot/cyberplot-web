@@ -686,7 +686,7 @@ def navigatorDatasetList():
     editedSince = datetime.datetime.fromtimestamp(request.json["since"])
 
     connector = HeadsetConnector.query.filter_by(key = key).first()
-    if not connector:
+    if not connector or not connector.to_dict()["UID"]:
         return jsonify({'result': 'Invalid key.'}), 401
 
     uid = connector.to_dict()["UID"]
@@ -698,7 +698,7 @@ def navigatorDatasetList():
 def navigatorUserInfo():
     key = request.json["key"]
     connector = HeadsetConnector.query.filter_by(key = key).first()
-    if not connector:
+    if not connector or not connector.to_dict()["UID"]:
         return jsonify({'result': 'Invalid key.'}), 401
 
     uid = connector.to_dict()["UID"]
@@ -710,7 +710,7 @@ def navigatorUserInfo():
 def navigatorDownloadDatasetVersion(did, vid):
     key = request.json["key"]
     connector = HeadsetConnector.query.filter_by(key = key).first()
-    if not connector:
+    if not connector or not connector.to_dict()["UID"]:
         return jsonify({'result': 'Invalid key.'}), 401
 
     uid = connector.to_dict()["UID"]
@@ -722,7 +722,7 @@ def navigatorDownloadDatasetVersion(did, vid):
 def navigatorDataset(did):
     key = request.json["key"]
     connector = HeadsetConnector.query.filter_by(key = key).first()
-    if not connector:
+    if not connector or not connector.to_dict()["UID"]:
         return jsonify({'result': 'Invalid key.'}), 401
 
     uid = connector.to_dict()["UID"]
