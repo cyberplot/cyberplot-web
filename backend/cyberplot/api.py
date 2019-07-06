@@ -33,7 +33,7 @@ def tokenRequired(f):
 
     return _verify
 
-def getDatasetData(uid, did):
+def getDataset(uid, did):
     dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first().to_dict()
     datasetVersions = DatasetVersion.query.filter_by(uid = uid, did = did).order_by(DatasetVersion.vid.desc())
 
@@ -83,7 +83,7 @@ def datasetList(user):
 @tokenRequired
 def dataset(user, did):
     if request.method == "GET":
-        return getDatasetData(user.uid, did)
+        return getDataset(user.uid, did)
 
     elif request.method == "PUT":
         datasetChanged = False
@@ -726,4 +726,4 @@ def navigatorDataset(did):
         return jsonify({'result': 'Invalid key.'}), 401
 
     uid = connector.to_dict()["UID"]
-    return getDatasetData(uid, did)
+    return getDataset(uid, did)
