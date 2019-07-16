@@ -107,7 +107,7 @@ def dataset(user, did):
             if data["attributes"][i]["label"] != attribute.label:
                 proposedLabel = data["attributes"][i]["label"]
                 # check if dataset does not include an attribute with the same label
-                if Attribute.query.filter_by(label = proposedLabel).first():
+                if Attribute.query.filter_by(did = did, label = proposedLabel).first():
                     return jsonify({'result': 'Dataset already contains an attribute with specified label.'}), 406
 
                 if len(proposedLabel) == 0:
