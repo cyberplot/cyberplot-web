@@ -689,8 +689,8 @@ def navigatorGenerateHeadsetConnector():
             db.session.commit()
             return jsonify({'setupCode': setupCode, 'key': key})
 
-# Returns metadata on datasets belonging to user that were updated since time provided
-@api.route("/navigator/dataset_list/", methods = ("POST",))
+# Returns metadata belonging to user that were updated since time provided
+@api.route("/navigator/synchronize/", methods = ("POST",))
 def navigatorDatasetList():
     key = request.json["key"]
     editedSince = datetime.datetime.fromtimestamp(request.json["since"])
@@ -700,8 +700,22 @@ def navigatorDatasetList():
         return jsonify({'result': 'Invalid key.'}), 401
 
     uid = connector.to_dict()["UID"]
-    datasets = Dataset.query.filter(Dataset.uid == uid, Dataset.deleted == False, Dataset.last_edit > editedSince).order_by(Dataset.last_edit.desc())
-    return jsonify({ 'datasets': [d.to_dict() for d in datasets] })
+    datasets = Dataset.query.filter(Dataset.uid == uid, Dataset.last_edit > editedSince).order_by(Dataset.last_edit.desc())
+    versions = DatasetVersion.query.filter(DatasetVersion.uid == uid, DatasetVersion.upload_date > editedSince).order_by(DatasetVersion.upload_date.desc())
+    attributes = []
+    statistics = []
+
+    for dataset in datasets:
+        if not dataset.deleted:
+            for attribute in Attribute.query.filter_by(uid = uid, did = dataset.did):
+                attributes.append(attribute.to_dict())
+            for stat in Statistics.query.filter_by(uid = uid, did = dataset.did):
+                statistics.append(stat.to_dict())
+
+    return jsonify({ 'datasets': [d.to_dict() for d in datasets],
+                     'versions': [v.to_dict() for v in versions],
+                     'attributes': attributes,
+                     'statistics': statistics })
 
 # Get information about user that is logged in
 @api.route("/navigator/user_info/", methods = ("POST",))
