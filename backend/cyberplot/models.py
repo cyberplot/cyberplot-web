@@ -76,13 +76,15 @@ class Space(db.Model):
     name = db.Column(db.String(100), nullable = False)
     filename = db.Column(db.String(255), nullable = False)
     last_edit = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+    deleted = db.Column(db.Boolean, nullable = False, default = False)
 
     def to_dict(self):
         return dict(SID = self.sid,
                     UID = self.uid,
                     name = self.name,
                     filename = self.filename,
-                    lastEdit = self.last_edit)
+                    lastEdit = self.last_edit,
+                    deleted = self.deleted)
 
     def filepath(self):
         return getSpaceFilepath(self.filename, self.uid, self.sid)
@@ -188,6 +190,7 @@ class DatasetVersion(db.Model):
     upload_date = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     item_count = db.Column(db.Integer, nullable = False)
     contains_header = db.Column(db.Boolean, nullable = False, default = True)
+    deleted = db.Column(db.Boolean, nullable = False, default = False)
 
     def to_dict(self):
         return dict(VID = self.vid,
@@ -196,7 +199,8 @@ class DatasetVersion(db.Model):
                     filename = self.filename,
                     uploadDate = int(datetime.timestamp(self.upload_date)),
                     itemCount = self.item_count,
-                    containsHeader = self.contains_header)
+                    containsHeader = self.contains_header,
+                    deleted = self.deleted)
     
     def copy(self, vid, did, uid):
         return DatasetVersion(vid = vid,

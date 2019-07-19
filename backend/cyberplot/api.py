@@ -34,10 +34,14 @@ def tokenRequired(f):
     return _verify
 
 def getDataset(uid, did):
-    dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first().to_dict()
-    datasetVersions = DatasetVersion.query.filter_by(uid = uid, did = did).order_by(DatasetVersion.vid.desc())
+    dataset = Dataset.query.filter_by(uid = uid, did = did, deleted = False).first()
+    if not dataset:
+        return jsonify({'result': 'The dataset you are requesting does not exist.'}), 406
 
-    lastVersion = DatasetVersion.query.filter_by(uid = uid, did = did).order_by(DatasetVersion.vid.desc()).first()
+    dataset = dataset.to_dict()
+    datasetVersions = DatasetVersion.query.filter_by(uid = uid, did = did, deleted = False).order_by(DatasetVersion.vid.desc())
+
+    lastVersion = DatasetVersion.query.filter_by(uid = uid, did = did, deleted = False).order_by(DatasetVersion.vid.desc()).first()
     dataset["itemCount"] = lastVersion.to_dict()["itemCount"]
     filepath = lastVersion.filepath()
 
@@ -152,12 +156,13 @@ def dataset(user, did):
 
             else:
                 # remove all versions and associated files except for the last one
-                versions = DatasetVersion.query.filter_by(uid = user.uid, did = did).order_by(DatasetVersion.vid.desc())
+                versions = DatasetVersion.query.filter_by(uid = user.uid, did = did, deleted = False).order_by(DatasetVersion.vid.desc())
                 for i, version in enumerate(versions):
                     if(i == 0): # do not remove the last version
                         continue
                     os.unlink(version.filepath())
-                    DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = version.vid).delete()
+                    deletedVersion = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = version.vid, deleted = False)
+                    deletedVersion.deleted = True
 
                 dataset.versioning_on = False
             
@@ -254,7 +259,8 @@ def uploadDataset():
                                            filename = "data.csv",
                                            upload_date = datetime.datetime.now(),
                                            item_count = datasetData["itemCount"],
-                                           contains_header = containsHeader)
+                                           contains_header = containsHeader,
+                                           deleted = False)
         db.session.add(newDatasetVersion)
 
         for i, attribute in enumerate(datasetData["attributes"]):
@@ -293,11 +299,12 @@ def uploadDataset():
                                                filename = "data.csv",
                                                upload_date = datetime.datetime.now(),
                                                item_count = datasetData["itemCount"],
-                                               contains_header = containsHeader)
+                                               contains_header = containsHeader,
+                                               deleted = False)
             db.session.add(newDatasetVersion)
 
         else:
-            datasetVersion = DatasetVersion.query.filter_by(uid = userID, did = datasetID).first()
+            datasetVersion = DatasetVersion.query.filter_by(uid = userID, did = datasetID, deleted = False).first()
             datasetVersion.filename = "data.csv"
             datasetVersion.upload_date = datetime.datetime.now()
             datasetVersion.item_count = datasetData["itemCount"]
@@ -327,8 +334,8 @@ def uploadDataset():
 @api.route("/dataset_delete/<int:did>/", methods = ("POST",))
 @tokenRequired
 def deleteDataset(user, did):
-    datasetVersions = DatasetVersion.query.filter_by(uid = user.uid, did = did)
-    for version in datasetVersions:
+    undeletedDatasetVersions = DatasetVersion.query.filter_by(uid = user.uid, did = did, deleted = False)
+    for version in undeletedDatasetVersions:
         os.unlink(version.filepath())
 
     SpaceDependency.query.filter_by(uid = user.uid, did = did).delete()
@@ -337,7 +344,9 @@ def deleteDataset(user, did):
     DatasetVersion.query.filter_by(uid = user.uid, did = did).delete()
     DatasetConnector.query.filter_by(uid = user.uid, did = did).delete()
     ShareRequest.query.filter_by(uid_sender = user.uid, did = did).delete()
-    Dataset.query.filter_by(uid = user.uid, did = did).delete()
+    deletedDataset = Dataset.query.filter_by(uid = user.uid, did = did).first()
+    deletedDataset.deleted = True
+    deletedDataset.last_edit = datetime.datetime.now()
     db.session.commit()
 
     return jsonify({'result': True}), 201
@@ -346,9 +355,10 @@ def deleteDataset(user, did):
 @api.route("/dataset_version_delete/<int:did>/<int:vid>/", methods = ("POST",))
 @tokenRequired
 def deleteDatasetVersion(user, did, vid):
-    version = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).first()
+    version = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid, deleted = False).first()
     os.unlink(version.filepath())
-    DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).delete()
+    version.deleted = True
+    version.last_edit = datetime.datetime.now()
     db.session.commit()
 
     return jsonify({'result': True}), 201
@@ -364,7 +374,7 @@ def downloadDataset(user, did):
 @api.route("/dataset_version_download/<int:did>/<int:vid>/")
 @tokenRequired
 def downloadDatasetVersion(user, did, vid):
-    path = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid).first().filepath()
+    path = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid, deleted = False).first().filepath()
     return send_file(path, as_attachment = True)
 
 # Creates a share request to selected user
@@ -548,7 +558,7 @@ def answerShareRequest(user):
             newStatistics = statistics.copy(statistics.aid, datasetCopyDID, user.uid)
             db.session.add(newStatistics)
 
-        for version in DatasetVersion.query.filter_by(did = _request["DID"], uid = _request["UIDsender"]):
+        for version in DatasetVersion.query.filter_by(did = _request["DID"], uid = _request["UIDsender"], deleted = False):
             newVersion = version.copy(version.vid, datasetCopyDID, user.uid)
             db.session.add(newVersion)
 
@@ -714,7 +724,7 @@ def navigatorDownloadDatasetVersion(did, vid):
         return jsonify({'result': 'Invalid key.'}), 401
 
     uid = connector.to_dict()["UID"]
-    path = DatasetVersion.query.filter_by(uid = uid, did = did, vid = vid).first().filepath()
+    path = DatasetVersion.query.filter_by(uid = uid, did = did, vid = vid, deleted = False).first().filepath()
     return send_file(path, as_attachment = True)
 
 # Returns metadata on specified dataset along with attributes and their stats

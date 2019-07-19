@@ -73,10 +73,10 @@ def getSpaceDirectory(uid, sid):
 def generateNonconflictingName(datasetName, uid):
     from .models import Dataset
 
-    if Dataset.query.filter_by(name = datasetName, uid = uid).first():
+    if Dataset.query.filter_by(name = datasetName, uid = uid, deleted = False).first():
         appendedNumber = 1
         # increment number until we find one that is unused
-        while Dataset.query.filter_by(name = datasetName + " (" + str(appendedNumber) + ")", uid = uid).first():
+        while Dataset.query.filter_by(name = datasetName + " (" + str(appendedNumber) + ")", uid = uid, deleted = False).first():
             appendedNumber = appendedNumber + 1
         
         datasetName = datasetName + " (" + str(appendedNumber) + ")"
