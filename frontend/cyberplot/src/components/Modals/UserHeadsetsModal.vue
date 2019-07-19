@@ -28,7 +28,7 @@
     <div v-else>
         <header><img src="@/assets/images/icon_vr_blue.svg"> Add new VR headset</header>
 
-        <p>In order to associate a new VR headset with your account, we will use a special pairing code. Launch Cyberplot Navigator on headset you wish to add and type in the numbers that are displayed on screen.</p>
+        <p>In order to associate a new VR headset with your account, we will use a special pairing code. Launch cyberplot navigator on headset you wish to add and type in the numbers that are displayed on screen.</p>
         <input :class="{inputError: codeInvalid || codeEmpty}" type="text" ref="codeInput" name="headset_code" placeholder="Pairing code" v-model="inputtedCode" @keyup.enter="addHeadset" @keydown="clearErrors">
         <span class="errorText" v-if="codeInvalid">Provided pairing code is not valid.</span>
         <span class="errorText" v-if="codeEmpty">Please enter a pairing code.</span>

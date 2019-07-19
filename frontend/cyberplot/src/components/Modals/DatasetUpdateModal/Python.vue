@@ -7,7 +7,7 @@
         <header><img src="@/assets/images/icon_dataset_new_blue.svg"> Add new dataset using Python</header>
     </span>
 
-    <p>To use Python with Cyberplot, first install the cyberplot package from PyPI repository by running the following command in the terminal.</p>
+    <p>To use Python with cyberplot, first install the cyberplot package from PyPI repository by running the following command in the terminal.</p>
     <div class="cli_box">
         pip install cyberplot
     </div>
