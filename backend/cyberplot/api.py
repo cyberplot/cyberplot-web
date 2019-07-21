@@ -161,8 +161,9 @@ def dataset(user, did):
                     if(i == 0): # do not remove the last version
                         continue
                     os.unlink(version.filepath())
-                    deletedVersion = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = version.vid, deleted = False)
+                    deletedVersion = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = version.vid, deleted = False).first()
                     deletedVersion.deleted = True
+                    deletedVersion.upload_date = datetime.datetime.now()
 
                 dataset.versioning_on = False
             
@@ -337,6 +338,8 @@ def deleteDataset(user, did):
     undeletedDatasetVersions = DatasetVersion.query.filter_by(uid = user.uid, did = did, deleted = False)
     for version in undeletedDatasetVersions:
         os.unlink(version.filepath())
+        version.deleted = True
+        version.upload_date = datetime.datetime.now()
 
     SpaceDependency.query.filter_by(uid = user.uid, did = did).delete()
     Statistics.query.filter_by(uid = user.uid, did = did).delete()
@@ -358,7 +361,7 @@ def deleteDatasetVersion(user, did, vid):
     version = DatasetVersion.query.filter_by(uid = user.uid, did = did, vid = vid, deleted = False).first()
     os.unlink(version.filepath())
     version.deleted = True
-    version.last_edit = datetime.datetime.now()
+    version.upload_date = datetime.datetime.now()
     db.session.commit()
 
     return jsonify({'result': True}), 201
@@ -706,11 +709,10 @@ def navigatorDatasetList():
     statistics = []
 
     for dataset in datasets:
-        if not dataset.deleted:
-            for attribute in Attribute.query.filter_by(uid = uid, did = dataset.did):
-                attributes.append(attribute.to_dict())
-            for stat in Statistics.query.filter_by(uid = uid, did = dataset.did):
-                statistics.append(stat.to_dict())
+        for attribute in Attribute.query.filter_by(uid = uid, did = dataset.did):
+            attributes.append(attribute.to_dict())
+        for stat in Statistics.query.filter_by(uid = uid, did = dataset.did):
+            statistics.append(stat.to_dict())
 
     return jsonify({ 'datasets': [d.to_dict() for d in datasets],
                      'versions': [v.to_dict() for v in versions],
