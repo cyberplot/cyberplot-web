@@ -754,3 +754,8 @@ def navigatorDataset(did):
 
     uid = connector.to_dict()["UID"]
     return getDataset(uid, did)
+
+# Used by navigator to check connection status
+@api.route("/navigator/check_connection/")
+def navigatorConnectionCheck():
+    return jsonify({'online': True})
