@@ -715,7 +715,8 @@ def navigatorDatasetList():
     return jsonify({ 'datasets': [d.to_dict() for d in datasets],
                      'versions': [v.to_dict() for v in versions],
                      'attributes': attributes,
-                     'statistics': statistics })
+                     'statistics': statistics,
+                     'timestamp': int(datetime.datetime.now().timestamp()) })
 
 # Get information about user that is logged in
 @api.route("/navigator/user_info/", methods = ("POST",))
