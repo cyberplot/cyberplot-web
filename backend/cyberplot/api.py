@@ -97,7 +97,7 @@ def dataset(user, did):
         dataset = Dataset.query.filter_by(uid = user.uid, did = did).first()
         if proposedName != dataset.name:
             # check if another dataset does not have the same name
-            if Dataset.query.filter_by(uid = user.uid, name = proposedName).first():
+            if Dataset.query.filter_by(uid = user.uid, name = proposedName, deleted = False).first():
                 return jsonify({'result': 'A dataset with specified name already exists.'}), 406
 
             dataset.name = data["dataset"]["name"]
