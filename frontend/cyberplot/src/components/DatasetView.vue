@@ -156,21 +156,21 @@ h2 {
     display: inline-block;
     border-radius: 0.3em;
     background-color: #333;
-    background: linear-gradient(180deg, #4b4b4b 00%, #333 100%);
+    background: linear-gradient(135deg, #4b4b4b 0%, #111111 100%);
     padding: 1em;
     color: white;
 }
 
 #attribute_listing li:hover {
-    background: linear-gradient(180deg, #5c5c5c 0%, #474747 100%);
+    background: linear-gradient(135deg, #5c5c5c 0%, #474747 100%);
 }
 
 #attribute_listing li:active {
-    background: linear-gradient(0deg, #666 00%, #222 100%);
+    background: linear-gradient(315deg, #4b4b4b 0%, #111111 100%);
 }
 
 .selected_attribute {
-    background: linear-gradient(0deg, #666 00%, #222 100%) !important;
+    background: linear-gradient(315deg, #4b4b4b 0%, #111111 100%) !important;
 }
 
 #attribute_listing dt {
