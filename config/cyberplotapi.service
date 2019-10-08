@@ -3,7 +3,7 @@ Description=uWSGI Python container server
 After=network.target
 
 [Service]
-User=root
+User=cyberplot
 Group=www-data
 WorkingDirectory=~/backend
 Environment="PATH=~/backend/venv/bin"
