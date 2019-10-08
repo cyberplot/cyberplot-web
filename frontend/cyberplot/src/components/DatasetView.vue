@@ -23,10 +23,10 @@
             <li @click="selectAttribute(attribute.AID)" v-for="(attribute, index) in currentDataset.attributes" :key="index" class="interactive" :class="{selected_attribute: selectedAttribute === attribute.AID}"><dl>
                 <dt>Name</dt><dd>{{ attribute.label }}</dd>
                 <dt>Type</dt><dd>
-                    <img src="@/assets/images/icon_attribute_nominal_white.svg" :alt="attribute.type" v-show="attribute.type === 'nominal'">
-                    <img src="@/assets/images/icon_attribute_numerical_white.svg" :alt="attribute.type" v-show="attribute.type === 'numerical'">
-                    <img src="@/assets/images/icon_attribute_categorical_white.svg" :alt="attribute.type" v-show="attribute.type === 'categorical'">
-                    <img src="@/assets/images/icon_attribute_vector_white.svg" :alt="attribute.type" v-show="attribute.type === 'vector'">
+                    <img src="@/assets/images/icon_attribute_nominal_gray.svg" :alt="attribute.type" v-show="attribute.type === 'nominal'">
+                    <img src="@/assets/images/icon_attribute_numerical_gray.svg" :alt="attribute.type" v-show="attribute.type === 'numerical'">
+                    <img src="@/assets/images/icon_attribute_categorical_gray.svg" :alt="attribute.type" v-show="attribute.type === 'categorical'">
+                    <img src="@/assets/images/icon_attribute_vector_gray.svg" :alt="attribute.type" v-show="attribute.type === 'vector'">
                 </dd>
                 <div id="attribute_listing_item" v-for="(value, index) in attribute.values" :key="index"><dt>Value</dt><dd>{{ value }}</dd></div>
             </dl></li>
@@ -155,22 +155,21 @@ h2 {
 #attribute_listing li {
     display: inline-block;
     border-radius: 0.3em;
-    background-color: #333;
-    background: linear-gradient(135deg, #4b4b4b 0%, #111111 100%);
+    background-color: #eee;
     padding: 1em;
-    color: white;
+    border: 1px solid #ccc;
 }
 
 #attribute_listing li:hover {
-    background: linear-gradient(135deg, #5c5c5c 0%, #474747 100%);
+    background: linear-gradient(180deg, #eee 0%, #ddd 40%);
 }
 
 #attribute_listing li:active {
-    background: linear-gradient(315deg, #4b4b4b 0%, #111111 100%);
+    background: linear-gradient(180deg, #bbb 0%, #eee 100%);
 }
 
 .selected_attribute {
-    background: linear-gradient(315deg, #4b4b4b 0%, #111111 100%) !important;
+    background: linear-gradient(180deg, #bbb 0%, #eee 100%) !important;
 }
 
 #attribute_listing dt {
