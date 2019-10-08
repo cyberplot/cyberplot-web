@@ -253,6 +253,7 @@ def uploadDataset():
                              deleted = False,
                              versioning_on = False)
         db.session.add(newDataset)
+        db.session.commit()
 
         newDatasetVersion = DatasetVersion(vid = 1,
                                            uid = userID,
@@ -269,6 +270,7 @@ def uploadDataset():
             attribute.did = datasetID
             attribute.aid = i + 1 # SQL increments from 1
             db.session.add(attribute)
+        db.session.commit()
 
         for statistics in datasetData["statistics"]:
             statistics.uid = userID
