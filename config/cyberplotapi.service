@@ -1,0 +1,14 @@
+[Unit]
+Description=uWSGI Python container server
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=~/backend
+Environment="PATH=~/backend/venv/bin"
+ExecStart=~/backend/venv/bin/uwsgi --ini cyberplotapi.ini
+
+[Install]
+WantedBy=multi-user.target
+

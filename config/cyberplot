@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    server_name SERVER;
+
+    location /api {
+        include uwsgi_params;
+        uwsgi_pass unix:~/backend/cyber.sock;
+    }
+
+  location / {
+    root ~/frontend/cyberplot/dist;
+    try_files $uri $uri/ /index.html;
+  }
+}
+
