@@ -136,7 +136,9 @@ class Attribute(db.Model):
                         nominal = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.NOMINAL)),
                         numerical = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.NUMERICAL)),
                         categorical = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.CATEGORICAL)),
-                        vector = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.VECTOR))
+                        vector = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.VECTOR)),
+                        latitude = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.LATITUDE)),
+                        longitude = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.LONGITUDE))
                     ),
                     missingValueSetting = intToMissingValueSetting(self.missing_value_setting).lower(),
                     missingValueCustom = self.missing_value_custom)

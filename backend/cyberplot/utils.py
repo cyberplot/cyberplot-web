@@ -6,6 +6,8 @@ class attributeTypes(enum.Enum):
     NUMERICAL = 2
     CATEGORICAL = 3
     VECTOR = 4
+    LATITUDE = 5
+    LONGITUDE = 6
 
 class attributeMissingValueSettings(enum.Enum):
     IGNORE = 1
@@ -130,6 +132,13 @@ def getDatasetData(filename, skipHeader):
                 data["attributes"][i].type = typeToInt(attributeTypes.CATEGORICAL)
             else:
                 data["attributes"][i].type = typeToInt(attributeTypes.NOMINAL)
+
+        # check if we are within bounds for longitude and latitude
+        if np.isnan(median[i]) or minimum[i] < -180 or maximum[i] > 180:
+            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.LONGITUDE))
+
+        if np.isnan(median[i]) or minimum[i] < -90 or maximum[i] > 90:
+            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.LATITUDE))
 
         # vector checks
         isVector = True
