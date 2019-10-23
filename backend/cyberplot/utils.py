@@ -136,9 +136,13 @@ def getDatasetData(filename, skipHeader):
         # check if we are within bounds for longitude and latitude
         if np.isnan(median[i]) or minimum[i] < -180 or maximum[i] > 180:
             data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.LONGITUDE))
+        elif data["attributes"][i].label.lower() == "lon" or data["attributes"][i].label.lower() == "longitude":
+            data["attributes"][i].type = typeToInt(attributeTypes.LONGITUDE)
 
         if np.isnan(median[i]) or minimum[i] < -90 or maximum[i] > 90:
             data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.LATITUDE))
+        elif data["attributes"][i].label.lower() == "lat" or data["attributes"][i].label.lower() == "latitude":
+            data["attributes"][i].type = typeToInt(attributeTypes.LATITUDE)
 
         # vector checks
         isVector = True
