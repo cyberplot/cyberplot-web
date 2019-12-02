@@ -2,7 +2,11 @@
 <section id="sidebar">
     <ul id="dataset_listing">
         <router-link v-on:click.native="changeDataset(dataset.DID)" :to="`${dataset.DID}`" v-for="dataset in datasets" :key="dataset.id">
-            <li>{{ dataset.name }}</li>
+            <li>
+                <img src="@/assets/images/icon_dataset_multivariate.svg" alt="Multivariate dataset" v-if="dataset.type == 'multivariate'">
+                <img src="@/assets/images/icon_dataset_matrix.svg" alt="Multivariate dataset" v-if="dataset.type == 'matrix'">
+                {{ dataset.name }}
+            </li>
         </router-link>
     </ul>
 
@@ -56,6 +60,10 @@ export default {
     padding: 1em;
     font-family: 'Libre Franklin Bold';
     color: #888;
+}
+
+#dataset_listing li img {
+    margin-right: 0.5em;
 }
 
 #dataset_listing li:hover {
