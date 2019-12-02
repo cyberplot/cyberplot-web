@@ -1,6 +1,6 @@
-from datetime import datetime  
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from .utils import isFlagOnPosition, intToType, typeToInt, attributeTypes, getDatasetFilepath, getDatasetDirectory, getSpaceFilepath, getSpaceDirectory, intToMissingValueSetting
+from .utils import isFlagOnPosition, intToAttributeType, attributeTypeToInt, intToDatasetType, datasetTypeToInt, attributeTypes, getDatasetFilepath, getDatasetDirectory, getSpaceFilepath, getSpaceDirectory, intToMissingValueSetting
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
@@ -49,6 +49,7 @@ class Dataset(db.Model):
     last_edit = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     deleted = db.Column(db.Boolean, nullable = False, default = False)
     versioning_on = db.Column(db.Boolean, nullable = False, default = False)
+    type = db.Column(db.SmallInteger, nullable = False)
 
     def to_dict(self):
         return dict(DID = self.did,
@@ -56,7 +57,8 @@ class Dataset(db.Model):
                     name = self.name,
                     lastEdit = int(datetime.timestamp(self.last_edit)),
                     deleted = self.deleted,
-                    versioningOn = self.versioning_on)
+                    versioningOn = self.versioning_on,
+                    type = intToDatasetType(self.type).lower())
     
     def copy(self, did, uid):
         return Dataset(did = did,
@@ -131,14 +133,14 @@ class Attribute(db.Model):
                     DID = self.did,
                     UID = self.uid,
                     label = self.label,
-                    type = intToType(self.type).lower(),
+                    type = intToAttributeType(self.type).lower(),
                     possibleTypes = dict(
-                        nominal = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.NOMINAL)),
-                        numerical = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.NUMERICAL)),
-                        categorical = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.CATEGORICAL)),
-                        vector = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.VECTOR)),
-                        latitude = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.LATITUDE)),
-                        longitude = isFlagOnPosition(self.type_mask, typeToInt(attributeTypes.LONGITUDE))
+                        nominal = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.NOMINAL)),
+                        numerical = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.NUMERICAL)),
+                        categorical = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.CATEGORICAL)),
+                        vector = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.VECTOR)),
+                        latitude = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.LATITUDE)),
+                        longitude = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.LONGITUDE))
                     ),
                     missingValueSetting = intToMissingValueSetting(self.missing_value_setting).lower(),
                     missingValueCustom = self.missing_value_custom)

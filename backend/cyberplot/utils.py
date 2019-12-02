@@ -16,16 +16,26 @@ class attributeMissingValueSettings(enum.Enum):
     MEDIAN = 4
     ZEROVECTOR = 5
 
+class datasetTypes(enum.Enum):
+    MULTIVARIATE = 1
+    MATRIX = 2
+
 def isFlagOnPosition(mask, pos):
     return ((mask >> pos - 1) & 1) != 0
 
 def flipBitOnPosition(mask, pos):
     return mask ^ (1 << pos - 1)
 
-def intToType(_int):
+def intToAttributeType(_int):
     return attributeTypes(_int).name
 
-def typeToInt(_type):
+def attributeTypeToInt(_type):
+    return _type.value
+
+def intToDatasetType(_int):
+    return datasetTypes(_int).name
+
+def datasetTypeToInt(_type):
     return _type.value
 
 def intToMissingValueSetting(_int):
@@ -35,7 +45,7 @@ def missingValueSettingToInt(_missingSetting):
     return _missingSetting.value
 
 def checkAttributeMissingValueValidity(attribute, value):
-    if intToType(attribute.type) == attributeTypes.NUMERICAL:
+    if intToAttributeType(attribute.type) == attributeTypes.NUMERICAL:
         try:
             assert float(value)
         except ValueError:
@@ -101,7 +111,7 @@ def getDatasetData(filename, skipHeader):
                     data["attributes"].append(Attribute(label = label, 
                                                         missing_value_setting = 1,
                                                         type_mask = pow(2, len(attributeTypes)) - 1,
-                                                        type = typeToInt(attributeTypes.NUMERICAL)))
+                                                        type = attributeTypeToInt(attributeTypes.NUMERICAL)))
                 continue
     
     import numpy as np
@@ -127,22 +137,22 @@ def getDatasetData(filename, skipHeader):
 
         if np.isnan(median[i]):
             generateStatistics = False # only generate statistics for numbers
-            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.NUMERICAL))
+            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, attributeTypeToInt(attributeTypes.NUMERICAL))
             if len(np.unique(datasetStrings[:,i])) <= BaseConfig.ATTRIBUTE_CLASSIFICATION_CATEGORY_MAX_UNIQUE_COUNT:
-                data["attributes"][i].type = typeToInt(attributeTypes.CATEGORICAL)
+                data["attributes"][i].type = attributeTypeToInt(attributeTypes.CATEGORICAL)
             else:
-                data["attributes"][i].type = typeToInt(attributeTypes.NOMINAL)
+                data["attributes"][i].type = attributeTypeToInt(attributeTypes.NOMINAL)
 
         # check if we are within bounds for longitude and latitude
         if np.isnan(median[i]) or minimum[i] < -180 or maximum[i] > 180:
-            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.LONGITUDE))
+            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, attributeTypeToInt(attributeTypes.LONGITUDE))
         elif data["attributes"][i].label.lower() == "lon" or data["attributes"][i].label.lower() == "longitude":
-            data["attributes"][i].type = typeToInt(attributeTypes.LONGITUDE)
+            data["attributes"][i].type = attributeTypeToInt(attributeTypes.LONGITUDE)
 
         if np.isnan(median[i]) or minimum[i] < -90 or maximum[i] > 90:
-            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.LATITUDE))
+            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, attributeTypeToInt(attributeTypes.LATITUDE))
         elif data["attributes"][i].label.lower() == "lat" or data["attributes"][i].label.lower() == "latitude":
-            data["attributes"][i].type = typeToInt(attributeTypes.LATITUDE)
+            data["attributes"][i].type = attributeTypeToInt(attributeTypes.LATITUDE)
 
         # vector checks
         isVector = True
@@ -159,9 +169,9 @@ def getDatasetData(filename, skipHeader):
                 break
 
         if isVector: # vector takes priority over any other type
-            data["attributes"][i].type = typeToInt(attributeTypes.VECTOR)
+            data["attributes"][i].type = attributeTypeToInt(attributeTypes.VECTOR)
         else:
-            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, typeToInt(attributeTypes.VECTOR))
+            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, attributeTypeToInt(attributeTypes.VECTOR))
 
         if generateStatistics:
             data["statistics"].append(Statistics(aid = i + 1, # SQL increments from 1

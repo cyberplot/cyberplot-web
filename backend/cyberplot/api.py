@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest, SpaceDependency, HeadsetConnector
 from .config import BaseConfig
-from .utils import isValidCSV, getDatasetData, isFlagOnPosition, typeToInt, attributeTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
+from .utils import isValidCSV, getDatasetData, isFlagOnPosition, attributeTypeToInt, datasetTypeToInt, attributeTypes, datasetTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets, random
 from functools import wraps
@@ -138,7 +138,7 @@ def dataset(user, did):
                 datasetChanged = True
 
             try:
-                proposedType = typeToInt(attributeTypes[data["attributes"][i]["type"].upper()])
+                proposedType = attributeTypeToInt(attributeTypes[data["attributes"][i]["type"].upper()])
                 if proposedType != attribute.type:
                     if isFlagOnPosition(attribute.type_mask, proposedType):
                         attribute.type = proposedType
@@ -251,7 +251,8 @@ def uploadDataset():
                              name = datasetName,
                              last_edit = datetime.datetime.now(),
                              deleted = False,
-                             versioning_on = False)
+                             versioning_on = False,
+                             type = datasetTypeToInt(datasetTypes.MULTIVARIATE))
         db.session.add(newDataset)
         db.session.commit()
 
