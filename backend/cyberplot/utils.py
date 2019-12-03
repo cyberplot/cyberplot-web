@@ -6,8 +6,7 @@ class attributeTypes(enum.Enum):
     NUMERICAL = 2
     CATEGORICAL = 3
     VECTOR = 4
-    LATITUDE = 5
-    LONGITUDE = 6
+    LOCATIONAL = 5
 
 class attributeMissingValueSettings(enum.Enum):
     IGNORE = 1
@@ -145,14 +144,9 @@ def getDatasetData(filename, skipHeader):
 
         # check if we are within bounds for longitude and latitude
         if np.isnan(median[i]) or minimum[i] < -180 or maximum[i] > 180:
-            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, attributeTypeToInt(attributeTypes.LONGITUDE))
-        elif data["attributes"][i].label.lower() == "lon" or data["attributes"][i].label.lower() == "longitude":
-            data["attributes"][i].type = attributeTypeToInt(attributeTypes.LONGITUDE)
-
-        if np.isnan(median[i]) or minimum[i] < -90 or maximum[i] > 90:
-            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, attributeTypeToInt(attributeTypes.LATITUDE))
-        elif data["attributes"][i].label.lower() == "lat" or data["attributes"][i].label.lower() == "latitude":
-            data["attributes"][i].type = attributeTypeToInt(attributeTypes.LATITUDE)
+            data["attributes"][i].type_mask = flipBitOnPosition(data["attributes"][i].type_mask, attributeTypeToInt(attributeTypes.LOCATIONAL))
+        elif data["attributes"][i].label.lower() == "lon" or data["attributes"][i].label.lower() == "longitude" or data["attributes"][i].label.lower() == "lat" or data["attributes"][i].label.lower() == "latitude":
+            data["attributes"][i].type = attributeTypeToInt(attributeTypes.LOCATIONAL)
 
         # vector checks
         isVector = True

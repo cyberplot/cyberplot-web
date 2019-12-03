@@ -10,8 +10,7 @@
                 <a @click="changeAttributeType('numerical')" id="data_type_numerical_button" :class="numericalSelectorStyle"><img :src="[possibleTypes.numerical && this.type != 'numerical' ? require('@/assets/images/label_attribute_numerical_blue.svg') : require('@/assets/images/label_attribute_numerical_white.svg')]" alt="Numerical"></a>
                 <a @click="changeAttributeType('categorical')" id="data_type_categorical_button" :class="categoricalSelectorStyle"><img :src="[possibleTypes.categorical && this.type != 'categorical' ? require('@/assets/images/label_attribute_categorical_blue.svg') : require('@/assets/images/label_attribute_categorical_white.svg')]" alt="Categorical"></a>
                 <a @click="changeAttributeType('vector')" id="data_type_vector_button" :class="vectorSelectorStyle"><img :src="[possibleTypes.vector && this.type != 'vector' ? require('@/assets/images/label_attribute_vector_blue.svg') : require('@/assets/images/label_attribute_vector_white.svg')]" alt="Vector"></a>
-                <a @click="changeAttributeType('latitude')" id="data_type_latitude_button" :class="latitudeSelectorStyle"><img :src="[possibleTypes.latitude && this.type != 'latitude' ? require('@/assets/images/label_attribute_latitude_blue.svg') : require('@/assets/images/label_attribute_latitude_white.svg')]" alt="Latitude"></a>
-                <a @click="changeAttributeType('longitude')" id="data_type_longitude_button" :class="longitudeSelectorStyle"><img :src="[possibleTypes.longitude && this.type != 'longitude' ? require('@/assets/images/label_attribute_longitude_blue.svg') : require('@/assets/images/label_attribute_longitude_white.svg')]" alt="Longitude"></a>
+                <a @click="changeAttributeType('locational')" id="data_type_locational_button" :class="locationalSelectorStyle"><img :src="[possibleTypes.locational && this.type != 'locational' ? require('@/assets/images/label_attribute_locational_blue.svg') : require('@/assets/images/label_attribute_locational_white.svg')]" alt="Locational"></a>
             </dd>
             <dt><img src="@/assets/images/icon_data_missing_gray.svg"> Missing values</dt>
             <dd id="data_missing_selector" class="selector">
@@ -128,19 +127,11 @@ export default {
             }
         },
 
-        longitudeSelectorStyle: function() {
+        locationalSelectorStyle: function() {
             return {
-                'button_primary': this.type === 'longitude',
-                'button_secondary': this.possibleTypes.longitude && this.type != 'longitude',
-                'button_secondary_disabled': !this.possibleTypes.longitude
-            }
-        },
-
-        latitudeSelectorStyle: function() {
-            return {
-                'button_primary': this.type === 'latitude',
-                'button_secondary': this.possibleTypes.latitude && this.type != 'latitude',
-                'button_secondary_disabled': !this.possibleTypes.latitude
+                'button_primary': this.type === 'locational',
+                'button_secondary': this.possibleTypes.locational && this.type != 'locational',
+                'button_secondary_disabled': !this.possibleTypes.locational
             }
         },
 
