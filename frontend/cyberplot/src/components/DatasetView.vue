@@ -28,6 +28,7 @@
                     <img src="@/assets/images/icon_attribute_categorical_gray.svg" :alt="attribute.type" v-show="attribute.type === 'categorical'">
                     <img src="@/assets/images/icon_attribute_vector_gray.svg" :alt="attribute.type" v-show="attribute.type === 'vector'">
                     <img src="@/assets/images/icon_attribute_locational_gray.svg" :alt="attribute.type" v-show="attribute.type === 'locational'">
+                    <img src="@/assets/images/icon_attribute_spatial_gray.svg" :alt="attribute.type" v-show="attribute.type === 'spatial'">
                 </dd>
                 <div id="attribute_listing_item" v-for="(value, index) in attribute.values" :key="index"><dt>Value</dt><dd>{{ value }}</dd></div>
             </dl></li>

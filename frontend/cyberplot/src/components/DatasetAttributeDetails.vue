@@ -4,22 +4,26 @@
         <h2>{{ currentDataset.attributes[selectedAttribute].label }}</h2>
         <a @click="showAttributeRenameModal" id="attribute_rename_button" class="button_secondary"><img src="@/assets/images/icon_rename_blue.svg" alt="Rename attribute"></a>
         <dl>
-            <dt><img src="@/assets/images/icon_data_type_gray.svg"> Data type</dt>
-            <dd id="data_type_selector" class="selector">
-                <a @click="changeAttributeType('nominal')" id="data_type_nominal_button" :class="nominalSelectorStyle"><img :src="[possibleTypes.nominal && this.type != 'nominal' ? require('@/assets/images/label_attribute_nominal_blue.svg') : require('@/assets/images/label_attribute_nominal_white.svg')]" alt="Nominal"></a>
-                <a @click="changeAttributeType('numerical')" id="data_type_numerical_button" :class="numericalSelectorStyle"><img :src="[possibleTypes.numerical && this.type != 'numerical' ? require('@/assets/images/label_attribute_numerical_blue.svg') : require('@/assets/images/label_attribute_numerical_white.svg')]" alt="Numerical"></a>
-                <a @click="changeAttributeType('categorical')" id="data_type_categorical_button" :class="categoricalSelectorStyle"><img :src="[possibleTypes.categorical && this.type != 'categorical' ? require('@/assets/images/label_attribute_categorical_blue.svg') : require('@/assets/images/label_attribute_categorical_white.svg')]" alt="Categorical"></a>
-                <a @click="changeAttributeType('vector')" id="data_type_vector_button" :class="vectorSelectorStyle"><img :src="[possibleTypes.vector && this.type != 'vector' ? require('@/assets/images/label_attribute_vector_blue.svg') : require('@/assets/images/label_attribute_vector_white.svg')]" alt="Vector"></a>
-                <a @click="changeAttributeType('locational')" id="data_type_locational_button" :class="locationalSelectorStyle"><img :src="[possibleTypes.locational && this.type != 'locational' ? require('@/assets/images/label_attribute_locational_blue.svg') : require('@/assets/images/label_attribute_locational_white.svg')]" alt="Locational"></a>
-            </dd>
-            <dt><img src="@/assets/images/icon_data_missing_gray.svg"> Missing values</dt>
-            <dd id="data_missing_selector" class="selector">
-                <a @click="changeMissingValueSetting('ignore')" id="data_missing_ignore_button" :class="ignoreSelectorStyle">Ignore</a>
-                <a @click="changeMissingValueSetting('mean')" id="data_missing_mean_button" v-if="type === 'numerical'" :class="meanSelectorStyle">Use mean</a>
-                <a @click="changeMissingValueSetting('median')" id="data_missing_median_button" v-if="type === 'numerical'" :class="medianSelectorStyle">Use median</a>
-                <a @click="changeMissingValueSetting('zerovector')" id="data_missing_zerovector_button" v-if="type === 'vector'" :class="zerovectorSelectorStyle">Zero vector</a>
-                <a @click="showMissingValueModal" id="data_missing_custom_button" v-if="type != 'vector'" :class="customSelectorStyle">Custom<span v-if="missingValueCustom != null">: {{ missingValueCustom }}</span></a>
-            </dd>
+            <div v-show="currentDataset.dataset.type != 'matrix'">
+                <dt><img src="@/assets/images/icon_data_type_gray.svg"> Data type</dt>
+                <dd id="data_type_selector" class="selector">
+                    <a @click="changeAttributeType('nominal')" id="data_type_nominal_button" :class="nominalSelectorStyle"><img :src="[possibleTypes.nominal && this.type != 'nominal' ? require('@/assets/images/label_attribute_nominal_blue.svg') : require('@/assets/images/label_attribute_nominal_white.svg')]" alt="Nominal"></a>
+                    <a @click="changeAttributeType('numerical')" id="data_type_numerical_button" :class="numericalSelectorStyle"><img :src="[possibleTypes.numerical && this.type != 'numerical' ? require('@/assets/images/label_attribute_numerical_blue.svg') : require('@/assets/images/label_attribute_numerical_white.svg')]" alt="Numerical"></a>
+                    <a @click="changeAttributeType('categorical')" id="data_type_categorical_button" :class="categoricalSelectorStyle"><img :src="[possibleTypes.categorical && this.type != 'categorical' ? require('@/assets/images/label_attribute_categorical_blue.svg') : require('@/assets/images/label_attribute_categorical_white.svg')]" alt="Categorical"></a>
+                    <a @click="changeAttributeType('vector')" id="data_type_vector_button" :class="vectorSelectorStyle"><img :src="[possibleTypes.vector && this.type != 'vector' ? require('@/assets/images/label_attribute_vector_blue.svg') : require('@/assets/images/label_attribute_vector_white.svg')]" alt="Vector"></a>
+                    <a @click="changeAttributeType('locational')" id="data_type_locational_button" :class="locationalSelectorStyle"><img :src="[possibleTypes.locational && this.type != 'locational' ? require('@/assets/images/label_attribute_locational_blue.svg') : require('@/assets/images/label_attribute_locational_white.svg')]" alt="Locational"></a>
+                </dd>
+            </div>
+            <div>
+                <dt><img src="@/assets/images/icon_data_missing_gray.svg"> Missing values</dt>
+                <dd id="data_missing_selector" class="selector">
+                    <a @click="changeMissingValueSetting('ignore')" id="data_missing_ignore_button" :class="ignoreSelectorStyle">Ignore</a>
+                    <a @click="changeMissingValueSetting('mean')" id="data_missing_mean_button" v-if="type === 'numerical'" :class="meanSelectorStyle">Use mean</a>
+                    <a @click="changeMissingValueSetting('median')" id="data_missing_median_button" v-if="type === 'numerical'" :class="medianSelectorStyle">Use median</a>
+                    <a @click="changeMissingValueSetting('zerovector')" id="data_missing_zerovector_button" v-if="type === 'vector'" :class="zerovectorSelectorStyle">Zero vector</a>
+                    <a @click="showMissingValueModal" id="data_missing_custom_button" v-if="type != 'vector'" :class="customSelectorStyle">Custom<span v-if="missingValueCustom != null">: {{ missingValueCustom }}</span></a>
+                </dd>
+            </div>
         </dl>
     </div>
 
