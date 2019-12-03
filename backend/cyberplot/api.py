@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest, SpaceDependency, HeadsetConnector
 from .config import BaseConfig
-from .utils import isValidCSV, getMultivariateDatasetData, getMatrixDatasetData, isFlagOnPosition, attributeTypeToInt, datasetTypeToInt, intToDatasetType, attributeTypes, datasetTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
+from .utils import isValidCSV, getMultivariateDatasetData, getMatrixDatasetData, isFlagOnPosition, attributeTypeToInt, datasetTypeToInt, attributeTypes, datasetTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets, random
 from functools import wraps
@@ -316,7 +316,7 @@ def uploadDataset():
         dataset.last_edit = datetime.datetime.now()
 
         # get file data, attributes, item count, statistics
-        if intToDatasetType(dataset.type) == datasetTypes.MATRIX:
+        if dataset.type == datasetTypeToInt(datasetTypes.MATRIX):
             datasetData = getMatrixDatasetData(filepath)
 
             if len(datasetData["statistics"]) != 1:
