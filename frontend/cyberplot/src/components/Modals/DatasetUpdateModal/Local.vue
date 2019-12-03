@@ -104,6 +104,7 @@ export default {
             uploadFailedMessage: '',
             labelsCorrect: 'yes',
             datasetType: '',
+            datasetCanBeMatrix: true,
             step: 0
         }
     },
@@ -123,14 +124,36 @@ export default {
             let reader = new FileReader()
             reader.onloadend = (e) => {
                 if (e.target.readyState == FileReader.DONE) {
-                    this.attributeLabels = e.target.result.split('\n')[0].split(',')
+                    let data = e.target.result.split('\n')
+                    this.attributeLabels = data[0].split(',')
+
+                    this.datasetCanBeMatrix = true
+                    for(var rowIndex in data) {
+                        let row = data[rowIndex].split(',')
+                        for(var valueIndex in row) {
+                            let value = row[valueIndex]
+                            if(isNaN(value)) {
+                                this.datasetCanBeMatrix = false
+                                break
+                            }
+                        }
+                        if(!this.datasetCanBeMatrix) {
+                            break
+                        }
+                    }
+
+                    this.datasetType = 'multivariate'
+                    if(this.datasetCanBeMatrix) {
+                        this.step = 1
+                    }
+                    else {
+                        this.step = 2
+                    }
                 }
             }
             
             let blob = this.file.slice(0, 1000)
             reader.readAsBinaryString(blob)
-
-            this.step = 1
         },
 
         uploadFile: function() {
@@ -143,15 +166,26 @@ export default {
                                                     containsHeader: containsHeader,
                                                     updating: updating,
                                                     file: this.file })
-            this.step = 2
+            this.step = 3
         },
 
         goToPreviousStep: function() {
-            this.step -= 1
+            if(this.step === 2 && !this.datasetCanBeMatrix) {
+                this.step = 0
+            }
+            else {
+                this.step -= 1
+            }
         },
 
         goToNextStep: function() {
-            this.step += 1
+            if(this.step === 1 && this.datasetType === 'matrix') {
+                this.uploadFile()
+            }
+            else {
+                this.step += 1
+            }
+
         }
     },
     computed: {
