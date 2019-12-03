@@ -243,6 +243,16 @@ def uploadDataset():
         # do not allow the user to have two datasets with same name
         datasetName = generateNonconflictingName(datasetName, userID)
 
+        datasetType = metadataDictionary["type"]
+        if not datasetType:
+            os.unlink(filepath)
+            return jsonify({'result': 'Please provide a dataset type.'}), 406
+        
+        if(datasetType == "matrix"):
+            datasetType = datasetTypes.MATRIX
+        else:
+            datasetType = datasetTypes.MULTIVARIATE
+
         # get file data, attributes, item count, statistics
         datasetData = getDatasetData(filepath, containsHeader)
 
@@ -252,7 +262,7 @@ def uploadDataset():
                              last_edit = datetime.datetime.now(),
                              deleted = False,
                              versioning_on = False,
-                             type = datasetTypeToInt(datasetTypes.MULTIVARIATE))
+                             type = datasetTypeToInt(datasetType))
         db.session.add(newDataset)
         db.session.commit()
 

@@ -21,8 +21,37 @@
             <a @click="backToInitial" id="button_back" class="interactive"><img src="@/assets/images/button_back.svg" alt="Back"></a>
         </nav>
     </div>
+
+    <div v-else-if="step === 1" id="dataset_type_setup">
+        <p>
+            Please select dataset type.
+        </p>
+
+        <label>
+            <input type="radio" name="type" value="multivariate" v-model="datasetType">
+            <div class="button_secondary">
+                <img src="@/assets/images/icon_dataset_multivariate_white.svg" v-if="datasetType == 'multivariate'">
+                <img src="@/assets/images/icon_dataset_multivariate_blue.svg" v-else>
+                Multivariate
+            </div>
+        </label>
+
+        <label>
+            <input type="radio" name="type" value="matrix" v-model="datasetType">
+            <div class="button_secondary">
+                <img src="@/assets/images/icon_dataset_matrix_white.svg" v-if="datasetType == 'matrix'">
+                <img src="@/assets/images/icon_dataset_matrix_blue.svg" v-else>
+                Matrix
+            </div>
+        </label>
+
+        <nav>
+            <a @click="goToPreviousStep" id="button_back" class="interactive"><img src="@/assets/images/button_back.svg" alt="Back"></a>
+            <a @click="goToNextStep" id="button_next"><img src="@/assets/images/button_next.svg" alt="Next"></a>
+        </nav>
+    </div>
     
-    <div v-else-if="step === 1" id="attribute_setup">
+    <div v-else-if="step === 2" id="attribute_setup">
         <p>
             Are the following attribute labels?
         </p>
@@ -49,7 +78,7 @@
         </nav>
     </div>
 
-    <div v-else-if="step === 2" id="upload_in_progress">
+    <div v-else-if="step === 3" id="upload_in_progress">
         <p>
             Uploading dataset...
         </p>
@@ -74,6 +103,7 @@ export default {
             uploadFailed: false,
             uploadFailedMessage: '',
             labelsCorrect: 'yes',
+            datasetType: '',
             step: 0
         }
     },
@@ -108,6 +138,7 @@ export default {
             let containsHeader = this.labelsCorrect == 'yes' ? 1 : 0
             let updating = this.updating ? 1 : 0
             this.$store.dispatch('uploadDataset', { name: datasetName,
+                                                    type: this.datasetType,
                                                     identifier: this.apiKey,
                                                     containsHeader: containsHeader,
                                                     updating: updating,
@@ -117,6 +148,10 @@ export default {
 
         goToPreviousStep: function() {
             this.step -= 1
+        },
+
+        goToNextStep: function() {
+            this.step += 1
         }
     },
     computed: {
@@ -165,6 +200,7 @@ export default {
                 this.invalidFile = false
                 this.uploadFailed = false
                 this.labelsCorrect = 'yes'
+                this.datasetType = 'multivariate'
             }
         }
     }
@@ -219,5 +255,16 @@ export default {
 #attribute_setup div {
     margin-top: 1em;
     margin-bottom: 1em;
+}
+
+#dataset_type_setup div {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#dataset_type_setup label img {
+    vertical-align: middle;
+    display: inline;
+    width: 2em;
 }
 </style>
