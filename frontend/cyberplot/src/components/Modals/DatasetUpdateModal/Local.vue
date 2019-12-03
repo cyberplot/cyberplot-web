@@ -143,11 +143,22 @@ export default {
                     }
 
                     this.datasetType = 'multivariate'
-                    if(this.datasetCanBeMatrix) {
-                        this.step = 1
+                    if(this.updating) {
+                        this.datasetType = this.currentDataset.dataset.type
+                        if(this.datasetType == 'matrix') {
+                            this.uploadFile()
+                        }
+                        else {
+                            this.step = 2
+                        }
                     }
                     else {
-                        this.step = 2
+                        if(this.datasetCanBeMatrix) {
+                            this.step = 1
+                        }
+                        else {
+                            this.step = 2
+                        }
                     }
                 }
             }
