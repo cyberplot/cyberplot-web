@@ -7,6 +7,7 @@ class attributeTypes(enum.Enum):
     CATEGORICAL = 3
     VECTOR = 4
     LOCATIONAL = 5
+    SPATIAL = 6
 
 class attributeMissingValueSettings(enum.Enum):
     IGNORE = 1
@@ -93,7 +94,47 @@ def generateNonconflictingName(datasetName, uid):
         datasetName = datasetName + " (" + str(appendedNumber) + ")"
     return datasetName
 
-def getDatasetData(filename, skipHeader):
+def getMatrixDatasetData(filename):
+    data = {}
+
+    data["attributes"] = []
+    from .models import Attribute
+
+    data["attributes"].append(Attribute(label = "Values", 
+                                        missing_value_setting = 1,
+                                        type_mask = 0,
+                                        type = attributeTypeToInt(attributeTypes.SPATIAL)))
+    data["attributes"][0].type_mask = flipBitOnPosition(data["attributes"][0].type_mask, attributeTypeToInt(attributeTypes.SPATIAL))
+
+    import numpy as np
+    dataset = np.genfromtxt(filename, delimiter = ",", skip_header = False, usemask = True)
+
+    median = np.median(dataset)
+    mean = np.mean(dataset)
+    sdev = np.std(dataset)
+    minimum = np.quantile(dataset, 0)
+    q1 = np.quantile(dataset, .25)
+    q3 = np.quantile(dataset, .75)
+    maximum = np.quantile(dataset, 1)
+
+    data["statistics"] = []
+    from .models import Statistics
+
+    if not np.isnan(median):
+        data["statistics"].append(Statistics(aid = 1, # SQL increments from 1
+                                            minimum = minimum,
+                                            q1 = q1,
+                                            median = median,
+                                            q3 = q3,
+                                            maximum = maximum,
+                                            mean = mean,
+                                            sdev = sdev))
+
+    data["itemCount"] = int(dataset.shape[0]) * int(dataset.shape[1])
+
+    return data
+
+def getMultivariateDatasetData(filename, skipHeader):
     data = {}
 
     data["attributes"] = []

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest, SpaceDependency, HeadsetConnector
 from .config import BaseConfig
-from .utils import isValidCSV, getDatasetData, isFlagOnPosition, attributeTypeToInt, datasetTypeToInt, attributeTypes, datasetTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
+from .utils import isValidCSV, getMultivariateDatasetData, getMatrixDatasetData, isFlagOnPosition, attributeTypeToInt, datasetTypeToInt, intToDatasetType, attributeTypes, datasetTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets, random
 from functools import wraps
@@ -57,13 +57,19 @@ def getDataset(uid, did):
     if lastVersion.to_dict()["containsHeader"]:
         rowsToGet = rowsToGet + 1
 
-    with open(filepath) as csvfile:
-        reader = csv.reader(csvfile)
-        for i, row in enumerate(itertools.islice(reader, rowsToGet)):
-            if i == 0 and lastVersion.to_dict()["containsHeader"]:
-                continue # ignore the header
-            for y, column in enumerate(row):
-                attributes[y]["values"].append(column)
+    if dataset["type"] == "matrix":
+        datasetType = datasetTypes.MATRIX
+    else:
+        datasetType = datasetTypes.MULTIVARIATE
+
+    if datasetType == datasetTypes.MULTIVARIATE:
+        with open(filepath) as csvfile:
+            reader = csv.reader(csvfile)
+            for i, row in enumerate(itertools.islice(reader, rowsToGet)):
+                if i == 0 and lastVersion.to_dict()["containsHeader"]:
+                    continue # ignore the header
+                for y, column in enumerate(row):
+                    attributes[y]["values"].append(column)
 
     statistics = Statistics.query.filter_by(uid = uid, did = did)
     key = DatasetConnector.query.filter_by(uid = uid, did = did).first().key
@@ -248,13 +254,17 @@ def uploadDataset():
             os.unlink(filepath)
             return jsonify({'result': 'Please provide a dataset type.'}), 406
         
-        if(datasetType == "matrix"):
+        # get file data, attributes, item count, statistics
+        if datasetType == "matrix":
             datasetType = datasetTypes.MATRIX
+            datasetData = getMatrixDatasetData(filepath)
+
+            if len(datasetData["statistics"]) != 1:
+                os.unlink(filepath)
+                return jsonify({'result': 'Matrix dataset can only contain numbers.'}), 406
         else:
             datasetType = datasetTypes.MULTIVARIATE
-
-        # get file data, attributes, item count, statistics
-        datasetData = getDatasetData(filepath, containsHeader)
+            datasetData = getMultivariateDatasetData(filepath, containsHeader)
 
         newDataset = Dataset(uid = userID,
                              did = datasetID,
@@ -302,9 +312,18 @@ def uploadDataset():
         db.session.commit()
 
     else:
-        datasetData = getDatasetData(filepath, containsHeader)
         dataset = Dataset.query.filter_by(uid = userID, did = datasetID).first()
         dataset.last_edit = datetime.datetime.now()
+
+        # get file data, attributes, item count, statistics
+        if intToDatasetType(dataset.type) == datasetTypes.MATRIX:
+            datasetData = getMatrixDatasetData(filepath)
+
+            if len(datasetData["statistics"]) != 1:
+                os.unlink(filepath)
+                return jsonify({'result': 'Matrix dataset can only contain numbers.'}), 406
+        else:
+            datasetData = getMultivariateDatasetData(filepath, containsHeader)
 
         if dataset.versioning_on:
             newDatasetVersion = DatasetVersion(vid = versionNumber,
