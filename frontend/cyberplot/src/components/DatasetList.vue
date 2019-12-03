@@ -57,7 +57,7 @@ export default {
 
 #dataset_listing li {
     border-radius: 0.3em 0 0 0.3em;
-    padding: 1em;
+    padding: 0.6em;
     font-family: 'Libre Franklin Bold';
     color: #888;
 }
