@@ -169,7 +169,10 @@ export default {
 
         uploadFile: function() {
             let datasetName = this.file.name.split(".")[0]
-            let containsHeader = this.labelsCorrect == 'yes' ? 1 : 0
+            let containsHeader = 0
+            if(this.datasetType === 'multivariate' && this.labelsCorrect === 'yes') {
+                containsHeader = 1
+            }
             let updating = this.updating ? 1 : 0
             this.$store.dispatch('uploadDataset', { name: datasetName,
                                                     type: this.datasetType,
