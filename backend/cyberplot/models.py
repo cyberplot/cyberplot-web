@@ -139,7 +139,8 @@ class Attribute(db.Model):
                         numerical = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.NUMERICAL)),
                         categorical = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.CATEGORICAL)),
                         vector = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.VECTOR)),
-                        locational = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.LOCATIONAL))
+                        locational = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.LOCATIONAL)),
+                        spatial = isFlagOnPosition(self.type_mask, attributeTypeToInt(attributeTypes.SPATIAL))
                     ),
                     missingValueSetting = intToMissingValueSetting(self.missing_value_setting).lower(),
                     missingValueCustom = self.missing_value_custom)
