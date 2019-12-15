@@ -231,13 +231,13 @@ class Statistics(db.Model):
     aid = db.Column(db.Integer, primary_key = True)
     did = db.Column(db.Integer, primary_key = True)
     uid = db.Column(db.Integer, primary_key = True)
-    minimum = db.Column(db.Numeric)
-    q1 = db.Column(db.Numeric)
-    median = db.Column(db.Numeric)
-    q3 = db.Column(db.Numeric)
-    maximum = db.Column(db.Numeric)
-    mean = db.Column(db.Numeric)
-    sdev = db.Column(db.Numeric)
+    minimum = db.Column(db.Float)
+    q1 = db.Column(db.Float)
+    median = db.Column(db.Float)
+    q3 = db.Column(db.Float)
+    maximum = db.Column(db.Float)
+    mean = db.Column(db.Float)
+    sdev = db.Column(db.Float)
 
     def to_dict(self):
         return dict(AID = self.aid,
