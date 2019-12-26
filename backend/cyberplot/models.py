@@ -66,7 +66,8 @@ class Dataset(db.Model):
                        name = self.name,
                        last_edit = self.last_edit,
                        deleted = self.deleted,
-                       versioning_on = self.versioning_on)
+                       versioning_on = self.versioning_on,
+                       type = self.type)
 
 class Space(db.Model):
     __tablename__ = "spaces"
