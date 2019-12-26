@@ -160,6 +160,8 @@ h2 {
     background-color: #eee;
     padding: 1em;
     border: 1px solid #ccc;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 #attribute_listing li:hover {
