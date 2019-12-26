@@ -52,7 +52,6 @@ export default {
 
 #dataset_listing .router-link-active li {
     background-color: #ececec;
-    border-bottom: 5px solid #1fbbfb;
 }
 
 #dataset_listing li {
