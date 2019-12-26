@@ -131,6 +131,7 @@ h2 {
 
 #dataset_actions a {
     margin: 0.25em;
+    vertical-align: middle;
 }
 
 #dataset_panel {
