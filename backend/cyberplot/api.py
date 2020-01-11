@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from .models import db, User, Dataset, Space, Attribute, DatasetConnector, UserConnector, DatasetVersion, Statistics, ShareRequest, SpaceDependency, HeadsetConnector
 from .config import BaseConfig
-from .utils import isValidCSV, getMultivariateDatasetData, getMatrixDatasetData, isFlagOnPosition, attributeTypeToInt, datasetTypeToInt, attributeTypes, datasetTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName
+from .utils import isValidCSV, getMultivariateDatasetData, getMatrixDatasetData, isFlagOnPosition, attributeTypeToInt, datasetTypeToInt, attributeTypes, datasetTypes, attributeMissingValueSettings, getDatasetFilepath, missingValueSettingToInt, checkAttributeMissingValueValidity, missingValueSettingValidForAttribute, generateNonconflictingName, isImage, createCSVFromHeightmap
 import simplejson as json
 import csv, itertools, ast, werkzeug, os, datetime, secrets, random
 from functools import wraps
@@ -236,9 +236,11 @@ def uploadDataset():
     os.makedirs(os.path.dirname(filepath), exist_ok = True)
     datasetData.save(filepath)
 
-    if not isValidCSV(filepath):
+    if isImage(filepath):
+        createCSVFromHeightmap(filepath)
+    elif not isValidCSV(filepath):
         os.unlink(filepath)
-        return jsonify({'result': 'Provided file is not a valid CSV file.'}), 406
+        return jsonify({'result': 'Provided file is not supported.'}), 406
 
     if createDataset:
         datasetName = metadataDictionary["name"]

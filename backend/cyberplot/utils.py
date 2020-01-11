@@ -1,4 +1,4 @@
-import enum, csv
+import enum, csv, os
 from .config import BaseConfig
 
 class attributeTypes(enum.Enum):
@@ -69,6 +69,42 @@ def missingValueSettingValidForAttribute(attribute, setting):
 def isValidCSV(filename):
     # TODO
     return True
+
+def isImage(filename):
+    from PIL import Image
+    try:
+        im = Image.open(filename)
+        im.verify()
+        im.close()
+        return True
+    except:
+        return False
+
+def createCSVFromHeightmap(filename):
+    from PIL import Image
+    im = Image.open(filename, "r")
+    width, height = im.size
+
+    if width > 256 or height > 256:
+        thumbsize = 256, 256
+        im.thumbnail(thumbsize)
+        width, height = im.size
+
+    pixelValues = list(im.getdata(band = 0))
+    im.close()
+    os.unlink(filename)
+
+    output = open(filename, "w+")
+
+    for h in range(0, height):
+        for w in range(0, width):
+            output.write(str(pixelValues[h * width + w]))
+            if w != width - 1:
+                output.write(",")
+        output.write("\n")
+    output.close()
+
+    return
 
 def getDatasetFilepath(filename, uid, did, vid):
     return getDatasetDirectory(uid, did, vid) + "/" + str(filename)

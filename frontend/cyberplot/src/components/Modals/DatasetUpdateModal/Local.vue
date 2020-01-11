@@ -12,9 +12,10 @@
         <span class="errorText" v-show="invalidFile">Please select a valid CSV file.</span>
         <span class="errorText" v-show="uploadFailed">{{ uploadFailedMessage }}</span>
         <p id="file_prompt">
-            Drag and drop a csv file or 
-            <input @change="getFileFromPrompt()" type="file" ref="file" accept=".csv" style="display: none">
+            Drag and drop a file or 
+            <input @change="getFileFromPrompt()" type="file" ref="file" accept=".csv,.jpg,.jpeg,.png" style="display: none">
             <a @click="$refs.file.click()" id="button_copy" class="button_primary">Select file</a>
+            <span id="supported_file_types">(supported types: csv, jpg, png)</span>
         </p>
 
         <nav>
@@ -124,6 +125,15 @@ export default {
             let reader = new FileReader()
             reader.onloadend = (e) => {
                 if (e.target.readyState == FileReader.DONE) {
+                    let extension = this.file.name.split('.').pop().toLowerCase()
+                    let isImage = ['jpg', 'jpeg', 'png'].indexOf(extension) > -1
+
+                    if(isImage) {
+                        this.datasetType = 'matrix'
+                        this.uploadFile()
+                        return
+                    }
+
                     let data = e.target.result.split('\n')
                     this.attributeLabels = data[0].split(',')
 
@@ -314,5 +324,12 @@ export default {
     vertical-align: middle;
     display: inline;
     width: 2em;
+}
+
+#supported_file_types {
+    display: block;
+    margin-top: 1em;
+    color: #888;
+    font-size: 0.9em;
 }
 </style>
